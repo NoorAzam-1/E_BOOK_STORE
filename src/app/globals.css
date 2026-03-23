@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+:root {
+  --tertiary-fixed: 219 225 255;
+  --outline: 153 144 124;
+  --surface-container-lowest: 0 14 35;
+  --inverse-surface: 212 227 255;
+  --tertiary: 191 205 255;
+  --surface-container-highest: 27 54 86;
+  --secondary-container: 73 76 77;
+  --surface-dim: 0 20 43;
+  --primary: 242 202 80;
+  --error: 255 180 171;
+  --surface-container-high: 14 43 75;
+  --on-secondary-fixed-variant: 69 71 72;
+  --on-tertiary-fixed-variant: 39 67 138;
+  --on-error: 105 0 5;
+  --primary-fixed: 255 224 136;
+  --primary-container: 212 175 55;
+  --inverse-on-surface: 22 49 82;
+  --surface-bright: 32 58 91;
+  --on-background: 212 227 255;
+  --secondary-fixed-dim: 197 199 200;
+  --surface-tint: 233 195 73;
+  --secondary: 197 199 200;
+  --tertiary-fixed-dim: 180 197 255;
+  --on-error-container: 255 218 214;
+  --surface: 0 20 43;
+  --error-container: 147 0 10;
+  --on-primary-container: 85 67 0;
+  --on-tertiary: 8 43 114;
+  --on-primary-fixed-variant: 87 69 0;
+  --primary-fixed-dim: 233 195 73;
+  --on-surface: 212 227 255;
+  --background: 0 20 43;
+  --outline-variant: 77 70 53;
+  --on-secondary-container: 186 188 189;
+  --secondary-fixed: 225 227 228;
+  --on-secondary: 46 49 50;
+  --surface-variant: 27 54 86;
+  --on-surface-variant: 208 197 175;
+  --on-primary-fixed: 36 26 0;
+  --surface-container-low: 0 28 58;
+  --tertiary-container: 151 176 255;
+  --on-secondary-fixed: 25 28 29;
+  --on-primary: 60 47 0;
+  --surface-container: 1 32 64;
+  --inverse-primary: 115 92 0;
+  --on-tertiary-container: 37 65 136;
+  --on-tertiary-fixed: 0 23 75;
+}
+
+@theme inline {
+  --color-background: rgb(var(--background));
+  --color-on-surface: rgb(var(--on-surface));
+  --color-on-surface-variant: rgb(var(--on-surface-variant));
+  --color-on-background: rgb(var(--on-background));
+
+  --color-primary: rgb(var(--primary));
+  --color-primary-container: rgb(var(--primary-container));
+  --color-primary-fixed: rgb(var(--primary-fixed));
+  --color-primary-fixed-dim: rgb(var(--primary-fixed-dim));
+  --color-on-primary: rgb(var(--on-primary));
+  --color-on-primary-container: rgb(var(--on-primary-container));
+  --color-on-primary-fixed: rgb(var(--on-primary-fixed));
+  --color-on-primary-fixed-variant: rgb(var(--on-primary-fixed-variant));
+
+  --color-secondary: rgb(var(--secondary));
+  --color-secondary-container: rgb(var(--secondary-container));
+  --color-secondary-fixed: rgb(var(--secondary-fixed));
+  --color-secondary-fixed-dim: rgb(var(--secondary-fixed-dim));
+  --color-on-secondary: rgb(var(--on-secondary));
+  --color-on-secondary-container: rgb(var(--on-secondary-container));
+  --color-on-secondary-fixed: rgb(var(--on-secondary-fixed));
+  --color-on-secondary-fixed-variant: rgb(var(--on-secondary-fixed-variant));
+
+  --color-tertiary: rgb(var(--tertiary));
+  --color-tertiary-container: rgb(var(--tertiary-container));
+  --color-tertiary-fixed: rgb(var(--tertiary-fixed));
+  --color-tertiary-fixed-dim: rgb(var(--tertiary-fixed-dim));
+  --color-on-tertiary: rgb(var(--on-tertiary));
+  --color-on-tertiary-container: rgb(var(--on-tertiary-container));
+  --color-on-tertiary-fixed: rgb(var(--on-tertiary-fixed));
+  --color-on-tertiary-fixed-variant: rgb(var(--on-tertiary-fixed-variant));
+
+  --color-surface: rgb(var(--surface));
+  --color-surface-variant: rgb(var(--surface-variant));
+  --color-surface-dim: rgb(var(--surface-dim));
+  --color-surface-bright: rgb(var(--surface-bright));
+  --color-surface-container: rgb(var(--surface-container));
+  --color-surface-container-low: rgb(var(--surface-container-low));
+  --color-surface-container-lowest: rgb(var(--surface-container-lowest));
+  --color-surface-container-high: rgb(var(--surface-container-high));
+  --color-surface-container-highest: rgb(var(--surface-container-highest));
+  --color-inverse-surface: rgb(var(--inverse-surface));
+  --color-inverse-on-surface: rgb(var(--inverse-on-surface));
+  --color-inverse-primary: rgb(var(--inverse-primary));
+
+  --color-outline: rgb(var(--outline));
+  --color-outline-variant: rgb(var(--outline-variant));
+
+  --color-error: rgb(var(--error));
+  --color-error-container: rgb(var(--error-container));
+  --color-on-error: rgb(var(--on-error));
+  --color-on-error-container: rgb(var(--on-error-container));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: max(884px, 100dvh);
+  background: rgb(var(--background));
+  color: rgb(var(--on-surface));
+  font-family: var(--font-inter), sans-serif;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.glass-card {
+  background: rgba(1, 32, 64, 0.7);
+  backdrop-filter: blur(12px);
+}
