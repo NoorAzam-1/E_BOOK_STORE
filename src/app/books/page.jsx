@@ -86,15 +86,21 @@ export default function HomePage() {
 
             {/* DETAILS */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-              <div className="p-3 bg-surface-container rounded-lg">
-                Oct 2023
+              <div className="flex flex-col gap-2 p-3 bg-surface-container rounded-lg">
+                <span className="uppercase font text-(--color-primary-fixed-dim)">Release</span>
+                <span>Oct 2023</span>
               </div>
-              <div className="p-3 bg-surface-container rounded-lg">
-                412 Pages
+              <div className="flex flex-col gap-2 p-3 bg-surface-container rounded-lg">
+                <span className="uppercase font text-(--color-primary-fixed-dim)">page</span>
+                <span>412 Pages</span>
               </div>
-              <div className="p-3 bg-surface-container rounded-lg">English</div>
-              <div className="p-3 bg-surface-container rounded-lg">
-                Hardcover
+              <div className="flex flex-col gap-2 p-3 bg-surface-container rounded-lg">
+                <span className="uppercase font text-(--color-primary-fixed-dim)">Language</span>
+                <span>English</span>
+              </div>
+              <div className="flex flex-col gap-2 p-3 bg-surface-container rounded-lg">
+                <span className="uppercase font text-(--color-primary-fixed-dim)">Format</span>
+                <span>HardCover</span>
               </div>
             </div>
           </div>
