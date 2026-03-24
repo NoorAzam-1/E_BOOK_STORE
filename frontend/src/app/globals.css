@@ -110,7 +110,7 @@ html {
 }
 
 body {
-  min-height: max(884px, 100dvh);
+  min-height: 100%;
   background: rgb(var(--background));
   color: rgb(var(--on-surface));
   font-family: var(--font-inter), sans-serif;

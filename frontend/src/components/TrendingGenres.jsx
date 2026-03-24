@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function TrendingGenres() {
   return (
     <section className="my-8">
-      <div className="mx-auto mb-2 flex max-w-7xl items-end justify-between px-6">
+      <div className="mx-auto mb-2 flex items-end justify-between px-3">
         <div>
           <h2 className="font-headline text-3xl font-extrabold tracking-tight md:text-4xl">
             Trending Genres
@@ -19,7 +19,7 @@ export default function TrendingGenres() {
         </Link>
       </div>
 
-      <div className="hide-scrollbar mx-auto flex max-w-7xl gap-8 overflow-x-auto px-6 py-4">
+      <div className="hide-scrollbar mx-auto flex max-w-7xl gap-8 overflow-x-auto px-2 py-4">
         {site.genres.map((genre) => (
           <div
             key={genre.name}

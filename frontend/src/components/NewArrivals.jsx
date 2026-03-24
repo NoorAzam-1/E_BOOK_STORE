@@ -22,7 +22,7 @@ function RatingStars({ rating }) {
 
 export default function NewArrivals() {
   return (
-    <section className="mx-auto my-5 md:my-8 max-w-7xl px-6">
+    <section className="mx-auto my-5 md:my-8 px-3">
       <h2 className="mb-6 md:mb-10 font-headline text-3xl font-bold">New Arrivals</h2>
 
       <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">

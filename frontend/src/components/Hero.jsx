@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="mx-auto max-w-7xl px-6 mt-20 md:mt-30">
+    <section className="mx-auto w-full">
       <div className="relative flex min-h-[500px] flex-col items-center gap-12 overflow-hidden rounded-xl md:rounded-4xl bg-surface-container-low p-8 md:flex-row md:p-16">
         <div className="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-primary/10 blur-[120px]" />
 
@@ -16,7 +16,7 @@ export default function Hero() {
             </span>
           </div>
 
-          <h1 className="font-headline text-5xl font-extrabold leading-tight tracking-tight text-on-surface md:text-7xl">
+          <h1 className="font-headline text-5xl font-extrabold md:leading-tight tracking-tight text-on-surface md:text-7xl">
             {site.hero.title.split(" ").slice(0, 2).join(" ")} <br />
             <span className="text-primary">
               {site.hero.title.split(" ").slice(2).join(" ")}

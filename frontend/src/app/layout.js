@@ -25,7 +25,9 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${manrope.variable} bg-background text-on-surface`}
       >
         <Header />
+        <main className="pt-18 sm:py-19 md:pt-20 lg:pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         {children}
+        </main>
         <Footer />
       </body>
     </html>
