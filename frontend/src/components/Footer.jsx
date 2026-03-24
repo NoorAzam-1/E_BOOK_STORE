@@ -12,11 +12,11 @@ export default function Footer() {
         <div className="flex flex-wrap justify-center gap-8">
           {site.footerLinks.map((item) => (
             <Link
-              key={item}
-              href="#"
+              key={item.title}
+              href={item.link}
               className="text-xs leading-relaxed text-on-surface/50 transition-colors hover:text-primary"
             >
-              {item}
+              {item.title}
             </Link>
           ))}
         </div>

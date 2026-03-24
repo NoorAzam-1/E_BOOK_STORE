@@ -6,47 +6,40 @@ export const site = {
     description:
       "An evocative journey through the constellations of memory and the architecture of the human heart. Curated for the restless soul.",
     price: 14.99,
-    image:
-      "/images/heroImage.png",
+    image: "/images/heroImage.png",
   },
   genres: [
     {
       name: "Fiction",
       count: "15,400+ titles available",
       tags: ["Historical", "Fantasy", "Mystery"],
-      image:
-        "/images/t1.png",
+      image: "/images/t1.png",
       spotlight: {
         title: "Silence of the Void",
         author: "Marcus Thorne",
-        image:
-          "/images/books/t1Book.png",
+        image: "/images/books/t1Book.png",
       },
     },
     {
       name: "Tech",
       count: "8,200+ titles available",
       tags: ["Programming", "AI & ML", "Design"],
-      image:
-        "/images/t2.png",
+      image: "/images/t2.avif",
       spotlight: {
         title: "The Digital Nomad",
         author: "Elena Rodriguez",
-        image:
-          "/images/books/t2Book.png",
+        image: "/images/books/t2Book.png",
       },
     },
     {
       name: "Business",
       count: "12,100+ titles available",
       tags: ["Startup", "Strategy", "Finance"],
-      image:
-        "/images/t3.png",
+      image: "/images/t3.png",
       spotlight: {
         title: "Pulse of Innovation",
         author: "Sarah Jenkins",
-        image:
-          "/images/books/t3Book.png",
+        image: "/images/books/t3Book.png",
       },
     },
   ],
@@ -88,5 +81,10 @@ export const site = {
         "https://lh3.googleusercontent.com/aida-public/AB6AXuBsu6tklvvhw7nsQpNVsaZFMC4SRJQBH6euuyj4KHAXbBL2ggU98goEZcMLgLzWKfA7lKkOx0C-YqIZQquczmtJ3lHRdB0wsBjzug8o9JxkGl8-HUdlILPbIOBck0p_E8kuJxDN_sQldLzL7wBITkbWOHvnUwiI4ya-6v1GYbSGx0_d6-t-JVa46XKoWBamw2HOgd7Tq6WImh69qxTYNGz51nbxeYUYvwuJEmvqm-sznYD8QoK1gB9kpO69RHzrfX0y0ReQuQFcbEc",
     },
   ],
-  footerLinks: ["Journal", "Privacy", "Terms", "Shipping"],
+  footerLinks: [
+    { title: "Journal", link: "/journal" },
+    { title: "Privacy", link: "/privacy-policy" },
+    { title: "Terms", link: "terms" },
+    { title: "Shipping", link: "shipping" },
+  ],
 };

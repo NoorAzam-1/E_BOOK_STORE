@@ -37,6 +37,9 @@ export default function Header() {
             <Link className="text-on-surface transition-colors duration-300 hover:text-primary" href="#">
               Library
             </Link>
+            <Link className="text-on-surface transition-colors duration-300 hover:text-primary" href="#">
+              Login
+            </Link>
           </nav>
 
           <button className="relative scale-95 text-primary transition-transform active:opacity-80 cursor-pointer" aria-label="Cart">

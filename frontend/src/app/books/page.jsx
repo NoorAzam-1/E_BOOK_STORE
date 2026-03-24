@@ -19,6 +19,7 @@ function RatingStars({ rating }) {
     </div>
   );
 }
+  
 
 export default function HomePage() {
   return (
