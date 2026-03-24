@@ -8,7 +8,7 @@ export default function ProfilePage() {
   const [active, setActive] = useState("profile");
 
   return (
-    <div className="min-h-screen mt-24 bg-background text-on-surface">
+    <div className="min-h-screen bg-background text-on-surface">
       <main className="max-w-4xl mx-auto px-4 sm:px-6 space-y-10">
         {/* PROFILE HEADER */}
         <section className="flex flex-col items-center text-center space-y-4">
