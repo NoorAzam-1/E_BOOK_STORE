@@ -1,55 +1,119 @@
+"use client";
+
 import Link from "next/link";
-import { Menu, Search, ShoppingCart } from "lucide-react";
+import { Menu, ShoppingCart, X } from "lucide-react";
 import { site } from "@/data/site";
+import { useState } from "react";
 
 export default function Header() {
+  const [active, setActive] = useState("/");
+  const [open, setOpen] = useState(false);
+
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "Browse", href: "/browse" },
+    { name: "Library", href: "/library" },
+    { name: "Login", href: "/login" },
+  ];
+
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-xl shadow-2xl shadow-blue-950/20">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-4">
-          <button className="scale-95 text-primary transition-transform active:opacity-80 md:hidden" aria-label="Open menu">
-            <Menu className="h-6 w-6" />
-          </button>
-          <Link href="/" className="font-headline text-xl font-black uppercase tracking-tighter text-primary">
-            {site.brand}
-          </Link>
-        </div>
+    <>
+      {/* HEADER */}
+      <header className="fixed top-0 z-40 w-full border-b border-outline-variant/20 bg-background/80 backdrop-blur-xl">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
 
-        <div className="hidden flex-1 max-w-xl mx-12 md:flex">
-          <div className="group relative w-full">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-on-surface-variant transition-colors group-focus-within:text-primary" />
-            <input
-              type="text"
-              placeholder="Search curated titles..."
-              className="w-full rounded-xl border-none bg-surface-container-lowest py-3 pl-12 text-sm text-on-surface outline-none ring-0 transition-all placeholder:text-on-surface-variant/50 focus:border-primary focus:ring-0"
-            />
+          {/* LEFT */}
+          <div className="flex items-center gap-4">
+
+            {/* MOBILE MENU BUTTON */}
+            <button
+              onClick={() => setOpen(true)}
+              className="text-primary md:hidden"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+
+            <Link
+              href="/"
+              onClick={() => setActive("/")}
+              className="font-headline text-xl font-black uppercase text-primary"
+            >
+              {site.brand}
+            </Link>
           </div>
-        </div>
 
-        <div className="flex items-center gap-6">
-          <nav className="hidden items-center gap-8 text-sm font-semibold tracking-wide md:flex">
-            <Link className="text-primary transition-colors duration-300" href="#">
-              Home
-            </Link>
-            <Link className="text-on-surface transition-colors duration-300 hover:text-primary" href="#">
-              Browse
-            </Link>
-            <Link className="text-on-surface transition-colors duration-300 hover:text-primary" href="#">
-              Library
-            </Link>
-            <Link className="text-on-surface transition-colors duration-300 hover:text-primary" href="#">
-              Login
-            </Link>
+          {/* DESKTOP NAV */}
+          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold">
+
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setActive(link.href)}
+                className={`transition ${
+                  active === link.href
+                    ? "text-primary"
+                    : "text-on-surface hover:text-primary"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+
           </nav>
 
-          <button className="relative scale-95 text-primary transition-transform active:opacity-80 cursor-pointer" aria-label="Cart">
+          {/* CART */}
+          <button className="relative text-primary">
             <ShoppingCart className="h-6 w-6" />
-            <span className="absolute -right-2 -top-2 rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-bold text-on-primary">
+            <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
               3
             </span>
           </button>
+
+        </div>
+      </header>
+
+      {/* MOBILE SIDEBAR */}
+      <div
+        className={`fixed top-0 left-0 h-full w-[260px] bg-background shadow-2xl border-r border-outline-variant/20 transform transition-transform duration-300 z-[60]
+        ${open ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        <div className="flex justify-between items-center p-4 border-b border-outline-variant/20">
+          <span className="text-primary font-bold text-lg">Menu</span>
+          <button onClick={() => setOpen(false)}>
+            <X />
+          </button>
+        </div>
+
+        {/* LINKS */}
+        <div className="flex flex-col p-4 gap-3">
+
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              onClick={() => {
+                setActive(link.href);
+                setOpen(false);
+              }}
+              className={`p-2 rounded-md transition ${
+                active === link.href
+                  ? "bg-primary/10 text-primary"
+                  : "text-on-surface hover:bg-white/5"
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+
         </div>
       </div>
-    </header>
+      {open && (
+        <div
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 bg-black/60 z-50"
+        />
+      )}
+    </>
   );
 }
