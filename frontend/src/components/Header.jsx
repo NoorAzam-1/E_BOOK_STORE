@@ -1,7 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, ShoppingCart, X } from "lucide-react";
+import {
+  Menu,
+  ShoppingCart,
+  X,
+  Home,
+  Compass,
+  Library,
+  LogIn,
+} from "lucide-react";
 import { site } from "@/data/site";
 import { useState } from "react";
 
@@ -10,10 +18,10 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Browse", href: "/browse" },
-    { name: "Library", href: "/library" },
-    { name: "Login", href: "/login" },
+    { name: "Home", href: "/", icon: Home },
+    { name: "Browse", href: "/browse", icon: Compass },
+    { name: "Library", href: "/library", icon: Library },
+    { name: "Login", href: "/login", icon: LogIn },
   ];
 
   return (
@@ -21,10 +29,8 @@ export default function Header() {
       {/* HEADER */}
       <header className="fixed top-0 z-40 w-full border-b border-outline-variant/20 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
-
           {/* LEFT */}
           <div className="flex items-center gap-4">
-
             {/* MOBILE MENU BUTTON */}
             <button
               onClick={() => setOpen(true)}
@@ -44,7 +50,6 @@ export default function Header() {
 
           {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-semibold">
-
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -59,7 +64,6 @@ export default function Header() {
                 {link.name}
               </Link>
             ))}
-
           </nav>
 
           {/* CART */}
@@ -69,7 +73,6 @@ export default function Header() {
               3
             </span>
           </button>
-
         </div>
       </header>
 
@@ -87,25 +90,31 @@ export default function Header() {
 
         {/* LINKS */}
         <div className="flex flex-col p-4 gap-3">
+          {navLinks.map((link) => {
+            const Icon = link.icon;
 
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              onClick={() => {
-                setActive(link.href);
-                setOpen(false);
-              }}
-              className={`p-2 rounded-md transition ${
-                active === link.href
-                  ? "bg-primary/10 text-primary"
-                  : "text-on-surface hover:bg-white/5"
-              }`}
-            >
-              {link.name}
-            </Link>
-          ))}
+            return (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => {
+                  setActive(link.href);
+                  setOpen(false);
+                }}
+                className={`flex items-center gap-3 p-3 rounded-md transition ${
+                  active === link.href
+                    ? "bg-primary/10 text-primary"
+                    : "text-on-surface hover:bg-white/5"
+                }`}
+              >
+                {/* ICON */}
+                <Icon size={18} />
 
+                {/* TEXT */}
+                <span className="text-sm font-medium">{link.name}</span>
+              </Link>
+            );
+          })}
         </div>
       </div>
       {open && (

@@ -22,7 +22,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="bg-background text-on-surface flex items-center justify-center px-2 py-3 relative overflow-hidden">
+    <div className="bg-background text-on-surface flex items-center justify-center px-2 py-3 md:py-0 relative overflow-hidden">
       <div className="w-full max-w-md z-10">
         {/* HEADING */}
         <div className="text-center mb-6">

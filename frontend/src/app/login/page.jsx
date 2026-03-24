@@ -56,9 +56,9 @@ export default function LoginPage() {
 
             {/* FORGOT PASSWORD */}
             <div className="text-right text-sm">
-              <span className="text-primary cursor-pointer hover:underline">
+              <Link href="/forgot_password" className="text-primary cursor-pointer hover:underline">
                 Forgot Password?
-              </span>
+              </Link>
             </div>
 
             {/* BUTTON */}
