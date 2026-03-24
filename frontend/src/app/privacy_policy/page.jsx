@@ -12,7 +12,7 @@ import {
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen mt-18 md:mt-24 bg-background text-on-surface relative overflow-hidden">
+    <div className="h-full bg-background text-on-surface relative overflow-hidden">
       <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 md:px-10">
 
         {/* HERO */}
