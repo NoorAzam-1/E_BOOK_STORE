@@ -83,7 +83,7 @@ export const site = {
   ],
   footerLinks: [
     { title: "Journal", link: "/journal" },
-    { title: "Privacy", link: "/privacy-policy" },
+    { title: "Privacy", link: "/privacy_policy" },
     { title: "Terms", link: "terms" },
     { title: "Shipping", link: "shipping" },
   ],

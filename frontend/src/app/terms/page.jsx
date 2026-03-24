@@ -7,17 +7,12 @@ import {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-background text-on-surface relative overflow-hidden">
-
-      {/* Background Glow */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 blur-[120px] rounded-full" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-surface-container-high/30 blur-[120px] rounded-full" />
-
-      <main className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-24">
+    <div className="min-h-screen pt-20 md:pt-24 bg-background text-on-surface relative overflow-hidden">
+       <main className="relative z-10 mx-auto px-4 sm:px-6 lg:px-24">
 
         {/* HERO */}
-        <section className="mb-14">
-          <span className="text-primary text-xs font-bold tracking-[0.2em] uppercase block mb-4">
+        <section className="mb-8 md:mb-14">
+          <span className="text-primary text-lg font-bold tracking-[0.2em] uppercase block mb-4">
             Legal Documentation
           </span>
 
@@ -31,18 +26,18 @@ export default function TermsPage() {
           </p>
 
           <div className="mt-4 flex gap-2 text-xs text-outline">
-            <span>Last Updated: October 24, 2023</span>
+            <span>Last Updated: January 24, 2026</span>
             <span>•</span>
             <span>Effective Immediately</span>
           </div>
         </section>
 
         {/* CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10 md:mb-20">
           
           {/* Card 1 */}
           <div className="bg-surface-container p-6 rounded-xl border border-outline-variant/20 hover:border-primary/40 transition">
-            <UserCheck className="text-primary mb-4" />
+            <UserCheck size={36} className="text-primary mb-4" />
             <h3 className="font-bold mb-1">Membership</h3>
             <p className="text-sm text-on-surface-variant">
               Guidelines for account creation and user responsibilities.
@@ -51,7 +46,7 @@ export default function TermsPage() {
 
           {/* Card 2 */}
           <div className="bg-surface-container p-6 rounded-xl border border-outline-variant/20 hover:border-primary/40 transition">
-            <ShoppingCart className="text-primary mb-4" />
+            <ShoppingCart size={36} className="text-primary mb-4" />
             <h3 className="font-bold mb-1">Purchases</h3>
             <p className="text-sm text-on-surface-variant">
               Rules surrounding digital transactions and access.
@@ -60,7 +55,7 @@ export default function TermsPage() {
 
           {/* Card 3 */}
           <div className="bg-surface-container p-6 rounded-xl border border-outline-variant/20 hover:border-primary/40 transition">
-            <Copyright className="text-primary mb-4" />
+            <Copyright size={36} className="text-primary mb-4" />
             <h3 className="font-bold mb-1">Intellectual Property</h3>
             <p className="text-sm text-on-surface-variant">
               Ownership rights and content usage restrictions.
@@ -69,7 +64,7 @@ export default function TermsPage() {
         </div>
 
         {/* SECTIONS */}
-        <div className="space-y-20">
+        <div className="space-y-10 md:space-y-20 px-4 sm:px-8 md:px-10">
 
           {/* SECTION 01 */}
           <section className="relative">
@@ -166,27 +161,6 @@ export default function TermsPage() {
             </div>
           </section>
         </div>
-
-        {/* CTA */}
-        <section className="mt-20 pt-10 border-t border-outline-variant/30 text-center">
-          <h3 className="text-lg sm:text-xl font-bold mb-3">
-            Have questions about our terms?
-          </h3>
-
-          <p className="text-sm text-on-surface-variant mb-6">
-            Our support team is ready to assist.
-          </p>
-
-          <div className="flex justify-center gap-4 flex-wrap">
-            <button className="bg-primary text-black px-6 py-2 rounded-md font-semibold">
-              Contact Support
-            </button>
-
-            <button className="text-primary font-semibold">
-              Privacy Policy
-            </button>
-          </div>
-        </section>
       </main>
     </div>
   );
