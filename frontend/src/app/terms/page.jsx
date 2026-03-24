@@ -7,7 +7,7 @@ import {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen pt-20 md:pt-24 bg-background text-on-surface relative overflow-hidden">
+    <div className="min-h-screen bg-background text-on-surface relative overflow-hidden">
        <main className="relative z-10 mx-auto px-4 sm:px-6 lg:px-24">
 
         {/* HERO */}
