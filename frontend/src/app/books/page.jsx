@@ -23,8 +23,8 @@ function RatingStars({ rating }) {
 
 export default function HomePage() {
   return (
-    <div className="bg-background text-on-surface min-h-screen">
-      <main className="pt-24 px-4 md:px-6 max-w-7xl mx-auto">
+    <div className="bg-background text-on-surface">
+      <main className="px-4 md:px-6 max-w-7xl mx-auto">
         {/* HERO SECTION */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-16">
           {/* IMAGE */}
