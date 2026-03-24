@@ -147,8 +147,6 @@ function PersonalInfo() {
 
       <InfoRow label="Name" value="Noor Azam" />
       <InfoRow label="Email" value="noor@example.com" />
-      <InfoRow label="Phone" value="+91 9876543210" />
-      <InfoRow label="Location" value="India" />
     </div>
   );
 }
