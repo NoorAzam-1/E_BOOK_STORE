@@ -1,11 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User, History, CreditCard, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
 export default function ProfilePage() {
   const [active, setActive] = useState("profile");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Fetch profile data safely
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        console.log("token", token);
+
+        if (!token) {
+          console.log("❌ No token found");
+          setLoading(false);
+          return;
+        }
+
+        const res = await fetch("http://localhost:4000/api/user/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          setUser(data.user);
+        } else {
+          console.log("❌ Failed to fetch user");
+        }
+      } catch (error) {
+        console.log("🔥 Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  if (loading) {
+    return (
+      <p className="text-center mt-10 text-on-surface-variant">
+        Loading profile...
+      </p>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-on-surface">
@@ -22,7 +70,9 @@ export default function ProfilePage() {
             />
           </div>
 
-          <h2 className="text-2xl font-bold">Noor Azam</h2>
+          <h2 className="text-2xl font-bold">
+            {user?.name || "No Name"}
+          </h2>
         </section>
 
         {/* STATS */}
@@ -75,7 +125,7 @@ export default function ProfilePage() {
 
         {/* DYNAMIC CONTENT */}
         <section className="bg-surface-container p-5 rounded-xl border border-outline-variant/20">
-          {active === "personal" && <PersonalInfo />}
+          {active === "personal" && <PersonalInfo user={user} />}
           {active === "orders" && <OrderHistory />}
           {active === "payment" && <PaymentMethods />}
 
@@ -123,9 +173,7 @@ function MenuItem({ icon, label, onClick, value, active }) {
         </span>
 
         <span
-          className={`text-sm ${
-            isActive ? "text-primary font-semibold" : ""
-          }`}
+          className={`text-sm ${isActive ? "text-primary font-semibold" : ""}`}
         >
           {label}
         </span>
@@ -140,13 +188,15 @@ function MenuItem({ icon, label, onClick, value, active }) {
   );
 }
 
-function PersonalInfo() {
+function PersonalInfo({ user }) {
   return (
     <div className="space-y-3 text-sm">
-      <h3 className="font-bold text-primary mb-3">Personal Information</h3>
+      <h3 className="font-bold text-primary mb-3">
+        Personal Information
+      </h3>
 
-      <InfoRow label="Name" value="Noor Azam" />
-      <InfoRow label="Email" value="noor@example.com" />
+      <InfoRow label="Name" value={user?.name || "N/A"} />
+      <InfoRow label="Email" value={user?.email || "N/A"} />
     </div>
   );
 }
@@ -172,7 +222,9 @@ function OrderHistory() {
               <p className="text-xs text-on-surface-variant">{o.id}</p>
             </div>
 
-            <span className="text-primary font-semibold">{o.price}</span>
+            <span className="text-primary font-semibold">
+              {o.price}
+            </span>
           </div>
         ))}
       </div>
@@ -188,7 +240,9 @@ function PaymentMethods() {
 
   return (
     <div>
-      <h3 className="font-bold text-primary mb-3">Payment Methods</h3>
+      <h3 className="font-bold text-primary mb-3">
+        Payment Methods
+      </h3>
 
       <div className="space-y-3">
         {cards.map((card, i) => (
@@ -197,7 +251,9 @@ function PaymentMethods() {
             className="flex justify-between p-3 bg-surface-container-high rounded-lg"
           >
             <span>{card.type}</span>
-            <span className="text-on-surface-variant">{card.number}</span>
+            <span className="text-on-surface-variant">
+              {card.number}
+            </span>
           </div>
         ))}
       </div>

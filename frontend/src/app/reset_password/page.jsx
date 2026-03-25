@@ -1,36 +1,59 @@
 "use client";
 
-import { Mail, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { Lock, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import { useSearchParams, useRouter } from "next/navigation";
 
-export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
+export default function ResetPasswordPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const token = searchParams.get("token"); // get token from URL
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    if (!token) {
+      toast.error("Invalid or missing token");
+    }
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email) {
-      toast.error("Please enter your email");
+    if (!newPassword || !confirmPassword) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
       return;
     }
 
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/user/forgot_password", {
+      const res = await fetch("http://localhost:4000/api/user/reset_password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        
+        body: JSON.stringify({ token, newPassword }),
       });
 
       const data = await res.json();
 
       if (data.success) {
-        toast.success("Password reset link sent ✅");
-        setSubmitted(true);
+        toast.success(data.message);
+        setSuccess(true);
+
+        // Optional: redirect to login after a delay
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
       } else {
         toast.error(data.message);
       }
@@ -47,36 +70,47 @@ export default function ForgotPasswordPage() {
       <Toaster position="top-right" reverseOrder={false} />
 
       <div className="w-full max-w-md">
-        <h2 className="text-3xl font-bold mb-2 text-center">Forgot Password</h2>
+        <h2 className="text-3xl font-bold mb-2 text-center">Reset Password</h2>
         <p className="text-on-surface-variant text-sm text-center mb-6">
-          Enter your email and we will send you a password reset link.
+          Enter your new password below to reset your account password.
         </p>
 
         <div className="bg-surface-container/80 backdrop-blur-xl p-6 rounded-xl border border-outline-variant/20">
-          {submitted ? (
+          {success ? (
             <div className="text-center text-on-surface">
-              <p className="mb-4">
-                ✅ Check your email for the password reset link. The link is valid for 15 minutes.
+              <p className="mb-4">✅ Password has been reset successfully!</p>
+              <p className="text-sm text-on-surface-variant">
+                Redirecting to login page...
               </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <InputField
-                icon={<Mail size={18} />}
-                label="Email Address"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                icon={<Lock size={18} />}
+                label="New Password"
+                name="newPassword"
+                type="password"
+                placeholder="••••••••"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+
+              <InputField
+                icon={<Lock size={18} />}
+                label="Confirm Password"
+                name="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !token}
                 className="w-full bg-linear-to-r from-primary to-primary-container text-black font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer"
               >
-                {loading ? "Sending..." : "Send Reset Link"} <ArrowRight size={18} />
+                {loading ? "Resetting..." : "Reset Password"} <ArrowRight size={18} />
               </button>
             </form>
           )}

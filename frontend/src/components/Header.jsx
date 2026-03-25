@@ -9,6 +9,7 @@ import {
   Compass,
   Library,
   LogIn,
+  User,
 } from "lucide-react";
 import { site } from "@/data/site";
 import { useState } from "react";
@@ -66,13 +67,21 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* CART */}
-          <button className="relative text-primary">
-            <ShoppingCart className="h-6 w-6" />
-            <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
-              3
-            </span>
-          </button>
+          {/* RIGHT SIDE */}
+          <div className="flex items-center gap-4">
+            {/* PROFILE */}
+            <Link href="/profile">
+              <User className="h-6 w-6 text-primary cursor-pointer" />
+            </Link>
+
+            {/* CART */}
+            <button className="relative text-primary">
+              <ShoppingCart className="h-6 w-6" />
+              <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
+                3
+              </span>
+            </button>
+          </div>
         </div>
       </header>
 

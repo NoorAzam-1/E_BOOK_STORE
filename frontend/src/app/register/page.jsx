@@ -3,7 +3,7 @@
 import { User, Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-
+import { Toaster, toast } from "react-hot-toast"
 export default function RegisterPage() {
   const [form, setForm] = useState({
     name: "",
@@ -13,6 +13,9 @@ export default function RegisterPage() {
     agree: false,
   });
 
+  const [loading, setLoading] = useState(false);
+
+  // handle input change
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm({
@@ -21,8 +24,58 @@ export default function RegisterPage() {
     });
   };
 
+  // handle submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!form.agree) {
+      alert("Please accept Terms & Conditions");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:4000/api/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          role: form.role,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success("Account Created ✅");
+
+        // save token
+        localStorage.setItem("token", data.token);
+
+        // small delay before redirect
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong ❌");
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div className="bg-background text-on-surface flex items-center justify-center px-2 py-3 md:py-0 relative overflow-hidden">
+       {/* ✅ Toaster component */}
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="w-full max-w-md z-10">
         {/* HEADING */}
         <div className="text-center mb-6">
@@ -34,7 +87,7 @@ export default function RegisterPage() {
 
         {/* CARD */}
         <div className="bg-surface-container/80 backdrop-blur-xl p-4 md:p-6 rounded-xl border border-outline-variant/20">
-          <form className="space-y-3 md:space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
             {/* FULL NAME */}
             <InputField
               icon={<User size={18} />}
