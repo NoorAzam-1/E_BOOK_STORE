@@ -20,23 +20,26 @@ export default function ForgotPasswordPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/user/forgot_password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const res = await fetch(
+        "http://localhost:4000/api/user/forgot_password",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        },
+      );
 
       const data = await res.json();
 
       if (data.success) {
-        toast.success("Password reset link sent ✅");
+        toast.success("Password reset link sent");
         setSubmitted(true);
       } else {
         toast.error(data.message);
       }
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong ❌");
+      toast.error("Something went wrong");
     }
 
     setLoading(false);
@@ -48,15 +51,20 @@ export default function ForgotPasswordPage() {
 
       <div className="w-full max-w-md">
         <h2 className="text-3xl font-bold mb-2 text-center">Forgot Password</h2>
-        <p className="text-on-surface-variant text-sm text-center mb-6">
-          Enter your email and we will send you a password reset link.
-        </p>
+        {submitted ? (
+          ""
+        ) : (
+          <p className="text-on-surface-variant text-sm text-center mb-6">
+            Enter your email and we will send you a password reset link.
+          </p>
+        )}
 
         <div className="bg-surface-container/80 backdrop-blur-xl p-6 rounded-xl border border-outline-variant/20">
           {submitted ? (
             <div className="text-center text-on-surface">
               <p className="mb-4">
-                ✅ Check your email for the password reset link. The link is valid for 15 minutes.
+                Check your email for the password reset link. The link is valid
+                for 15 minutes.
               </p>
             </div>
           ) : (
@@ -76,7 +84,8 @@ export default function ForgotPasswordPage() {
                 disabled={loading}
                 className="w-full bg-linear-to-r from-primary to-primary-container text-black font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer"
               >
-                {loading ? "Sending..." : "Send Reset Link"} <ArrowRight size={18} />
+                {loading ? "Sending..." : "Send Reset Link"}{" "}
+                <ArrowRight size={18} />
               </button>
             </form>
           )}
@@ -84,7 +93,10 @@ export default function ForgotPasswordPage() {
 
         <p className="text-center text-sm text-on-surface-variant mt-6">
           Remembered your password?{" "}
-          <a href="/login" className="text-primary font-semibold hover:underline">
+          <a
+            href="/login"
+            className="text-primary font-semibold hover:underline"
+          >
             Sign In
           </a>
         </p>
