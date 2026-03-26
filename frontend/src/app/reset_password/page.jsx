@@ -3,12 +3,13 @@
 import { Lock, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+// export const dynamic = "force-dynamic";
 
-export default function ResetPasswordPage() {
-  const searchParams = useSearchParams();
+export default function ResetPasswordPage({params}) {
+  // const searchParams = useSearchParams();
   const router = useRouter();
-  const token = searchParams.get("token"); // get token from URL
+  const token = params.token; // get token from URL
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
