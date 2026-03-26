@@ -19,11 +19,11 @@ export default function TrendingGenres() {
         </Link>
       </div>
 
-      <div className="hide-scrollbar mx-auto flex max-w-7xl gap-8 overflow-x-auto px-2 py-4">
+      <div className="hide-scrollbar mx-auto flex gap-8 overflow-x-auto px-2 py-4">
         {site.genres.map((genre) => (
           <div
             key={genre.name}
-            className="group relative w-80 shrink-0 cursor-pointer overflow-hidden rounded-3xl md:rounded-[2.5rem] bg-surfaceContainer  transition-all duration-700 hover:-translate-y-3 md:w-96"
+            className="group relative w-80 shrink-0 cursor-pointer overflow-hidden rounded-3xl md:rounded-[2.5rem] bg-surfaceContainer  transition-all duration-700 hover:-translate-y-3 md:w-92"
           >
             <Image
               src={genre.image}
