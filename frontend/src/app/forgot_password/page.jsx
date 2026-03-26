@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
       <Toaster position="top-right" reverseOrder={false} />
 
       <div className="w-full max-w-md">
-        <h2 className="text-3xl font-bold mb-2 text-center">Forgot Password</h2>
+        <h2 className="text-3xl font-bold mb-3 text-center">Forgot Password</h2>
         {submitted ? (
           ""
         ) : (
