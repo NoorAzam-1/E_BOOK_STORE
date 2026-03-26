@@ -1,8 +1,8 @@
 "use client";
-
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function LoginPage() {
   const [form, setForm] = useState({
@@ -10,6 +10,7 @@ export default function LoginPage() {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({
@@ -18,9 +19,49 @@ export default function LoginPage() {
     });
   };
 
+  // ✅ LOGIN SUBMIT
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:4000/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success("Login Successful ✅"); // ✅ toast
+        localStorage.setItem("token", data.token);
+
+        // small delay before redirect
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong ❌");
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div className="bg-background text-on-surface flex justify-center px-2 relative overflow-hidden">
-
+       {/* ✅ TOASTER */}
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="w-full max-w-md z-10">
         {/* HEADING */}
         <div className="text-center mb-6">
@@ -32,7 +73,7 @@ export default function LoginPage() {
 
         {/* CARD */}
         <div className="bg-surface-container/80 backdrop-blur-xl p-4 md:p-6 rounded-xl border border-outline-variant/20">
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* EMAIL */}
             <InputField
               icon={<Mail size={18} />}
@@ -56,7 +97,10 @@ export default function LoginPage() {
 
             {/* FORGOT PASSWORD */}
             <div className="text-right text-sm">
-              <Link href="/forgot_password" className="text-primary cursor-pointer hover:underline">
+              <Link
+                href="/forgot_password"
+                className="text-primary cursor-pointer hover:underline"
+              >
                 Forgot Password?
               </Link>
             </div>
@@ -64,9 +108,10 @@ export default function LoginPage() {
             {/* BUTTON */}
             <button
               type="submit"
+              disabled={loading}
               className="w-full bg-linear-to-r from-primary to-primary-container text-black font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer"
             >
-              Sign In <ArrowRight size={18} />
+              {loading ? "Signing in..." : "Sign In"} <ArrowRight size={18} />
             </button>
           </form>
         </div>
