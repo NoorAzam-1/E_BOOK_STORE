@@ -4,6 +4,7 @@ import { Lock, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useSearchParams, useRouter } from "next/navigation";
+import { backend_url } from "@/utils/axios";
 
 export default function ResetPasswordContent() {
   const searchParams = useSearchParams();
@@ -36,7 +37,7 @@ export default function ResetPasswordContent() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/user/reset_password", {
+      const res = await fetch(`${backend_url}/api/user/reset_password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         
