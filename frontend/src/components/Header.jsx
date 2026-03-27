@@ -8,21 +8,50 @@ import {
   Home,
   Compass,
   Library,
-  LogIn,
   User,
 } from "lucide-react";
 import { site } from "@/data/site";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const [active, setActive] = useState("/");
   const [open, setOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
+
+  const profileRef = useRef(null);
+  const router = useRouter();
+
+  // ✅ DIRECT LOGIN CHECK (BEST)
+  const isLoggedIn =
+    typeof window !== "undefined" && localStorage.getItem("token");
+
+  // ✅ PROFILE HOVER
+  const handleMouseEnter = () => {
+    if (profileRef.current) {
+      const rect = profileRef.current.getBoundingClientRect();
+
+      setDropdownPos({
+        top: rect.bottom - 4,
+        left: rect.left - 60 + rect.width,
+      });
+
+      setProfileOpen(true);
+    }
+  };
+
+  // ✅ LOGOUT
+  const logout = () => {
+    localStorage.removeItem("token");
+    setProfileOpen(false);
+    router.refresh(); // 🔥 UI update without reload
+  };
 
   const navLinks = [
     { name: "Home", href: "/", icon: Home },
     { name: "Browse", href: "/browse", icon: Compass },
     { name: "Library", href: "/library", icon: Library },
-    { name: "Login", href: "/login", icon: LogIn },
   ];
 
   return (
@@ -30,9 +59,9 @@ export default function Header() {
       {/* HEADER */}
       <header className="fixed top-0 z-40 w-full border-b border-outline-variant/20 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
+          
           {/* LEFT */}
           <div className="flex items-center gap-4">
-            {/* MOBILE MENU BUTTON */}
             <button
               onClick={() => setOpen(true)}
               className="text-primary md:hidden"
@@ -49,7 +78,7 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* DESKTOP NAV */}
+          {/* NAV */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-semibold">
             {navLinks.map((link) => (
               <Link
@@ -69,10 +98,24 @@ export default function Header() {
 
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-4">
-            {/* PROFILE */}
-            <Link href="/profile">
-              <User className="h-6 w-6 text-primary cursor-pointer" />
-            </Link>
+            
+            {/* ✅ LOGIN / PROFILE */}
+            {isLoggedIn ? (
+              <div
+                ref={profileRef}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={() => setProfileOpen(false)}
+              >
+                <User className="h-6 w-6 text-primary cursor-pointer" />
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="text-sm font-semibold text-primary"
+              >
+                Login
+              </Link>
+            )}
 
             {/* CART */}
             <button className="relative text-primary">
@@ -85,7 +128,42 @@ export default function Header() {
         </div>
       </header>
 
-      {/* MOBILE SIDEBAR */}
+      {/* ✅ DROPDOWN */}
+      {profileOpen && isLoggedIn && (
+        <div
+          style={{
+            position: "fixed",
+            top: dropdownPos.top,
+            left: dropdownPos.left,
+          }}
+          onMouseEnter={() => setProfileOpen(true)}
+          onMouseLeave={() => setProfileOpen(false)}
+          className="w-56 bg-background border border-outline-variant/20 rounded-lg shadow-xl py-2 z-50"
+        >
+          <Link
+            href="/profile"
+            className="block px-4 py-2 text-sm hover:bg-white/5"
+          >
+            My Profile
+          </Link>
+
+          <Link
+            href="/orders"
+            className="block px-4 py-2 text-sm hover:bg-white/5"
+          >
+            Orders
+          </Link>
+
+          <p
+            onClick={logout}
+            className="w-full text-left px-4 py-2 text-sm cursor-pointer hover:bg-red-500/10 text-red-500"
+          >
+            Logout
+          </p>
+        </div>
+      )}
+
+      {/* MOBILE MENU */}
       <div
         className={`fixed top-0 left-0 h-full w-[260px] bg-background shadow-2xl border-r border-outline-variant/20 transform transition-transform duration-300 z-[60]
         ${open ? "translate-x-0" : "-translate-x-full"}`}
@@ -97,7 +175,6 @@ export default function Header() {
           </button>
         </div>
 
-        {/* LINKS */}
         <div className="flex flex-col p-4 gap-3">
           {navLinks.map((link) => {
             const Icon = link.icon;
@@ -116,16 +193,14 @@ export default function Header() {
                     : "text-on-surface hover:bg-white/5"
                 }`}
               >
-                {/* ICON */}
                 <Icon size={18} />
-
-                {/* TEXT */}
                 <span className="text-sm font-medium">{link.name}</span>
               </Link>
             );
           })}
         </div>
       </div>
+
       {open && (
         <div
           onClick={() => setOpen(false)}

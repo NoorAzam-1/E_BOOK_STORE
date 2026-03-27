@@ -1,16 +1,46 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema({
-    name: {type:String, required:true},
-    description:{type:String, required:true},
-    price:{type:Number, required:true},
-    image:{type:Array, required:true},
-    category:{type:String, required:true},
-    subCategory:{type:String, required:true},
-    bestseller:{type: Boolean},
-    date:{type:Number,required:true}, 
-})
+const imageSchema = new mongoose.Schema({
+  url: { type: String, required: true },
+  public_id: { type: String, required: true }, 
+  alt: { type: String } 
+}, { _id: false });
 
-const productModel = mongoose.models.product || mongoose.model("product",productSchema)
 
-export default productModel
+const variantSchema = new mongoose.Schema({
+  format: { type: String, required: true }, 
+  price: { type: Number, required: true },
+  stock: { type: Number, default: 0 },
+  sku: { type: String } 
+}, { _id: false });
+
+const bookSchema = new mongoose.Schema({
+
+  title: { type: String, required: true, trim: true },
+  author: { type: String, required: true, trim: true },
+  description: { type: String, required: true },
+  
+ 
+  category: [{ type: String, required: true }], 
+  tags: [String], 
+  images: [imageSchema],
+
+  variants: [variantSchema],
+  bestseller: { type: Boolean, default: false },
+  available: { type: Boolean, default: true },
+  
+  averageRating: { type: Number, default: 0 },
+  numReviews: { type: Number, default: 0 },
+
+}, { 
+  timestamps: true,
+  toJSON: { virtuals: true }, 
+  toObject: { virtuals: true }
+});
+
+
+bookSchema.index({ title: 'text', author: 'text', description: 'text' });
+
+const bookModel = mongoose.model("book", bookSchema);
+
+export default bookModel;
