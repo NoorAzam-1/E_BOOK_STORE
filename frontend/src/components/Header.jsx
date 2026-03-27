@@ -11,7 +11,7 @@ import {
   User,
 } from "lucide-react";
 import { site } from "@/data/site";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
@@ -19,13 +19,18 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
+  const [isClient, setIsClient] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const profileRef = useRef(null);
   const router = useRouter();
 
-  // ✅ DIRECT LOGIN CHECK (BEST)
-  const isLoggedIn =
-    typeof window !== "undefined" && localStorage.getItem("token");
+  useEffect(() => {
+    setIsClient(true);
+
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
   // ✅ PROFILE HOVER
   const handleMouseEnter = () => {
@@ -44,8 +49,9 @@ export default function Header() {
   // ✅ LOGOUT
   const logout = () => {
     localStorage.removeItem("token");
+    setIsLoggedIn(false);
     setProfileOpen(false);
-    router.refresh(); // 🔥 UI update without reload
+    router.refresh();
   };
 
   const navLinks = [
@@ -54,12 +60,13 @@ export default function Header() {
     { name: "Library", href: "/library", icon: Library },
   ];
 
+  if (!isClient) return null;
+
   return (
     <>
       {/* HEADER */}
-      <header className="fixed top-0 z-40 w-full border-b border-outline-variant/20 bg-background/80 backdrop-blur-xl">
+      <header className="fixed top-0 z-40 w-full border-b border-outline-variant/80 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
-          
           {/* LEFT */}
           <div className="flex items-center gap-4">
             <button
@@ -98,8 +105,7 @@ export default function Header() {
 
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-4">
-            
-            {/* ✅ LOGIN / PROFILE */}
+            {/* LOGIN / PROFILE */}
             {isLoggedIn ? (
               <div
                 ref={profileRef}
@@ -128,7 +134,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ✅ DROPDOWN */}
+      {/* DROPDOWN */}
       {profileOpen && isLoggedIn && (
         <div
           style={{
@@ -165,7 +171,7 @@ export default function Header() {
 
       {/* MOBILE MENU */}
       <div
-        className={`fixed top-0 left-0 h-full w-[260px] bg-background shadow-2xl border-r border-outline-variant/20 transform transition-transform duration-300 z-[60]
+        className={`fixed top-0 left-0 h-full w-65 bg-background shadow-2xl border-r border-outline-variant/20 transform transition-transform duration-300 z-[60]
         ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex justify-between items-center p-4 border-b border-outline-variant/20">
