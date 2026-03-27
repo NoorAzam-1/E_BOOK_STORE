@@ -1,5 +1,6 @@
 "use client";
 
+import { backend_url } from "@/utils/axios";
 import { Mail, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
@@ -21,7 +22,7 @@ export default function ForgotPasswordPage() {
 
     try {
       const res = await fetch(
-        "http://localhost:4000/api/user/forgot_password",
+        `${backend_url}/api/user/forgot_password`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
