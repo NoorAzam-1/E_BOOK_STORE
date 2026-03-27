@@ -1,0 +1,1 @@
+export const backend_url = "https://e-book-store-xa8y.onrender.com";
