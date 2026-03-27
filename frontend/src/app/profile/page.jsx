@@ -50,7 +50,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <p className="text-center mt-10 text-on-surface-variant">
+      <p className="h-screen flex justify-center items-center text-center mt-10 text-on-surface-variant">
         Loading profile...
       </p>
     );
