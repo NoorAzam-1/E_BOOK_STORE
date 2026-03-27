@@ -1,1 +1,8 @@
-export const backend_url = "https://e-book-store-xa8y.onrender.com";
+import axios from "axios";
+
+const axiosInstance = axios.create({
+  baseURL: process.env.BACKEND_URL , // backend URL
+  withCredentials:true,
+});
+
+export default axiosInstance;
