@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   role: { type: String, default: "user" },
   password: { type: String, required: true }, 
-  
+  address:{type: String },
+  contact:{type: Number, required: true },
   resetToken: { type: String },
   resetTokenExpiry: { type: Number }
 });

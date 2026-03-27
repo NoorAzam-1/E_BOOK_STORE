@@ -116,7 +116,8 @@ const loginUser = async (req, res) => {
 //Route for user register
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role,address, contact  } = req.body;
+    console.log("req.body",req.body)
 
     // checking user already exists or not
     const exists = await userModel.findOne({ email });
@@ -148,9 +149,13 @@ const registerUser = async (req, res) => {
       name,
       email: email.toLowerCase(),
       password: hashedPassword,
+       address: address || "", // optional
+      contact: contact || "", // optional
     });
+    // console.log("newuser",newuser)
 
     const user = await newuser.save();
+    // console.log("user",user)
 
     const token = createToken(user._id);
     res.json({ success: true, token });
