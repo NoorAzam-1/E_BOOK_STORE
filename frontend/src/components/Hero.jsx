@@ -29,7 +29,7 @@ export default function Hero() {
 
           <div className="flex flex-col gap-4 pt-4 sm:flex-row md:items-center">
             <Link href="/books" className="w-full md:w-auto flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-primary to-primary-container px-8 py-4 font-bold text-on-primary shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 cursor-pointer">
-              Buy Now — ${site.hero.price.toFixed(2)}
+              Buy Now — ₹{site.hero.price.toFixed(0)}
               <ArrowRight className="h-5 w-5" />
             </Link>
 
@@ -40,13 +40,13 @@ export default function Hero() {
         </div>
 
         <div className="z-10 flex w-full flex-1 justify-center md:w-auto">
-          <div className="group relative">
+          <div className="group relative lg:scale-125">
             <div className="absolute inset-0 scale-90 rounded-full bg-primary/20 blur-2xl transition-transform duration-700 group-hover:scale-110" />
             <Image
               src={site.hero.image}
               alt="Book Cover"
               width={320}
-              height={480}
+              height={600}
               priority
               className="h-auto w-64 -rotate-6 rounded-lg shadow-[20px_20px_60px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:rotate-0 md:w-80"
             />
