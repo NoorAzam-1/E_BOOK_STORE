@@ -3,6 +3,7 @@ import { Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import { backend_url } from "@/utils/axios";
 
 export default function LoginPage() {
   const [form, setForm] = useState({
@@ -26,7 +27,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/user/login", {
+      const res = await fetch(`${backend_url}/api/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +61,7 @@ export default function LoginPage() {
 
   return (
     <div className="bg-background text-on-surface flex justify-center px-2 relative overflow-hidden">
-       {/* ✅ TOASTER */}
+      {/* ✅ TOASTER */}
       <Toaster position="top-right" reverseOrder={false} />
       <div className="w-full max-w-md z-10">
         {/* HEADING */}

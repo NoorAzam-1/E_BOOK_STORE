@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { User, History, CreditCard, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { backend_url } from "@/utils/axios";
 
 export default function ProfilePage() {
   const [active, setActive] = useState("profile");
@@ -22,7 +23,7 @@ export default function ProfilePage() {
           return;
         }
 
-        const res = await fetch("http://localhost:4000/api/user/profile", {
+        const res = await fetch(`${backend_url}/api/user/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
