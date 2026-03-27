@@ -5,7 +5,7 @@ export const site = {
     title: "The Midnight Stargazer",
     description:
       "An evocative journey through the constellations of memory and the architecture of the human heart. Curated for the restless soul.",
-    price: 14.99,
+    price: 1499,
     image: "/images/heroImage.png",
   },
   genres: [
