@@ -1,5 +1,6 @@
 "use client";
 
+import { backend_url } from "@/utils/axios";
 import { User, Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -36,7 +37,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/user/register", {
+      const res = await fetch(`${backend_url}/api/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
