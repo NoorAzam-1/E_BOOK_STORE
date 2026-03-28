@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express' 
 import cors from 'cors'
 import dns from "node:dns/promises"
+import morgan from 'morgan'
 
 import connectDB from './config/mongodb.js'
 import userRouter from './routes/userRoute.js'
@@ -19,7 +20,16 @@ connectCloudinary();
 
 // middlewares
 app.use(express.json())
-app.use(cors())
+app.use(morgan("dev"))
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://e-book-store-eta.vercel.app/",
+    ],
+    credentials: true,
+  })
+);
 
 // api endpoints
 app.use('/api/user',userRouter)

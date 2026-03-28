@@ -3,50 +3,18 @@
 import { useEffect, useState } from "react";
 import { User, History, CreditCard, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { backend_url } from "@/utils/axios";
+import { getProfile } from "@/features/authSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function ProfilePage() {
   const [active, setActive] = useState("profile");
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch profile data safely
+  const dispatch = useDispatch();
+  const { user, loading } = useSelector((state) => state.auth);
+
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        console.log("token", token);
-
-        if (!token) {
-          console.log("❌ No token found");
-          setLoading(false);
-          return;
-        }
-
-        const res = await fetch(`${backend_url}/api/user/profile`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await res.json();
-
-        if (data.success) {
-          setUser(data.user);
-        } else {
-          console.log("❌ Failed to fetch user");
-        }
-      } catch (error) {
-        console.log("🔥 Error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, []);
+    dispatch(getProfile());
+  }, [dispatch]);
 
   if (loading) {
     return (
@@ -192,9 +160,7 @@ function MenuItem({ icon, label, onClick, value, active }) {
 function PersonalInfo({ user }) {
   return (
     <div className="space-y-3 text-sm">
-      <h3 className="font-bold text-primary mb-3">
-        Personal Information
-      </h3>
+      <h3 className="font-bold text-primary mb-3">Personal Information</h3>
 
       <InfoRow label="Name" value={user?.name || "N/A"} />
       <InfoRow label="Email" value={user?.email || "N/A"} />
@@ -223,9 +189,7 @@ function OrderHistory() {
               <p className="text-xs text-on-surface-variant">{o.id}</p>
             </div>
 
-            <span className="text-primary font-semibold">
-              {o.price}
-            </span>
+            <span className="text-primary font-semibold">{o.price}</span>
           </div>
         ))}
       </div>
@@ -241,9 +205,7 @@ function PaymentMethods() {
 
   return (
     <div>
-      <h3 className="font-bold text-primary mb-3">
-        Payment Methods
-      </h3>
+      <h3 className="font-bold text-primary mb-3">Payment Methods</h3>
 
       <div className="space-y-3">
         {cards.map((card, i) => (
@@ -252,9 +214,7 @@ function PaymentMethods() {
             className="flex justify-between p-3 bg-surface-container-high rounded-lg"
           >
             <span>{card.type}</span>
-            <span className="text-on-surface-variant">
-              {card.number}
-            </span>
+            <span className="text-on-surface-variant">{card.number}</span>
           </div>
         ))}
       </div>
