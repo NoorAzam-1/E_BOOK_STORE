@@ -107,13 +107,13 @@ export default function Header() {
           <div className="flex items-center gap-4">
             {/* LOGIN / PROFILE */}
             {isLoggedIn ? (
-              <div
+              <button
                 ref={profileRef}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={() => setProfileOpen(false)}
               >
                 <User className="h-6 w-6 text-primary cursor-pointer" />
-              </div>
+              </button>
             ) : (
               <Link
                 href="/login"
@@ -124,7 +124,7 @@ export default function Header() {
             )}
 
             {/* CART */}
-            <button className="relative text-primary">
+            <button className="relative text-primary cursor-pointer">
               <ShoppingCart className="h-6 w-6" />
               <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
                 3
