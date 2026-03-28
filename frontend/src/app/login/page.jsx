@@ -3,9 +3,8 @@ import { Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import { backend_url } from "@/utils/axios";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../features/authSlice"; 
+import { loginUser } from "@/features/authSlice"; 
 
 export default function LoginPage() {
    const dispatch = useDispatch();
