@@ -4,12 +4,16 @@ import { Lock, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useSearchParams, useRouter } from "next/navigation";
-import { backend_url } from "@/utils/axios";
+import { useDispatch } from "react-redux";
+import { resetPassword } from "@/features/authSlice";
 
 export default function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const token = searchParams.get("token");
+
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,32 +38,26 @@ export default function ResetPasswordContent() {
       return;
     }
 
+    if (!token) {
+      toast.error("Invalid token");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const res = await fetch(`${backend_url}/api/user/reset_password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        
-        body: JSON.stringify({ token, newPassword }),
-      });
+      await dispatch(
+        resetPassword({ token, newPassword })
+      ).unwrap();
 
-      const data = await res.json();
+      setSuccess(true);
 
-      if (data.success) {
-        toast.success(data.message);
-        setSuccess(true);
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
 
-        // Optional: redirect to login after a delay
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
-      } else {
-        toast.error(data.message);
-      }
     } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong ❌");
+      console.log(error);
     }
 
     setLoading(false);

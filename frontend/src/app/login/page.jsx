@@ -4,14 +4,19 @@ import Link from "next/link";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { backend_url } from "@/utils/axios";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../features/authSlice"; 
 
 export default function LoginPage() {
-  const [form, setForm] = useState({
+   const dispatch = useDispatch();
+   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
   const [loading, setLoading] = useState(false);
+
+  // ✅ INPUT CHANGE
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({
@@ -20,40 +25,28 @@ export default function LoginPage() {
     });
   };
 
-  // ✅ LOGIN SUBMIT
+  // ✅ LOGIN SUBMIT (Redux use)
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
 
     try {
-      const res = await fetch(`${backend_url}/api/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: form.email,
-          password: form.password,
-        }),
-      });
+      // 🔥 Redux thunk call
+      const res = await dispatch(loginUser(form)).unwrap();
 
-      const data = await res.json();
-
-      if (data.success) {
-        toast.success("Login Successful ✅"); // ✅ toast
-        localStorage.setItem("token", data.token);
-
-        // small delay before redirect
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 1000);
-      } else {
-        toast.error(data.message);
+      toast.success("Login Successful ✅");
+      if (res?.token) {
+        localStorage.setItem("token", res.token);
       }
+
+      // redirect
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
+
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong ❌");
+      console.log(error);
+      toast.error(error?.message || "Login Failed ");
     }
 
     setLoading(false);

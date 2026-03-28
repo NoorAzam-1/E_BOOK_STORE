@@ -6,10 +6,10 @@ const userSchema = new mongoose.Schema({
   role: { type: String, default: "user" },
   password: { type: String, required: true }, 
   address:{type: String },
-  contact:{type: Number, required: true },
+  contact:{type: Number },
   resetToken: { type: String },
   resetTokenExpiry: { type: Number }
 });
 
-const userModel = mongoose.models.user || mongoose.model('user', userSchema);
+const userModel = mongoose.model('user', userSchema);
 export default userModel;
