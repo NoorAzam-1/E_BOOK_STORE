@@ -12,6 +12,9 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  // ✅ ADD THIS LINE
+  const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,8 +25,7 @@ export default function ForgotPasswordPage() {
 
     setLoading(true);
 
-     try {
-      // 🔥 Redux thunk call
+    try {
       const res = await dispatch(forgotPassword(email)).unwrap();
 
       toast.success("Password reset link sent ✅");
@@ -31,7 +33,7 @@ export default function ForgotPasswordPage() {
 
     } catch (error) {
       console.log(error);
-      toast.error(error?.message || "Something went wrong ❌");
+      toast.error(error || "Something went wrong ❌");
     }
 
     setLoading(false);

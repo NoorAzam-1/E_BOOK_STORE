@@ -1,13 +1,17 @@
 "use client";
-import { backend_url } from "@/utils/axios";
 import { User, Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { Toaster, toast } from "react-hot-toast"
+import { Toaster, toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../features/authSlice.js";
+
+import { useRouter } from "next/navigation";
+
 export default function RegisterPage() {
-  const dispatch = useDispatch(); 
+  const router = useRouter();
+
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -27,42 +31,37 @@ export default function RegisterPage() {
     });
   };
 
-  // handle submit
   const handleSubmit = async (e) => {
-    console.log("handlesubmitcalled")
     e.preventDefault();
 
     if (!form.agree) {
-      alert("Please accept Terms & Conditions");
+      toast.error("Please accept Terms & Conditions");
       return;
     }
 
     setLoading(true);
 
     try {
-      // 🔥 Redux thunk call
-      const res = await dispatch(registerUser({
-        name: form.name,
-        email: form.email,
-        password: form.password,
-        role: form.role,
-      })).unwrap();
+      const res = await dispatch(
+        registerUser({
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          role: form.role,
+        }),
+      ).unwrap();
 
-      toast.success("Account Created ✅");
+      // ✅ Only runs if SUCCESS
+      console.log("User created:", res);
 
-      // optional: token save (agar backend de raha ho)
-      if (res?.token) {
-        localStorage.setItem("token", res.token);
-      }
-
-      // redirect
+      // redirect after success
       setTimeout(() => {
-        window.location.href = "/";
+        router.push("/");
       }, 1000);
-
     } catch (error) {
+      // ❌ Runs only on failure
       console.log(error);
-      toast.error(error?.message || "Register Failed ");
+      toast.error(error || "Register Failed");
     }
 
     setLoading(false);
@@ -70,12 +69,14 @@ export default function RegisterPage() {
 
   return (
     <div className="bg-background text-on-surface flex items-center justify-center px-2 py-3 md:py-0 relative overflow-hidden">
-       {/* ✅ Toaster component */}
+      {/* ✅ Toaster component */}
       <Toaster position="top-right" reverseOrder={false} />
       <div className="w-full max-w-md z-10">
         {/* HEADING */}
         <div className="text-center mb-6">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-2">Begin Your Journey</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+            Begin Your Journey
+          </h2>
           <p className="text-on-surface-variant text-sm">
             Join our community of digital curators.
           </p>
@@ -174,7 +175,10 @@ export default function RegisterPage() {
         {/* FOOT TEXT */}
         <p className="text-center text-sm text-on-surface-variant mt-6">
           Already have an account?{" "}
-          <Link href="/login" className="text-primary font-semibold cursor-pointer">
+          <Link
+            href="/login"
+            className="text-primary font-semibold cursor-pointer"
+          >
             Sign In
           </Link>
         </p>

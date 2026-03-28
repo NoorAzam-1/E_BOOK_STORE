@@ -9,8 +9,7 @@ import { loginUser } from "../../features/authSlice";
 
 export default function LoginPage() {
    const dispatch = useDispatch();
-
-  const [form, setForm] = useState({
+   const [form, setForm] = useState({
     email: "",
     password: "",
   });

@@ -23,11 +23,13 @@ axiosInstance.getProfile = () => {
 
 // ✅ FORGOT PASSWORD
 axiosInstance.forgotPassword = (email) => {
+  
   return axiosInstance.post("/api/user/forgot_password", { email });
 };
 
 // ✅ RESET PASSWORD
 axiosInstance.resetPassword = (data) => {
+  console.log("resetPassword",data)
   return axiosInstance.post("/api/user/reset_password", data);
 };
 
