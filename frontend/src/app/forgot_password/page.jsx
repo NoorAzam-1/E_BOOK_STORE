@@ -4,6 +4,8 @@ import { backend_url } from "@/utils/axios";
 import { Mail, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { forgotPassword } from "../../features/authSlice.js";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -20,27 +22,16 @@ export default function ForgotPasswordPage() {
 
     setLoading(true);
 
-    try {
-      const res = await fetch(
-        `${backend_url}/api/user/forgot_password`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        },
-      );
+     try {
+      // 🔥 Redux thunk call
+      const res = await dispatch(forgotPassword(email)).unwrap();
 
-      const data = await res.json();
+      toast.success("Password reset link sent ✅");
+      setSubmitted(true);
 
-      if (data.success) {
-        toast.success("Password reset link sent");
-        setSubmitted(true);
-      } else {
-        toast.error(data.message);
-      }
     } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong");
+      console.log(error);
+      toast.error(error?.message || "Something went wrong ❌");
     }
 
     setLoading(false);

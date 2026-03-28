@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../api/axios";
+import axiosInstance from "../utils/axios.js";
 
 // 🔥 API call using Redux thunk
 export const fetchPost = createAsyncThunk(

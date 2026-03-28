@@ -1,11 +1,13 @@
 "use client";
-
 import { backend_url } from "@/utils/axios";
 import { User, Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast"
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../features/authSlice.js";
 export default function RegisterPage() {
+  const dispatch = useDispatch(); 
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -27,6 +29,7 @@ export default function RegisterPage() {
 
   // handle submit
   const handleSubmit = async (e) => {
+    console.log("handlesubmitcalled")
     e.preventDefault();
 
     if (!form.agree) {
@@ -37,37 +40,29 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${backend_url}/api/user/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          password: form.password,
-          role: form.role,
-        }),
-      });
+      // 🔥 Redux thunk call
+      const res = await dispatch(registerUser({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        role: form.role,
+      })).unwrap();
 
-      const data = await res.json();
+      toast.success("Account Created ✅");
 
-      if (data.success) {
-        toast.success("Account Created ✅");
-
-        // save token
-        localStorage.setItem("token", data.token);
-
-        // small delay before redirect
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 1000);
-      } else {
-        toast.error(data.message);
+      // optional: token save (agar backend de raha ho)
+      if (res?.token) {
+        localStorage.setItem("token", res.token);
       }
+
+      // redirect
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
+
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong ❌");
+      console.log(error);
+      toast.error(error?.message || "Register Failed ");
     }
 
     setLoading(false);
