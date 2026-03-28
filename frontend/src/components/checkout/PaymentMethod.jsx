@@ -21,19 +21,19 @@ export default function PaymentMethod() {
               : "border-white/5"
           }`}
         >
-          Credit Card
+          Credit/Debit Card
         </div>
 
         {/* Wallet */}
         <div
-          onClick={() => setMethod("wallet")}
+          onClick={() => setMethod("upi")}
           className={`p-5 rounded-xl cursor-pointer border transition ${
-            method === "wallet"
+            method === "upi"
               ? "border-primary bg-surface-container-high"
               : "border-white/5"
           }`}
         >
-          Digital Wallet
+          UPI
         </div>
       </div>
     </section>
