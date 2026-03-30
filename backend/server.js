@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://e-book-store-eta.vercel.app/",
+      "https://e-book-store-eta.vercel.app",
     ],
     credentials: true,
   })
