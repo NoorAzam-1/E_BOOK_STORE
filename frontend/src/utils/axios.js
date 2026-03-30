@@ -1,36 +1,56 @@
-export  const backend_url = ""
 import axios from "axios";
-
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
   withCredentials: true,
 });
 
-// ✅ REGISTER
-axiosInstance.register = (data) => {
-  return axiosInstance.post("/api/user/register", data);
-};
+// ✅ REQUEST INTERCEPTOR (Role-Based Token)
+axiosInstance.interceptors.request.use(
+  (config) => {
+    if (typeof window !== "undefined") {
+      const activeRole = localStorage.getItem("active_role");
+      let token = null;
 
-// ✅ LOGIN
-axiosInstance.login = (data) => {
-  return axiosInstance.post("/api/user/login", data);
-};
+      if (activeRole === "admin" || activeRole === "superadmin") {
+        token = localStorage.getItem("admin_token");
+      } else {
+        token = localStorage.getItem("user_token");
+      }
 
-// ✅ PROFILE
-axiosInstance.getProfile = () => {
-  return axiosInstance.get("/api/user/profile");
-};
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// ✅ FORGOT PASSWORD
-axiosInstance.forgotPassword = (email) => {
-  
-  return axiosInstance.post("/api/user/forgot_password", { email });
-};
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error?.response?.status === 401) {
+      // ✅ LAZY IMPORT: Only import store when a 401 actually happens
+      // This breaks the circular dependency loop!
+      const store = (await import("@/app/store.js")).default;
+      const { logoutUser } = await import("@/features/authSlice.js");
 
-// ✅ RESET PASSWORD
-axiosInstance.resetPassword = (data) => {
-  console.log("resetPassword",data)
-  return axiosInstance.post("/api/user/reset_password", data);
-};
+      store.dispatch(logoutUser());
+
+      if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+// ✅ API METHODS
+axiosInstance.register = (data) => axiosInstance.post("/api/user/register", data);
+axiosInstance.login = (data) => axiosInstance.post("/api/user/login", data);
+axiosInstance.getProfile = () => axiosInstance.get("/api/user/profile");
+axiosInstance.forgotPassword = (email) => axiosInstance.post("/api/user/forgot_password", { email });
+axiosInstance.resetPassword = (data) => axiosInstance.post("/api/user/reset_password", data); // Removed console.log
 
 export default axiosInstance;

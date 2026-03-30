@@ -32,12 +32,9 @@ export default function LoginPage() {
     try {
       // 🔥 Redux thunk call
       const res = await dispatch(loginUser(form)).unwrap();
+      console.log("login page res",res)
 
       toast.success("Login Successful ✅");
-      if (res?.token) {
-        localStorage.setItem("token", res.token);
-      }
-
       // redirect
       setTimeout(() => {
         window.location.href = "/";
