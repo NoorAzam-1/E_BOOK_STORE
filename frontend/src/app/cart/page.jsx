@@ -11,7 +11,7 @@ const initialCart = [
     author: "Elena V. Thorne",
     price: 240,
     quantity: 1,
-    image: "/images/books/t1Book.png",
+    image: "/images/books/t1Book.webp",
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const initialCart = [
     author: "Marcus Aurelius Jr.",
     price: 1800,
     quantity: 2,
-    image: "/images/books/t2Book.png",
+    image: "/images/books/t2Book.webp",
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ const initialCart = [
     author: "Sarah Jenkins",
     price: 320,
     quantity: 1,
-    image: "/images/books/t3Book.png",
+    image: "/images/books/t3Book.webp",
   },
 ];
 
