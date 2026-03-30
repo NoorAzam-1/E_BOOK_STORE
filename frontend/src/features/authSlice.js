@@ -31,7 +31,27 @@ export const loginUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.login(data);
-      return res.data;
+
+      const responseData = res.data;
+      console.log("responseData",responseData)
+
+      // ✅ ROLE + TOKEN
+      const role = responseData?.data?.role;
+      console.log("role",responseData?.data?.role)
+      const token = responseData?.accessToken;
+      console.log("accessToken",responseData?.accessToken)
+
+      // ✅ STORE TOKEN BASED ON ROLE
+      if (role === "admin" || role === "superadmin") {
+        localStorage.setItem("admin_token", token);
+      } else if (role === "user") {
+        localStorage.setItem("user_token", token);
+      }
+
+      // ✅ STORE ACTIVE ROLE
+      localStorage.setItem("active_role", role);
+
+      return responseData;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Error");
     }
@@ -44,11 +64,11 @@ export const getProfile = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.getProfile();
-      return res.data;
+      return res.data.user;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Error");
     }
-  }
+  },
 );
 
 // forgotPassword
@@ -65,7 +85,6 @@ export const forgotPassword = createAsyncThunk(
 
       toast.success(res.data.message);
       return res.data;
-
     } catch (error) {
       const message =
         error?.response?.data?.message || "Failed to send reset link";
@@ -73,7 +92,7 @@ export const forgotPassword = createAsyncThunk(
       toast.error(message);
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 //reset profile
@@ -93,15 +112,12 @@ export const resetPassword = createAsyncThunk(
 
       toast.success(res.data.message);
       return res.data;
-
     } catch (error) {
-      const message =
-        error?.response?.data?.message || "Reset Password Failed";
-
+      const message = error?.response?.data?.message || "Reset Password Failed";
       toast.error(message);
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 const authSlice = createSlice({
@@ -114,6 +130,15 @@ const authSlice = createSlice({
   reducers: {
     logoutUser: (state) => {
       state.user = null;
+      state.loading = false;
+      state.error = null;
+
+      // Add this so it cleans up everything:
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("user_token");
+        localStorage.removeItem("admin_token");
+        localStorage.removeItem("active_role");
+      }
     },
   },
   extraReducers: (builder) => {
