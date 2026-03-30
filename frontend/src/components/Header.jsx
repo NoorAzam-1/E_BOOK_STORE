@@ -117,19 +117,20 @@ export default function Header() {
             ) : (
               <Link
                 href="/login"
-                className="text-sm font-semibold text-primary"
+                onClick={()=>setActive("/login")}
+                className="text-sm font-semibold hover:text-primary"
               >
                 Login
               </Link>
             )}
 
             {/* CART */}
-            <button className="relative text-primary cursor-pointer">
+            <Link href="/cart" className="relative text-primary cursor-pointer">
               <ShoppingCart className="h-6 w-6" />
               <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
                 3
               </span>
-            </button>
+            </Link>
           </div>
         </div>
       </header>
@@ -158,6 +159,13 @@ export default function Header() {
             className="block px-4 py-2 text-sm hover:bg-white/5"
           >
             Orders
+          </Link>
+
+          <Link
+            href="/wishlist"
+            className="block px-4 py-2 text-sm hover:bg-white/5"
+          >
+            Wishlist
           </Link>
 
           <p
