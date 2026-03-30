@@ -21,12 +21,10 @@ connectCloudinary();
 // middlewares
 app.use(express.json())
 app.use(morgan("dev"))
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://e-book-store-eta.vercel.app",
-    ],
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
