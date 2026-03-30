@@ -25,7 +25,7 @@
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",   // ✅ FINAL FIX
+  service: "gmail", // ✅ FINAL FIX
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
