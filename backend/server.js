@@ -1,40 +1,81 @@
-import 'dotenv/config'
-import express from 'express' 
-import cors from 'cors'
-import dns from "node:dns/promises"
-import morgan from 'morgan'
+// import 'dotenv/config'
+// import express from 'express' 
+// import cors from 'cors'
+// import dns from "node:dns/promises"
+// import morgan from 'morgan'
 
-import connectDB from './config/mongodb.js'
-import userRouter from './routes/userRoute.js'
-import productRouter from './routes/productRoute.js'
-import {connectCloudinary} from './config/cloudinary.js'
+// import connectDB from './config/mongodb.js'
+// import userRouter from './routes/userRoute.js'
+// import productRouter from './routes/productRoute.js'
+// import {connectCloudinary} from './config/cloudinary.js'
 
-if(process.env.NODE_ENV === "development"){
-  dns.setServers(["8.8.8.8","4.4.8.8"])
-}
-// App Config 
-const app = express()
-const port = process.env.PORT || 4000
-connectDB()
+// if(process.env.NODE_ENV === "development"){
+//   dns.setServers(["8.8.8.8","4.4.8.8"])
+// }
+// // App Config 
+// const app = express()
+// const port = process.env.PORT || 4000
+// connectDB()
+// connectCloudinary();
+
+// // middlewares
+// app.use(express.json())
+// app.use(morgan("dev"))
+
+// app.use(
+//   cors({
+//     origin: process.env.FRONTEND_URL,
+//     credentials: true,
+//   })
+// );
+
+// // api endpoints
+// app.use('/api/user',userRouter)
+// app.use('/api/product',productRouter)
+
+// app.get('/',(req,res)=>{
+//     res.send("API Working")
+// })
+
+// app.listen(port,() => console.log('server started on PORT :' + port))
+
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import dns from "node:dns/promises";
+import morgan from "morgan";
+
+import connectDB from "./config/mongodb.js";
+import userRouter from "./routes/userRoute.js";
+import productRouter from "./routes/productRoute.js";
+import { connectCloudinary } from "./config/cloudinary.js";
+
+// ✅ ALWAYS FIX DNS (important for SMTP)
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
+const app = express();
+const port = process.env.PORT || 4000;
+
+connectDB();
 connectCloudinary();
 
 // middlewares
-app.use(express.json())
-app.use(morgan("dev"))
+app.use(express.json());
+app.use(morgan("dev"));
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL, // ✅ only one origin
     credentials: true,
   })
 );
 
-// api endpoints
-app.use('/api/user',userRouter)
-app.use('/api/product',productRouter)
+// routes
+app.use("/api/user", userRouter);
+app.use("/api/product", productRouter);
 
-app.get('/',(req,res)=>{
-    res.send("API Working")
-})
+app.get("/", (req, res) => {
+  res.send("API Working");
+});
 
-app.listen(port,() => console.log('server started on PORT :' + port))
+app.listen(port, () => console.log("server started on PORT :" + port));
