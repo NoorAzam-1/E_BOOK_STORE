@@ -14,6 +14,7 @@ const forgotPassword = async (req, res) => {
   try {
     const email = req.body.email?.toLowerCase();
 
+
     const user = await userModel.findOne({ email });
 
     if (!user) {
@@ -51,7 +52,7 @@ const forgotPassword = async (req, res) => {
     console.log("FORGOT ERROR:", error);
     res.status(500).json({
       success: false,
-      message: "Server Error",
+      message: "Server Error", error,
     });
   }
 };
