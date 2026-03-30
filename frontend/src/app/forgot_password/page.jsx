@@ -1,18 +1,15 @@
 "use client";
 
-import { backend_url } from "@/utils/axios";
 import { Mail, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { forgotPassword } from "../../features/authSlice.js";
+import { forgotPassword } from "@/features/authSlice.js";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
-  // ✅ ADD THIS LINE
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {

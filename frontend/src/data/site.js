@@ -6,40 +6,40 @@ export const site = {
     description:
       "An evocative journey through the constellations of memory and the architecture of the human heart. Curated for the restless soul.",
     price: 1499,
-    image: "/images/heroImage.png",
+    image: "/images/heroImage.webp",
   },
   genres: [
     {
       name: "Fiction",
       count: "15,400+ titles available",
       tags: ["Historical", "Fantasy", "Mystery"],
-      image: "/images/t1.png",
+      image: "/images/t1.webp",
       spotlight: {
         title: "Silence of the Void",
         author: "Marcus Thorne",
-        image: "/images/books/t1Book.png",
+        image: "/images/books/t1Book.webp",
       },
     },
     {
       name: "Tech",
       count: "8,200+ titles available",
       tags: ["Programming", "AI & ML", "Design"],
-      image: "/images/t2.avif",
+      image: "/images/t2.webp",
       spotlight: {
         title: "The Digital Nomad",
         author: "Elena Rodriguez",
-        image: "/images/books/t2Book.png",
+        image: "/images/books/t2Book.webp",
       },
     },
     {
       name: "Business",
       count: "12,100+ titles available",
       tags: ["Startup", "Strategy", "Finance"],
-      image: "/images/t3.png",
+      image: "/images/t3.webp",
       spotlight: {
         title: "Pulse of Innovation",
         author: "Sarah Jenkins",
-        image: "/images/books/t3Book.png",
+        image: "/images/books/t3Book.webp",
       },
     },
   ],

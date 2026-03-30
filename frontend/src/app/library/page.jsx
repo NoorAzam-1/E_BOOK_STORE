@@ -44,7 +44,7 @@ export default function LibraryPage() {
               title="Stoner"
               author="John Williams"
               progress={60}
-              image="/images/reading/gr1.jfif"
+              image="/images/reading/gr1.webp"
               bg="rgba(255,255,255,0.08)"
             />
 
@@ -52,7 +52,7 @@ export default function LibraryPage() {
               title="Design of Things"
               author="Don Norman"
               progress={12}
-              image="/images/reading/gr2.jfif"
+              image="/images/reading/gr2.webp"
               bg="rgba(0,150,136,0.18)"
             />
 
@@ -60,7 +60,7 @@ export default function LibraryPage() {
               title="Dune Messiah"
               author="Frank Herbert"
               progress={95}
-              image="/images/reading/gr3.jfif"
+              image="/images/reading/gr3.webp"
               bg="rgba(255,140,0,0.18)"
             />
 
@@ -68,7 +68,7 @@ export default function LibraryPage() {
               title="Normal People"
               author="Sally Rooney"
               progress={45}
-              image="/images/reading/gr4.jfif"
+              image="/images/reading/gr4.webp"
               bg="rgba(255,105,180,0.18)"
             />
 
@@ -76,7 +76,7 @@ export default function LibraryPage() {
               title="Wuthering Heights"
               author="Emily Bronte"
               progress={5}
-              image="/images/reading/gr5.jfif"
+              image="/images/reading/gr5.webp"
               bg="rgba(100,149,237,0.18)"
             />
           </div>
@@ -95,28 +95,28 @@ export default function LibraryPage() {
             <WishlistCard
               title="Midnight Library"
               price="$14.99"
-              image="/images/wishlist/w2.jfif"
+              image="/images/wishlist/w2.webp"
               bg="rgba(255,255,255,0.08)"
             />
 
             <WishlistCard
               title="Circe"
               price="$12.50"
-              image="/images/wishlist/w3.jfif"
+              image="/images/wishlist/w3.webp"
               bg="rgba(0,150,136,0.20)"
             />
 
             <WishlistCard
               title="Atomic Habits"
               price="$18.00"
-              image="/images/wishlist/w2.jfif"
+              image="/images/wishlist/w2.webp"
               bg="rgba(255,193,7,0.18)"
             />
 
             <WishlistCard
               title="Pride & Prejudice"
               price="$9.99"
-              image="/images/wishlist/w3.jfif"
+              image="/images/wishlist/w3.webp"
               bg="rgba(244,143,177,0.18)"
             />
           </div>

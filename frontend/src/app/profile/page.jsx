@@ -31,7 +31,7 @@ export default function ProfilePage() {
         <section className="flex flex-col items-center text-center space-y-4">
           <div className="w-28 h-28 rounded-full p-[2px] bg-linear-to-tr from-primary to-primary-container">
             <Image
-              src="/images/profile.jfif"
+              src="/images/profile.webp"
               alt="profile"
               height={200}
               width={200}
