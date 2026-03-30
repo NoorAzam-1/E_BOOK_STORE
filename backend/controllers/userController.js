@@ -12,14 +12,17 @@ const createToken = (id) => {
 //Forgot password request
 const forgotPassword = async (req, res) => {
   try {
-    const email = req.body.email.toLowerCase();
+    const email = req.body.email?.toLowerCase();
+
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      return res.json({ success: false, message: "Email not found" });
+      return res.status(400).json({
+        success: false,
+        message: "Email not found",
+      });
     }
 
-    // create reset token (expires in 15 mins)
     const resetToken = crypto.randomBytes(20).toString("hex");
     const resetTokenExpiry = Date.now() + 15 * 60 * 1000;
 
@@ -27,31 +30,28 @@ const forgotPassword = async (req, res) => {
     user.resetTokenExpiry = resetTokenExpiry;
     await user.save();
 
-    // Create the reset link
-    // const resetLink = `${process.env.FRONTEND_URL}/reset_password?token=${resetToken}`;
-       const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+    // ✅ FINAL LINK FIX
+    const resetLink = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/reset-password?token=${resetToken}`;
 
-    // Send email using Nodemailer
     const message = `
       <h2>Password Reset Request</h2>
       <p>Hello ${user.name},</p>
-      <p>You requested to reset your password. Click the link below to reset it (valid for 15 minutes):</p>
+      <p>Click below to reset your password:</p>
       <a href="${resetLink}">Reset Password</a>
-      <p>If you did not request this, ignore this email.</p>
+      <p>Valid for 15 minutes</p>
     `;
 
-    await sendEmail(user.email, "Password Reset - Ebook Store", message);
+    await sendEmail(user.email, "Reset Password", message);
 
     res.json({
       success: true,
-      message: "Password reset link sent to your email",
+      message: "Reset link sent to email",
     });
   } catch (error) {
-    console.log("FORGOT PASSWORD ERROR:", error);
-
+    console.log("FORGOT ERROR:", error);
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Server Error",
     });
   }
 };

@@ -50,25 +50,51 @@ import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
 import { connectCloudinary } from "./config/cloudinary.js";
 
-// ✅ ALWAYS FIX DNS (important for SMTP)
+// ✅ DNS FIX (IMPORTANT FOR EMAIL)
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const app = express();
 const port = process.env.PORT || 4000;
 
+// DB + Cloudinary
 connectDB();
 connectCloudinary();
 
-// middlewares
+// Middlewares
 app.use(express.json());
 app.use(morgan("dev"));
 
+// ✅ FINAL CORS FIX (WORKS FOR LOCAL + LIVE)
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://e-book-store-eta.vercel.app",
+];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL, // ✅ only one origin
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("CORS not allowed"));
+      }
+    },
     credentials: true,
   })
 );
+
+// Routes
+app.use("/api/user", userRouter);
+app.use("/api/product", productRouter);
+
+// Test route
+app.get("/", (req, res) => {
+  res.send("API Working");
+});
+
+app.listen(port, () => console.log("Server started on PORT: " + port));
 
 // routes
 app.use("/api/user", userRouter);
