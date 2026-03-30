@@ -1,42 +1,107 @@
-import 'dotenv/config'
-import express from 'express' 
-import cors from 'cors'
-import dns from "node:dns/promises"
-import morgan from 'morgan'
+// import 'dotenv/config'
+// import express from 'express' 
+// import cors from 'cors'
+// import dns from "node:dns/promises"
+// import morgan from 'morgan'
 
-import connectDB from './config/mongodb.js'
-import userRouter from './routes/userRoute.js'
-import productRouter from './routes/productRoute.js'
-import {connectCloudinary} from './config/cloudinary.js'
+// import connectDB from './config/mongodb.js'
+// import userRouter from './routes/userRoute.js'
+// import productRouter from './routes/productRoute.js'
+// import {connectCloudinary} from './config/cloudinary.js'
 
-if(process.env.NODE_ENV === "development"){
-  dns.setServers(["8.8.8.8","4.4.8.8"])
-}
-// App Config 
-const app = express()
-const port = process.env.PORT || 4000
-connectDB()
+// if(process.env.NODE_ENV === "development"){
+//   dns.setServers(["8.8.8.8","4.4.8.8"])
+// }
+// // App Config 
+// const app = express()
+// const port = process.env.PORT || 4000
+// connectDB()
+// connectCloudinary();
+
+// // middlewares
+// app.use(express.json())
+// app.use(morgan("dev"))
+
+// app.use(
+//   cors({
+//     origin: process.env.FRONTEND_URL,
+//     credentials: true,
+//   })
+// );
+
+// // api endpoints
+// app.use('/api/user',userRouter)
+// app.use('/api/product',productRouter)
+
+// app.get('/',(req,res)=>{
+//     res.send("API Working")
+// })
+
+// app.listen(port,() => console.log('server started on PORT :' + port))
+
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import dns from "node:dns/promises";
+import morgan from "morgan";
+
+import connectDB from "./config/mongodb.js";
+import userRouter from "./routes/userRoute.js";
+import productRouter from "./routes/productRoute.js";
+import { connectCloudinary } from "./config/cloudinary.js";
+
+// ✅ DNS FIX (IMPORTANT FOR EMAIL)
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
+const app = express();
+const port = process.env.PORT || 4000;
+
+// DB + Cloudinary
+connectDB();
 connectCloudinary();
 
-// middlewares
-app.use(express.json())
-app.use(morgan("dev"))
+// Middlewares
+app.use(express.json());
+app.use(morgan("dev"));
+
+// ✅ FINAL CORS FIX (WORKS FOR LOCAL + LIVE)
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://e-book-store-eta.vercel.app",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://e-book-store-eta.vercel.app/",
-    ],
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("CORS not allowed"));
+      }
+    },
     credentials: true,
   })
 );
 
-// api endpoints
-app.use('/api/user',userRouter)
-app.use('/api/product',productRouter)
+// Routes
+app.use("/api/user", userRouter);
+app.use("/api/product", productRouter);
 
-app.get('/',(req,res)=>{
-    res.send("API Working")
-})
+// Test route
+app.get("/", (req, res) => {
+  res.send("API Working");
+});
 
-app.listen(port,() => console.log('server started on PORT :' + port))
+app.listen(port, () => console.log("Server started on PORT: " + port));
+
+// routes
+app.use("/api/user", userRouter);
+app.use("/api/product", productRouter);
+
+app.get("/", (req, res) => {
+  res.send("API Working");
+});
+
+app.listen(port, () => console.log("server started on PORT :" + port));

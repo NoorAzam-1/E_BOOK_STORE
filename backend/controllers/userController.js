@@ -12,14 +12,18 @@ const createToken = (id) => {
 //Forgot password request
 const forgotPassword = async (req, res) => {
   try {
-    const email = req.body.email.toLowerCase();
+    const email = req.body.email?.toLowerCase();
+
+
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      return res.json({ success: false, message: "Email not found" });
+      return res.status(400).json({
+        success: false,
+        message: "Email not found",
+      });
     }
 
-    // create reset token (expires in 15 mins)
     const resetToken = crypto.randomBytes(20).toString("hex");
     const resetTokenExpiry = Date.now() + 15 * 60 * 1000;
 
@@ -27,27 +31,29 @@ const forgotPassword = async (req, res) => {
     user.resetTokenExpiry = resetTokenExpiry;
     await user.save();
 
-    // Create the reset link
-    const resetLink = `${process.env.FRONTEND_URL}/reset_password?token=${resetToken}`;
+    // ✅ FINAL LINK FIX
+    const resetLink = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/reset-password?token=${resetToken}`;
 
-    // Send email using Nodemailer
     const message = `
       <h2>Password Reset Request</h2>
       <p>Hello ${user.name},</p>
-      <p>You requested to reset your password. Click the link below to reset it (valid for 15 minutes):</p>
+      <p>Click below to reset your password:</p>
       <a href="${resetLink}">Reset Password</a>
-      <p>If you did not request this, ignore this email.</p>
+      <p>Valid for 15 minutes</p>
     `;
 
-    await sendEmail(user.email, "Password Reset - Ebook Store", message);
+    await sendEmail(user.email, "Reset Password", message);
 
     res.json({
       success: true,
-      message: "Password reset link sent to your email",
+      message: "Reset link sent to email",
     });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Something went wrong" });
+    console.log("FORGOT ERROR:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error", error,
+    });
   }
 };
 
@@ -88,36 +94,66 @@ const resetPassword = async (req, res) => {
   }
 };
 
-//Route for user login
+// Route for user login
 const loginUser = async (req, res) => {
+  console.log("loginUser running")
   try {
     const { email, password } = req.body;
 
-    const user = await userModel.findOne({ email });
+    const normalisedMail = email.toLowerCase();
 
-    if (!user) {
-      return res.json({ success: false, message: "user doesn't exists" });
+    const findUser = await userModel.findOne({ email: normalisedMail });
+
+    if (!findUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is Incorrect!",
+      });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, findUser.password);
 
-    if (isMatch) {
-      const token = createToken(user._id);
-      res.json({ success: true, token });
-    } else {
-      res.json({ success: false, message: "Invalid credentials" });
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Password is Incorrect!",
+      });
     }
+
+    const token = jwt.sign({ id: findUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    const options = {
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    };
+    const user = await userModel
+      .findById(findUser._id)
+      .select("-password -__v");
+
+    res.status(200).cookie("token", token, options).json({
+      success: true,
+      message: "Login Successfully!",
+      accessToken: token,
+      tokenType: "Bearer",
+      data: user,
+    });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
 //Route for user register
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role,address, contact  } = req.body;
-    console.log("req.body",req.body)
+    const { name, email, password, role, address, contact } = req.body;
+    console.log("req.body", req.body);
 
     // checking user already exists or not
     const exists = await userModel.findOne({ email });
@@ -149,17 +185,17 @@ const registerUser = async (req, res) => {
       name,
       email: email.toLowerCase(),
       password: hashedPassword,
-       address: address || "", // optional
+      address: address || "", // optional
       contact: contact || "", // optional
     });
     // console.log("newuser",newuser)
 
     const user = await newuser.save();
-   res.json({
-  success: true,
-  message: "User registered successfully",
-  user,
-});
+    res.json({
+      success: true,
+      message: "User registered successfully",
+      user,
+    });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -198,9 +234,7 @@ const userProfile = async (req, res) => {
   }
 
   try {
-    const findUser = await userModel
-      .findById(_id)
-      .select("-password -__v");
+    const findUser = await userModel.findById(_id).select("-password -__v");
 
     console.log("findUser", findUser);
 
