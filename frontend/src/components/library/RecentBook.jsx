@@ -6,7 +6,7 @@ export default function RecentBook() {
       <div className="p-6 bg-cyan-100 rounded-sm group-hover:scale-105 transition duration-300 md:min-w-[43%]">
         <Image
           alt="images"
-          src="/images/meditation.jfif"
+          src="/images/meditation.webp"
           height={300}
           width={300}
           className="w-40 sm:w-48 h-64 object-cover rounded shadow-xl"
