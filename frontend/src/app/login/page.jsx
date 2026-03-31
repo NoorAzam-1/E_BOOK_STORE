@@ -4,18 +4,20 @@ import Link from "next/link";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { loginUser } from "@/features/authSlice"; 
+import { loginUser } from "@/features/authSlice";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-   const dispatch = useDispatch();
-   const [form, setForm] = useState({
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  
 
-  // ✅ INPUT CHANGE
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({
@@ -24,22 +26,16 @@ export default function LoginPage() {
     });
   };
 
-  // ✅ LOGIN SUBMIT (Redux use)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // 🔥 Redux thunk call
       const res = await dispatch(loginUser(form)).unwrap();
-      console.log("login page res",res)
-
-      toast.success("Login Successful ✅");
-      // redirect
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 1000);
-
+      if (res.success == true) {
+        toast.success("Login Successful ✅");
+        router.push("/browse");
+      }
     } catch (error) {
       console.log(error);
       toast.error(error?.message || "Login Failed ");
@@ -50,7 +46,6 @@ export default function LoginPage() {
 
   return (
     <div className="bg-background text-on-surface flex justify-center px-2 relative overflow-hidden">
-      {/* ✅ TOASTER */}
       <Toaster position="top-right" reverseOrder={false} />
       <div className="w-full max-w-md z-10">
         {/* HEADING */}
