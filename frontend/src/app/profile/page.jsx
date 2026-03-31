@@ -15,19 +15,24 @@ export default function ProfilePage() {
   const { user, loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+  const sellerToken = localStorage.getItem("seller_token");
+  const userToken = localStorage.getItem("user_token");
 
-    if (!token) {
+  const token = sellerToken || userToken;
+
+  console.log("Profile page token:", token);
+
+  if (!token) {
+    router.push("/login");
+    return;
+  }
+
+  dispatch(getProfile())
+    .unwrap()
+    .catch(() => {
       router.push("/login");
-      return;
-    }
-
-    dispatch(getProfile())
-      .unwrap()
-      .catch(() => {
-        router.push("/login");
-      });
-  }, [dispatch, router]);
+    });
+}, [dispatch, router]);
 
   if (loading) {
     return (
@@ -35,10 +40,6 @@ export default function ProfilePage() {
         Loading profile...
       </p>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   return (
