@@ -14,7 +14,6 @@ const addFeedback = async (req,res) => {
      res.json ({success:true, message:"Feedback added successfully",data:newFeedback});
         
     } catch (error) {
-      console.log(error);
       res.json({ success: false, message: error.message });
     }
 };
@@ -27,7 +26,6 @@ const getAllFeedback = async (req, res) => {
     res.json({success: true, data: feedbacks,});
 
   } catch (error) {
-    console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -46,7 +44,6 @@ const getSingleFeedback = async (req, res) => {
     res.json({ success: true, data: feedback,});
 
   } catch (error) {
-    console.log(error);
     res.json({ success: false, message: error.message });
   }
 };
@@ -65,7 +62,6 @@ const updateFeedback = async (req,res) => {
 
     res.json({success: true,message: "Feedback is updated successfully", data: updated,}); 
     } catch (error) {
-      console.log(error);
       res.json({ success: false, message: error.message });  
     }
 };
@@ -84,7 +80,6 @@ const updateFeedback = async (req,res) => {
     res.json({ success: true,message: "Feedback deleted successfully",});
         
     } catch (error) {
-      console.log(error);
       res.json({ success: false, message: error.message });  
     }
 };
