@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const essays = [
   {
@@ -40,7 +41,7 @@ export default function EssaysSection() {
 
       <div className="space-y-8 md:space-y-16">
         {essays.map((essay, i) => (
-          <div
+          <Link href="/browse"
             key={i}
             className="flex flex-col md:flex-row gap-8 group border-b border-white/5 pb-10"
           >
@@ -77,7 +78,7 @@ export default function EssaysSection() {
                 By {essay.author}
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>
