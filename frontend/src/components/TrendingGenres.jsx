@@ -14,7 +14,7 @@ export default function TrendingGenres() {
           <p className="mt-2 text-on-surface-variant">Hand-picked categories for your next discovery.</p>
         </div>
 
-        <Link href="/" className="flex items-center gap-1 rounded-2xl md:rounded-full border border-primary/10 bg-primary/5 px-2 md:px-4 py-2 text-sm font-bold text-primary transition-all hover:underline cursor-pointer">
+        <Link href="/browse" className="flex items-center gap-1 rounded-2xl md:rounded-full border border-primary/10 bg-primary/5 px-2 md:px-4 py-2 text-sm font-bold text-primary transition-all hover:underline cursor-pointer">
           View All <ArrowUpRight size={20} />
         </Link>
       </div>
