@@ -25,19 +25,25 @@ export default function Header() {
 
   const [mounted, setMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const profileRef = useRef(null);
   const router = useRouter();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
+  console.log("islogged in ",isLoggedIn)
 
-    if (localStorage.getItem("user_token")) {
+  useEffect(() => {
+    setMounted(true);
+    const sellerToken = localStorage.getItem("seller_token");
+    const userToken = localStorage.getItem("user_token");
+    const token = sellerToken || userToken;
+    
+    if (token) {
       setIsLoggedIn(true);
     }
-  }, []);
+  }, [mounted, setIsLoggedIn, router, dispatch]);
+
+
+  
 
   const handleMouseEnter = () => {
     if (profileRef.current) {
