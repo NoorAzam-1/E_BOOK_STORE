@@ -32,10 +32,6 @@ export default function Hero() {
               Buy Now — ₹{site.hero.price.toFixed(0)}
               <ArrowRight className="h-5 w-5" />
             </Link>
-
-            <button className="w-full md:w-auto rounded-xl bg-surface-container-highest px-8 py-4 font-bold text-on-surface transition-colors hover:bg-surface-bright active:scale-95 cursor-pointer">
-              Read Preview
-            </button>
           </div>
         </div>
 
