@@ -31,7 +31,7 @@ const forgotPassword = async (req, res) => {
     await user.save();
 
     // ✅ FIXED LINK
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/reset-password?token=${resetToken}`;
 
     const message = `
       <h2>Password Reset Request</h2>
