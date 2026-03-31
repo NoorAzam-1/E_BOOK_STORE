@@ -13,17 +13,18 @@ axiosInstance.interceptors.request.use(
 
       if (activeRole === "admin" || activeRole === "superadmin") {
         token = localStorage.getItem("admin_token");
-      } else {
+      } else if (activeRole === "user") {
         token = localStorage.getItem("user_token");
+      } else if (activeRole === "seller") {
+        token = localStorage.getItem("seller_token");
       }
-
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 axiosInstance.interceptors.response.use(
@@ -37,26 +38,36 @@ axiosInstance.interceptors.response.use(
 
       store.dispatch(logoutUser());
 
-      if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+      if (
+        typeof window !== "undefined" &&
+        window.location.pathname !== "/login"
+      ) {
         window.location.href = "/login";
       }
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 // ✅ API METHODS
-axiosInstance.register = (data) => axiosInstance.post("/api/user/register", data);
+axiosInstance.register = (data) =>
+  axiosInstance.post("/api/user/register", data);
 axiosInstance.login = (data) => axiosInstance.post("/api/user/login", data);
 axiosInstance.getProfile = () => axiosInstance.get("/api/user/profile");
-axiosInstance.forgotPassword = (email) => axiosInstance.post("/api/user/forgot_password", { email });
-axiosInstance.resetPassword = (data) => axiosInstance.post("/api/user/reset_password", data); // Removed console.log
+axiosInstance.forgotPassword = (email) =>
+  axiosInstance.post("/api/user/forgot_password", { email });
+axiosInstance.resetPassword = (data) =>
+  axiosInstance.post("/api/user/reset_password", data); // Removed console.log
 
 // ✅ FEEDBACK APIs
-axiosInstance.addFeedback = (data) => axiosInstance.post("/api/feedback/add", data);
+axiosInstance.addFeedback = (data) =>
+  axiosInstance.post("/api/feedback/add", data);
 axiosInstance.getAllFeedback = () => axiosInstance.get("/api/feedback/all");
-axiosInstance.getSingleFeedback = (id) => axiosInstance.get(`/api/feedback/${id}`);
-axiosInstance.updateFeedback = (id, data) => axiosInstance.put(`/api/feedback/update/${id}`, data);
-axiosInstance.deleteFeedback = (id) => axiosInstance.delete(`/api/feedback/delete/${id}`);
+axiosInstance.getSingleFeedback = (id) =>
+  axiosInstance.get(`/api/feedback/${id}`);
+axiosInstance.updateFeedback = (id, data) =>
+  axiosInstance.put(`/api/feedback/update/${id}`, data);
+axiosInstance.deleteFeedback = (id) =>
+  axiosInstance.delete(`/api/feedback/delete/${id}`);
 export default axiosInstance;
