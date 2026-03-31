@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function BookCard({ title, author, progress, image, bg }) {
   return (
-    <div className="group cursor-pointer">
+    <Link href="/browse" className="group cursor-pointer">
       <div className={`p-4 rounded-lg`} style={{ backgroundColor: bg }}>
         <Image
           alt="iamges"
@@ -25,6 +26,6 @@ export default function BookCard({ title, author, progress, image, bg }) {
         </div>
         <span className="text-xs text-primary">{progress}%</span>
       </div>
-    </div>
+    </Link>
   );
 }
