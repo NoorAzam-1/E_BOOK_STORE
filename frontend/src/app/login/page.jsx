@@ -15,7 +15,7 @@ export default function LoginPage() {
     password: "",
   });
 
-  
+
 
   const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
@@ -37,7 +37,6 @@ export default function LoginPage() {
         router.push("/browse");
       }
     } catch (error) {
-      console.log(error);
       toast.error(error?.message || "Login Failed ");
     }
 
