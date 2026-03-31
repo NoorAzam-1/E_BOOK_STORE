@@ -5,16 +5,29 @@ import { User, History, CreditCard, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { getProfile } from "@/features/authSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const [active, setActive] = useState("profile");
 
   const dispatch = useDispatch();
+  const router = useRouter();
   const { user, loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(getProfile());
-  }, [dispatch]);
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
+    dispatch(getProfile())
+      .unwrap()
+      .catch(() => {
+        router.push("/login");
+      });
+  }, [dispatch, router]);
 
   if (loading) {
     return (
@@ -24,10 +37,13 @@ export default function ProfilePage() {
     );
   }
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-background text-on-surface">
       <main className="max-w-4xl mx-auto px-4 sm:px-6 space-y-10">
-        {/* PROFILE HEADER */}
         <section className="flex flex-col items-center text-center space-y-4">
           <div className="w-28 h-28 rounded-full p-[2px] bg-linear-to-tr from-primary to-primary-container">
             <Image
@@ -44,7 +60,6 @@ export default function ProfilePage() {
           </h2>
         </section>
 
-        {/* STATS */}
         <section className="bg-surface-container p-5 rounded-xl border border-outline-variant/20">
           <h3 className="text-xs uppercase tracking-widest text-on-surface-variant mb-4">
             Library Insights
@@ -59,7 +74,6 @@ export default function ProfilePage() {
           </div>
         </section>
 
-        {/* ACCOUNT MENU */}
         <section className="space-y-3">
           <h3 className="text-xs uppercase tracking-widest text-on-surface-variant px-1">
             Account Management
@@ -92,7 +106,6 @@ export default function ProfilePage() {
           </div>
         </section>
 
-        {/* DYNAMIC CONTENT */}
         <section className="bg-surface-container p-5 rounded-xl border border-outline-variant/20">
           {active === "personal" && <PersonalInfo user={user} />}
           {active === "orders" && <OrderHistory />}
