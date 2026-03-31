@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
     try {
       const res = await dispatch(forgotPassword(email)).unwrap();
 
-      toast.success("Password reset link sent ✅");
+      // toast.success("Password reset link sent ✅");
       setSubmitted(true);
 
     } catch (error) {
