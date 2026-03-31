@@ -158,21 +158,7 @@ export default function PrivacyPolicy() {
             </div>
           </section>
 
-          {/* SECURITY */}
-          <section className="bg-surface-container-high p-5 md:p-8 rounded-3xl border border-primary/10">
-            <h2 className="text-xl font-bold mb-4">
-              Our Security Commitment
-            </h2>
-
-            <p className="text-sm text-on-surface-variant mb-4 md:mb-6">
-              We use AES-256 encryption and TLS 1.3 to secure your data.
-            </p>
-
-            <button className="bg-primary text-black px-6 py-3 rounded-md font-semibold flex items-center gap-2">
-              Contact Data Officer <ArrowRight size={16} />
-            </button>
-          </section>
-
+      
         </div>
       </main>
     </div>

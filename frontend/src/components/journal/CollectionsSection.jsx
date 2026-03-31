@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function CollectionsSection() {
   return (
@@ -16,7 +17,7 @@ export default function CollectionsSection() {
       {/* Grid */}
       <div className="grid md:grid-cols-2 gap-10">
         {/* Card 1 */}
-        <div className="relative h-[380px] rounded-2xl overflow-hidden group cursor-pointer">
+        <div className="relative h-[380px] rounded-2xl overflow-hidden group ">
           {/* Image */}
           <Image
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmjzg1QpDELZMNVhlOVCAFgJFdrWYmdZ0gGLdLjgRLEAUrlpDtAJCfZzizTHHeNq0TU8LacPIIaVVEdnqeyEZpHWZ81TNmDGMpE-Vc4Q_H1JrqEKRO1wgD0X7AcYu0DiCdOcq5FXzqokVc27274Qdo4Y26tcOaUDI01ejuvUCANdDW6Vx8btmS_CF56MPvyQFehAtOk_CSfjh8i4ZfK0tJHxdYIutF0RSK8hXKGiHTVxo1dCpDojheUoOivwtQCriXbLwBXWE0cpk"
@@ -37,14 +38,14 @@ export default function CollectionsSection() {
               Atmospheric reads for the longest nights of the year.
             </p>
 
-            <button className="border border-primary text-primary px-6 py-2 text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition">
+            <Link href="/browse" className="border border-primary text-primary px-6 py-2 text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition">
               Browse Collection
-            </button>
+            </Link>
           </div>
         </div>
 
         {/* Card 2 */}
-        <div className="relative h-[380px] rounded-2xl overflow-hidden group cursor-pointer">
+        <div className="relative h-[380px] rounded-2xl overflow-hidden group">
           {/* Image */}
           <Image
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1YuZY-85MbNNTrDJH3sJFCjxMgWk9t9XyEF2fe4fWsoa2-aO3fQ-fgKK-i63irfSAD0iGq0t28otwkc8kwcAsYMdyvucv7KRyd7aXiucISRBHRpX-JuCiKVSN30z0xcURjJub1xJ9yoEh-YIYaHyIq4uF60vYZ3fsejhD3CW9yc2FgDGsMtJ7SAydCVH-WGzE-ws7LUjFUwAozxmdcQq6KF02MRnrymMiIJF93_vjol9_-9GgqFLN8UQIB-3phZhK4shib-Iv3N8"
@@ -65,9 +66,9 @@ export default function CollectionsSection() {
               Atmospheric reads for the longest nights of the year.
             </p>
 
-            <button className="border border-primary text-primary px-6 py-2 text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition">
+            <Link href="/browse" className="border border-primary text-primary px-6 py-2 text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition">
               Browse Collection
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Star, StarHalf } from "lucide-react";
 import { site } from "@/data/site";
+import Link from "next/link";
 
 function RatingStars({ rating }) {
   const fullStars = Math.floor(rating);
@@ -27,7 +28,7 @@ export default function NewArrivals() {
 
       <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
         {site.arrivals.map((book) => (
-          <div key={book.title} className="group">
+          <Link href="/browse" key={book.title} className="group">
             <div className="relative mb-4 aspect-3/4 overflow-hidden rounded-xl shadow-xl">
               <Image
                 src={book.image}
@@ -53,7 +54,7 @@ export default function NewArrivals() {
 
               <p className="mt-2 text-lg font-bold text-primary">${book.price.toFixed(2)}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>

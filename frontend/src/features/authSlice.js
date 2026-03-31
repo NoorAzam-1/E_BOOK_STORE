@@ -31,15 +31,9 @@ export const loginUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.login(data);
-
       const responseData = res.data;
-      console.log("responseData",responseData)
-
-      // ✅ ROLE + TOKEN
       const role = responseData?.data?.role;
-      console.log("role",responseData?.data?.role)
       const token = responseData?.accessToken;
-      console.log("accessToken",responseData?.accessToken)
 
       // ✅ STORE TOKEN BASED ON ROLE
       if (role === "admin" || role === "superadmin") {
@@ -48,7 +42,6 @@ export const loginUser = createAsyncThunk(
         localStorage.setItem("user_token", token);
       }
 
-      // ✅ STORE ACTIVE ROLE
       localStorage.setItem("active_role", role);
 
       return responseData;

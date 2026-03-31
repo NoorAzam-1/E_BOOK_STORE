@@ -2,7 +2,7 @@ import FeaturedBook from "@/components/library/FeaturedBook";
 import RecentBook from "@/components/library/RecentBook";
 import BookCard from "@/components/library/BookCard";
 import WishlistCard from "@/components/library/WishlistCard";
-import ToggleTabs from "@/components/library/ToggleTabs";
+// import ToggleTabs from "@/components/library/ToggleTabs";
 
 export default function LibraryPage() {
   return (
@@ -19,7 +19,7 @@ export default function LibraryPage() {
             </h1>
           </div>
 
-          <ToggleTabs />
+          {/* <ToggleTabs /> */}
         </div>
 
         {/* Recently Opened */}

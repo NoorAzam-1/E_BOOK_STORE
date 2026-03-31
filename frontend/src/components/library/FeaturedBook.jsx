@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function FeaturedBook() {
   return (
-    <div className="group w-full bg-surface-container-low p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-center cursor-pointer border border-transparent hover:border-white/10 ">
+    <Link href="/browse" className="group w-full bg-surface-container-low p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-center cursor-pointer border border-transparent hover:border-white/10 ">
       <div className="p-6 bg-gray-200 rounded-sm group-hover:scale-105 transition duration-300 md:min-w-[43%]">
         <Image
         alt="images"
@@ -28,6 +29,6 @@ export default function FeaturedBook() {
           &quot;And, when you want something, all the universe conspires in helping you to achieve...&quot;
         </p>
       </div>
-    </div>
+    </Link>
   );
 }

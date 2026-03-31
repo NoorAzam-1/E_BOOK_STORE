@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AccessSection() {
   const steps = [
     {
@@ -60,9 +62,9 @@ export default function AccessSection() {
               Access your books instantly and enjoy seamless reading across devices.
             </p>
 
-            <button className="w-full bg-primary text-black py-3 rounded-lg font-semibold hover:opacity-90 transition cursor-pointer">
+            <Link href="/browse" className="w-full bg-primary text-black py-3 px-4 rounded-lg font-semibold hover:opacity-90 transition cursor-pointer">
               Start Reading
-            </button>
+            </Link>
 
           </div>
 

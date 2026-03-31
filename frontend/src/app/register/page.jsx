@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../features/authSlice.js";
-
 import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
@@ -22,7 +21,6 @@ export default function RegisterPage() {
 
   const [loading, setLoading] = useState(false);
 
-  // handle input change
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm({
@@ -50,16 +48,10 @@ export default function RegisterPage() {
           role: form.role,
         }),
       ).unwrap();
-
-      // ✅ Only runs if SUCCESS
-      console.log("User created:", res);
-
-      // redirect after success
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
+      if (res.success == true) {
+        router.push("/login");
+      }
     } catch (error) {
-      // ❌ Runs only on failure
       console.log(error);
       toast.error(error || "Register Failed");
     }
@@ -69,7 +61,6 @@ export default function RegisterPage() {
 
   return (
     <div className="bg-background text-on-surface flex items-center justify-center px-2 py-3 md:py-0 relative overflow-hidden">
-      {/* ✅ Toaster component */}
       <Toaster position="top-right" reverseOrder={false} />
       <div className="w-full max-w-md z-10">
         {/* HEADING */}

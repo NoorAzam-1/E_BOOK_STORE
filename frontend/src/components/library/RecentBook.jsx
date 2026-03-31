@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function RecentBook() {
   return (
-    <div className="group bg-surface-container-lowest p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-center cursor-pointer border border-transparent hover:border-white/10">
+    <Link href="/browse" className="group bg-surface-container-lowest p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-center cursor-pointer border border-transparent hover:border-white/10">
       <div className="p-6 bg-cyan-100 rounded-sm group-hover:scale-105 transition duration-300 md:min-w-[43%]">
         <Image
           alt="images"
@@ -23,6 +24,6 @@ export default function RecentBook() {
 
         <p className="text-xs mt-2">32% Complete</p>
       </div>
-    </div>
+    </Link>
   );
 }

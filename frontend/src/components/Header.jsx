@@ -9,7 +9,7 @@ import {
   Compass,
   Library,
   User,
-  UserKey,
+  LogIn,
 } from "lucide-react";
 import { site } from "@/data/site";
 import { useState, useRef, useEffect } from "react";
@@ -110,9 +110,9 @@ export default function Header() {
             ) : (
               <Link
                 href="/login"
-                className="flex  gap-1 text-sm font-semibold hover:text-primary"
+                className="flex justify-center items-center gap-1 text-sm font-semibold hover:text-primary"
               >
-                <span><UserKey size={20} /></span>
+                <span><LogIn size={16} /></span>
                 Login
               </Link>
             )}
