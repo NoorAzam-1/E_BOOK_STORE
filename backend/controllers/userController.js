@@ -49,7 +49,6 @@ const forgotPassword = async (req, res) => {
     });
 
   } catch (error) {
-    console.log("FORGOT ERROR:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -62,8 +61,6 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
-
-    console.log(req.body);
 
     // Find user by token and check expiry
     const user = await userModel.findOne({
@@ -89,14 +86,12 @@ const resetPassword = async (req, res) => {
       message: "Password has been reset successfully",
     });
   } catch (error) {
-    console.log(error);
     res.json({ success: false, message: "Something went wrong" });
   }
 };
 
 // Route for user login
 const loginUser = async (req, res) => {
-  console.log("loginUser running")
   try {
     const { email, password } = req.body;
 
@@ -141,7 +136,6 @@ const loginUser = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -153,7 +147,6 @@ const loginUser = async (req, res) => {
 const registerUser = async (req, res) => {
   try {
     const { name, email, password, role, address, contact } = req.body;
-    console.log("req.body", req.body);
 
     // checking user already exists or not
     const exists = await userModel.findOne({ email });
@@ -188,7 +181,6 @@ const registerUser = async (req, res) => {
       address: address || "", // optional
       contact: contact || "", // optional
     });
-    // console.log("newuser",newuser)
 
     const user = await newuser.save();
     res.json({
@@ -197,7 +189,6 @@ const registerUser = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
     res.json({ success: false, message: error.message });
   }
 };
@@ -217,13 +208,11 @@ const adminLogin = async (req, res) => {
       res.json({ success: false, message: "Invalid credentials" });
     }
   } catch (error) {
-    console.log(error);
     res.json({ success: false, message: error.message });
   }
 };
 
 const userProfile = async (req, res) => {
-  console.log("req.user", req.user);
 
   const { _id } = req.user;
 
@@ -236,14 +225,11 @@ const userProfile = async (req, res) => {
   try {
     const findUser = await userModel.findById(_id).select("-password -__v");
 
-    console.log("findUser", findUser);
-
     res.status(200).json({
       success: true,
       user: findUser,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "Server error",
     });

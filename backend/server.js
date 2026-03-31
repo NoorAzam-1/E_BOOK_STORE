@@ -54,8 +54,6 @@ app.get("/", (req, res) => {
   res.send("API Working");
 });
 
-app.listen(port, () => console.log("Server started on PORT: " + port));
-
 // routes
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);

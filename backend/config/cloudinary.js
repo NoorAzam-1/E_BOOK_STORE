@@ -14,7 +14,6 @@ const connectCloudinary = () => {
       api_secret: process.env.CLOUDINARY_SECRET_KEY,
       secure: true,
     });
-    console.log('✅ Cloudinary Configured');
   } catch (error) {
     console.error('❌ Cloudinary Config Error:', error.message);
   }
