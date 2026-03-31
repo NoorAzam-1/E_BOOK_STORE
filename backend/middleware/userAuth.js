@@ -12,11 +12,8 @@ const userAuth = async (req, res, next) => {
       });
     }
 
-    // verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // ✅ FIX 1: Changed .select("password") to .select("-password")
-    // "-" means EXCLUDE. Without "-", you were fetching ONLY the password.
     const user = await userModel.findById(decoded.id).select("-password -__v");
 
     if (!user) {
@@ -26,12 +23,10 @@ const userAuth = async (req, res, next) => {
       });
     }
 
-    // ✅ Attach full user (minus password)
     req.user = user;
-    
+
     next();
   } catch (error) {
-    // ✅ FIX 2: Removed token logging for security
     res.status(401).json({
       success: false,
       message: "Invalid token, please login again",
