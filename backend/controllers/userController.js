@@ -14,7 +14,6 @@ const forgotPassword = async (req, res) => {
   try {
     const email = req.body.email?.toLowerCase();
 
-
     const user = await userModel.findOne({ email });
 
     if (!user) {
@@ -31,8 +30,8 @@ const forgotPassword = async (req, res) => {
     user.resetTokenExpiry = resetTokenExpiry;
     await user.save();
 
-    // ✅ FINAL LINK FIX
-    const resetLink = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/reset-password?token=${resetToken}`;
+    // ✅ FIXED LINK
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
     const message = `
       <h2>Password Reset Request</h2>
@@ -48,11 +47,12 @@ const forgotPassword = async (req, res) => {
       success: true,
       message: "Reset link sent to email",
     });
+
   } catch (error) {
     console.log("FORGOT ERROR:", error);
     res.status(500).json({
       success: false,
-      message: "Server Error", error,
+      message: error.message,
     });
   }
 };
