@@ -47,7 +47,6 @@ const forgotPassword = async (req, res) => {
       success: true,
       message: "Reset link sent to email",
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -57,7 +56,6 @@ const forgotPassword = async (req, res) => {
 };
 
 //Reset password route
-
 const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
@@ -120,9 +118,10 @@ const loginUser = async (req, res) => {
     });
 
     const options = {
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
     };
     const user = await userModel
       .findById(findUser._id)
@@ -202,7 +201,7 @@ const adminLogin = async (req, res) => {
       email === process.env.ADMIN_EMAIL &&
       password == process.env.ADMIN_PASSWORD
     ) {
-      const token = jwt.sign(email + password, process.env.JWT_SECRET);
+      const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET);
       res.json({ success: true, token });
     } else {
       res.json({ success: false, message: "Invalid credentials" });
@@ -213,25 +212,44 @@ const adminLogin = async (req, res) => {
 };
 
 const userProfile = async (req, res) => {
-
-  const { _id } = req.user;
-
-  if (!_id) {
-    return res.status(400).json({
-      message: "error user No id",
-    });
-  }
-
   try {
-    const findUser = await userModel.findById(_id).select("-password -__v");
-
+    const findUser = await userModel
+      .findById(req.user.id)
+      .select("-password -__v");
+    if (!findUser) {
+      return res.status(404).json({
+        success: false,
+      });
+    }
     res.status(200).json({
       success: true,
       user: findUser,
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: "Server error",
+    });
+  }
+};
+
+const logoutUser = async (req, res) => {
+  try {
+    res.cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0),
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Logout failed",
     });
   }
 };
@@ -243,4 +261,5 @@ export {
   forgotPassword,
   resetPassword,
   userProfile,
+  logoutUser,
 };
