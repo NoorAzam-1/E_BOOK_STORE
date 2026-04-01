@@ -7,7 +7,7 @@ export const fetchPost = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/post");
-      return response.data.data; // backend se data
+      return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Error");
     }
