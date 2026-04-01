@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "@/utils/axios";
+import {axiosInstance} from "@/utils/axios.js";
 
-// ✅ ADD
+// ADD
 export const addFeedback = createAsyncThunk(
   "feedback/add",
   async (data, { rejectWithValue }) => {
@@ -14,7 +14,7 @@ export const addFeedback = createAsyncThunk(
   }
 );
 
-// ✅ GET ALL
+//  GET ALL
 export const getAllFeedback = createAsyncThunk(
   "feedback/getAll",
   async (_, { rejectWithValue }) => {
@@ -27,7 +27,7 @@ export const getAllFeedback = createAsyncThunk(
   }
 );
 
-// ✅ GET SINGLE
+//  GET SINGLE
 export const getSingleFeedback = createAsyncThunk(
   "feedback/getOne",
   async (id, { rejectWithValue }) => {
@@ -40,7 +40,7 @@ export const getSingleFeedback = createAsyncThunk(
   }
 );
 
-// ✅ DELETE
+//  DELETE
 export const deleteFeedback = createAsyncThunk(
   "feedback/delete",
   async (id, { rejectWithValue }) => {
@@ -53,7 +53,7 @@ export const deleteFeedback = createAsyncThunk(
   }
 );
 
-// ✅ UPDATE
+//  UPDATE
 export const updateFeedback = createAsyncThunk(
   "feedback/update",
   async ({ id, data }, { rejectWithValue }) => {
@@ -84,7 +84,7 @@ const feedbackSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      // 🔄 GET ALL
+      //  GET ALL
       .addCase(getAllFeedback.pending, (state) => {
         state.loading = true;
       })
@@ -97,7 +97,7 @@ const feedbackSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 🔄 GET SINGLE
+      //  GET SINGLE
       .addCase(getSingleFeedback.pending, (state) => {
         state.loading = true;
       })
@@ -110,7 +110,7 @@ const feedbackSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 🔄 ADD
+      //  ADD
       .addCase(addFeedback.fulfilled, (state, action) => {
         state.feedbacks.unshift(action.payload.data);
       })
@@ -118,7 +118,7 @@ const feedbackSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 🔄 DELETE
+      // DELETE
       .addCase(deleteFeedback.fulfilled, (state, action) => {
         state.feedbacks = state.feedbacks.filter(
           (item) => item._id !== action.payload
@@ -128,7 +128,7 @@ const feedbackSlice = createSlice({
         state.error = action.payload;
       })
 
-      // 🔄 UPDATE
+      //  UPDATE
       .addCase(updateFeedback.fulfilled, (state, action) => {
         const index = state.feedbacks.findIndex(
           (item) => item._id === action.payload._id

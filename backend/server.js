@@ -8,6 +8,9 @@ import connectDB from "./config/mongodb.js";
 import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
 import { connectCloudinary } from "./config/cloudinary.js";
+import wishlistRouter from "./routes/wishlistRoutes.js";
+import cartRouter from "./routes/cartRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 
 // ✅ DNS FIX (IMPORTANT FOR EMAIL)
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
@@ -48,6 +51,9 @@ app.use("/api/product", productRouter);
 app.use("/api/feedback", feedbackRouter);
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
+app.use("/api/wishlist",wishlistRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");
