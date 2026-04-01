@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {axiosInstance} from "./../utils/axios.js";
+import {axiosInstance} from "@/utils/axios.js";
 import toast from "react-hot-toast";
 
 // 🔐 REGISTER
