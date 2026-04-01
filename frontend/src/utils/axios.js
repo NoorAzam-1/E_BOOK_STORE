@@ -5,35 +5,21 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-axiosInstance.interceptors.request.use(
-  (config) => {
-    if (typeof window !== "undefined") {
-      const activeRole = localStorage.getItem("active_role");
-      let token = null;
-
-      if (activeRole === "admin") {
-        token = localStorage.getItem("admin_token");
-      } else if (activeRole === "user") {
-        token = localStorage.getItem("user_token");
-      } else if (activeRole === "seller") {
-        token = localStorage.getItem("seller_token");
-      }
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
-
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    const originalRequest = error.config;
+
+    if (originalRequest?.url?.includes("/logout")) {
+      return Promise.reject(error);
+    }
+
     if (error?.response?.status === 401) {
       const store = (await import("@/app/store.js")).default;
       const { logoutUser } = await import("@/features/authSlice.js");
+
       store.dispatch(logoutUser());
+
       if (
         typeof window !== "undefined" &&
         window.location.pathname !== "/login"
@@ -51,6 +37,8 @@ axiosInstance.register = (data) =>
   axiosInstance.post("/api/user/register", data);
 
 axiosInstance.login = (data) => axiosInstance.post("/api/user/login", data);
+
+axiosInstance.logout = () => axiosInstance.post("/api/user/logout");
 
 axiosInstance.forgotPassword = (email) =>
   axiosInstance.post("/api/user/forgot_password", { email });
