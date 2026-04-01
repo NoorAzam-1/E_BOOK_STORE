@@ -8,9 +8,12 @@ import connectDB from "./config/mongodb.js";
 import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
 import { connectCloudinary } from "./config/cloudinary.js";
+import cookieParser from "cookie-parser";
 
 // ✅ DNS FIX (IMPORTANT FOR EMAIL)
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
+if (process.env.NODE_ENV === "development") {  
+  dns.setServers(["8.8.8.8", "8.8.4.4"]);
+}
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -19,6 +22,7 @@ connectDB();
 connectCloudinary();
 
 // Middlewares
+app.use(cookieParser());
 app.use(express.json());
 app.use(morgan("dev"));
 
@@ -46,12 +50,9 @@ app.use(
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/feedback", feedbackRouter);
-app.use("/api/user", userRouter);
-app.use("/api/product", productRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");
 });
-
 
 app.listen(port, () => console.log("server started on PORT :" + port));
