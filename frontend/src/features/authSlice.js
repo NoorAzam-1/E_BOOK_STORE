@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {axiosInstance} from "./../utils/axios.js";
+import {axiosInstance} from "@/utils/axios.js";
 import toast from "react-hot-toast";
 
 // 🔐 REGISTER
@@ -18,7 +18,6 @@ export const registerUser = createAsyncThunk(
       return res.data;
     } catch (error) {
       const message = error?.response?.data?.message || "Registration failed";
-
       toast.error(message);
       return rejectWithValue(message);
     }
@@ -31,29 +30,19 @@ export const loginUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.login(data);
-      const responseData = res.data;
-      const role = responseData?.data?.role;
-      const token = responseData?.accessToken;
 
-      // ✅ STORE TOKEN BASED ON ROLE
-      if (role === "admin" || role === "superadmin") {
-        localStorage.setItem("admin_token", token);
-      } else if (role === "user") {
-        localStorage.setItem("user_token", token);
-      } else if (role === "seller") {
-        localStorage.setItem("seller_token", token);
+      if (!res.data.success) {
+        return rejectWithValue(res.data.message);
       }
 
-      localStorage.setItem("active_role", role);
-
-      return responseData;
+      return res.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Error");
     }
   },
 );
 
-//profile
+// 👤 PROFILE
 export const getProfile = createAsyncThunk(
   "auth/profile",
   async (_, { rejectWithValue }) => {
@@ -66,7 +55,7 @@ export const getProfile = createAsyncThunk(
   },
 );
 
-// forgotPassword
+// 🔐 FORGOT PASSWORD
 export const forgotPassword = createAsyncThunk(
   "auth/forgotPassword",
   async (email, { rejectWithValue }) => {
@@ -90,7 +79,7 @@ export const forgotPassword = createAsyncThunk(
   },
 );
 
-//reset profile
+// 🔐 RESET PASSWORD
 export const resetPassword = createAsyncThunk(
   "auth/resetPassword",
   async ({ token, newPassword }, { rejectWithValue }) => {
@@ -115,6 +104,18 @@ export const resetPassword = createAsyncThunk(
   },
 );
 
+export const logoutUserAsync = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      await axiosInstance.logout(); // 🔥 cookie delete
+      return true;
+    } catch (error) {
+      return rejectWithValue("Logout failed");
+    }
+  },
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -122,27 +123,14 @@ const authSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {
-    logoutUser: (state) => {
-      state.user = null;
-      state.loading = false;
-      state.error = null;
-
-      // Add this so it cleans up everything:
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("user_token");
-        localStorage.removeItem("admin_token");
-        localStorage.removeItem("active_role");
-      }
-    },
-  },
+  
   extraReducers: (builder) => {
     builder
       // REGISTER
-      .addCase(registerUser.pending, (state, action) => {
+      .addCase(registerUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -163,9 +151,28 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
+      .addCase(logoutUserAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logoutUserAsync.fulfilled, (state) => {
+        state.loading = false;
+        state.user = null;
+        state.error = null;
+      })
+      .addCase(logoutUserAsync.rejected, (state) => {
+        state.loading = false;
+      })
+
       // PROFILE
+      .addCase(getProfile.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(getProfile.fulfilled, (state, action) => {
+        state.loading = false;
         state.user = action.payload;
+      })
+      .addCase(getProfile.rejected, (state) => {
+        state.loading = false;
       });
   },
 });

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/features/authSlice";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -12,10 +13,8 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
-
-
-
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({
@@ -30,8 +29,9 @@ export default function LoginPage() {
 
     try {
       const res = await dispatch(loginUser(form)).unwrap();
-      if (res.success == true) {
+      if (res) {
         toast.success("Login Successful ✅");
+        router.push("/profile");
       }
     } catch (error) {
       toast.error(error?.message || "Login Failed ");

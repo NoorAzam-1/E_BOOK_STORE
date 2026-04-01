@@ -1,0 +1,25 @@
+import { NextResponse } from "next/server";
+
+export function middleware(request) {
+  const token = request.cookies.get("token")?.value;
+  const protectedRoutes = ["/profile", "/orders", "/cart", "/wishlist"];
+  const authRoutes = ["/login", "/register"];
+
+  const { pathname } = request.nextUrl;
+
+  // Protected routes
+  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
+    if (!token) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+  }
+
+  // Prevent login if already logged in
+  if (authRoutes.includes(pathname)) {
+    if (token) {
+      return NextResponse.redirect(new URL("/profile", request.url));
+    }
+  }
+
+  return NextResponse.next();
+}

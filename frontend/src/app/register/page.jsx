@@ -1,10 +1,10 @@
 "use client";
-import { User, Mail, Lock, ArrowRight } from "lucide-react";
+import { User, Mail, Lock, ArrowRight, Contact, Locate, MapPinHouse } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../../features/authSlice.js";
+import { registerUser } from "@/features/authSlice.js";
 import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
@@ -15,6 +15,8 @@ export default function RegisterPage() {
     name: "",
     email: "",
     password: "",
+    contact_no: "",
+    address: "",
     role: "user",
     agree: false,
   });
@@ -44,6 +46,8 @@ export default function RegisterPage() {
         registerUser({
           name: form.name,
           email: form.email,
+          contact: form.contact_no,
+          address: form.address,
           password: form.password,
           role: form.role,
         }),
@@ -75,7 +79,7 @@ export default function RegisterPage() {
 
         {/* CARD */}
         <div className="bg-surface-container/80 backdrop-blur-xl p-4 md:p-6 rounded-xl border border-outline-variant/20">
-          <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-2 md:space-y-3">
             {/* FULL NAME */}
             <InputField
               icon={<User size={18} />}
@@ -93,6 +97,24 @@ export default function RegisterPage() {
               name="email"
               placeholder="noor@ebookstore.com"
               value={form.email}
+              onChange={handleChange}
+            />
+
+            <InputField
+              icon={<Contact size={18} />}
+              label="Contact No"
+              name="contact_no"
+              placeholder="xxxxxx1234"
+              value={form.contact_no}
+              onChange={handleChange}
+            />
+
+            <InputField
+              icon={<MapPinHouse size={18} />}
+              label="Address"
+              name="address"
+              placeholder="123 Main St, City, Country"
+              value={form.address}
               onChange={handleChange}
             />
 
