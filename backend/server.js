@@ -9,6 +9,9 @@ import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
 import { connectCloudinary } from "./config/cloudinary.js";
 import cookieParser from "cookie-parser";
+import wishlistRouter from "./routes/wishlistRoutes.js";
+import cartRouter from "./routes/cartRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 
 // ✅ DNS FIX (IMPORTANT FOR EMAIL)
 if (process.env.NODE_ENV === "development") {  
@@ -50,6 +53,9 @@ app.use(
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/feedback", feedbackRouter);
+app.use("/api/wishlist",wishlistRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");
