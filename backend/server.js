@@ -15,7 +15,6 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 const app = express();
 const port = process.env.PORT || 4000;
 
-// DB + Cloudinary
 connectDB();
 connectCloudinary();
 
@@ -23,7 +22,6 @@ connectCloudinary();
 app.use(express.json());
 app.use(morgan("dev"));
 
-// ✅ FINAL CORS FIX (WORKS FOR LOCAL + LIVE)
 const allowedOrigins = [
   "http://localhost:3000",
   "https://e-book-store-eta.vercel.app",
@@ -41,25 +39,19 @@ app.use(
       }
     },
     credentials: true,
-  })
+  }),
 );
 
 // Routes
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
-app.use("/api/feedback",feedbackRouter);
-
-// Test route
-app.get("/", (req, res) => {
-  res.send("API Working");
-});
-
-// routes
+app.use("/api/feedback", feedbackRouter);
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");
 });
+
 
 app.listen(port, () => console.log("server started on PORT :" + port));
