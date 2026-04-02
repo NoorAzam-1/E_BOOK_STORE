@@ -31,18 +31,8 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-background text-on-surface">
-      <main className="max-w-4xl mx-auto space-y-10">
-        <section className="flex flex-col items-center text-center space-y-4">
-          <div className="w-28 h-28 rounded-full p-0.5 bg-linear-to-tr from-primary to-primary-container">
-            <Image
-              src="/images/profile.webp"
-              alt="profile"
-              height={200}
-              width={200}
-              className="w-full h-full rounded-full object-cover border-4 border-background"
-            />
-          </div>
-
+      <main className="max-w-4xl mx-auto space-y-4 md:space-y-7">
+        <section className="flex flex-col items-center text-center">
           <h2 className="text-2xl font-bold uppercase">
             {user?.name || "No Name"}
           </h2>
