@@ -125,9 +125,9 @@ const loginUser = async (req, res) => {
     // };
     const options = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       sameSite: "None",
-      domain: "https://e-book-store-eta.vercel.app",
+      // domain: "https://e-book-store-eta.vercel.app",
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
     };
     const user = await userModel
