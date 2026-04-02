@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 export function middleware(request) {
+  console.log("ALL COOKIES:", request.cookies.getAll());
   const token = request.cookies.get("token")?.value;
   console.log("midle token",token)
   const protectedRoutes = ["/profile", "/orders", "/cart", "/wishlist"];
