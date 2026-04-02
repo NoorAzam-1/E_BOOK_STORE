@@ -126,7 +126,7 @@ const loginUser = async (req, res) => {
     const options = {
       httpOnly: true,
       secure: true,
-      sameSite: "None",
+      sameSite: "Strict",
       domain:
         process.env.NODE_ENV === "production"
           ? "e-book-store-xa8y.onrender.com"
