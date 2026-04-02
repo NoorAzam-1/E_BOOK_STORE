@@ -22,11 +22,7 @@ const addProduct = async (req, res) => {
         .json({ success: false, message: "Images are required" });
     }
 
-    // Upload to Cloudinary using the SERVICE
-
     const uploadedImages = await uploadFiles(images, "products");
-
-    // Format data for the Dynamic Database Schema
     const productData = {
       title,
       author,
@@ -52,7 +48,7 @@ const addProduct = async (req, res) => {
     const product = new prodctModel(productData);
     await product.save();
 
-    res.json({ success: true, message: "Product Added", product });
+    res.json({ success: true, message: "Product Added", data: product });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }

@@ -67,7 +67,7 @@ export default function Header() {
           <div className="flex items-center gap-1 md:gap-4">
             <button
               onClick={() => setOpen(true)}
-              className="text-primary md:hidden"
+              className="text-primary md:hidden cursor-pointer hover:text-tertiary"
             >
               <Menu className="h-6 w-6" />
             </button>
@@ -75,7 +75,7 @@ export default function Header() {
             <Link
               href="/"
               onClick={() => setActive("/")}
-              className="font-headline text-xl font-black uppercase text-primary"
+              className="font-headline text-xl font-black uppercase text-primary hover:text-tertiary"
             >
               {site.brand}
             </Link>
@@ -171,9 +171,9 @@ export default function Header() {
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex justify-between items-center p-4 border-b border-outline-variant/20">
+        <div className="flex justify-between items-center p-4 border-b border-outline-variant/20  ">
           <span className="text-primary font-bold text-lg">Menu</span>
-          <button onClick={() => setOpen(false)}>
+          <button onClick={() => setOpen(false)} className="cursor-pointer hover:text-red-600">
             <X />
           </button>
         </div>
