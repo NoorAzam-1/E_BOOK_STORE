@@ -126,12 +126,9 @@ const loginUser = async (req, res) => {
     const options = {
       httpOnly: true,
       secure: true,
-      sameSite: "Strict",
-      domain:
-        process.env.NODE_ENV === "production"
-          ? "e-book-store-xa8y.onrender.com"
-          : "localhost",
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      sameSite: "none",
+      path: "/",
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     };
     const user = await userModel
       .findById(findUser._id)
