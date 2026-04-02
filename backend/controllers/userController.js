@@ -117,11 +117,18 @@ const loginUser = async (req, res) => {
       expiresIn: "7d",
     });
 
+    // const options = {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "Lax",
+    //   expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+    // };
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "None",
-      // expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      domain: "https://e-book-store-eta.vercel.app",
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
     };
     const user = await userModel
       .findById(findUser._id)
