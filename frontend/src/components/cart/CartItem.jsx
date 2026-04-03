@@ -1,6 +1,19 @@
+import { getCart } from "@/features/cartSlice";
 import Image from "next/image";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function CartItem({ item, updateQty, removeItem }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
+
+  const { cartCount } = useSelector((state) => state.cart);
+
+  console.log(cartCount);
+
   return (
     <div className="group flex flex-col md:flex-row gap-6 pb-10 border-b border-white/5">
       {/* Image */}
@@ -37,19 +50,25 @@ export default function CartItem({ item, updateQty, removeItem }) {
         {/* Actions */}
         <div className="flex justify-between mt-6">
           <div className="flex items-center justify-center bg-surface-container-low rounded-lg p-2">
-            <button onClick={() => updateQty(item.id, "dec")} className="px-3 cursor-pointer">
+            <button
+              onClick={() => updateQty(item.productId, "dec")}
+              className="px-3 cursor-pointer"
+            >
               -
             </button>
 
             <span className="px-4 font-bold">{item.quantity}</span>
 
-            <button onClick={() => updateQty(item.id, "inc")} className="px-3 cursor-pointer">
+            <button
+              onClick={() => updateQty(item.productId, "inc")}
+              className="px-3 cursor-pointer"
+            >
               +
             </button>
           </div>
 
           <button
-            onClick={() => removeItem(item.id)}
+            onClick={() => removeItem(item.productId)}
             className="text-red-400 text-sm cursor-pointer hover:text-on-surface hover:font-semibold hover:bg-error-container hover:p-2 rounded-lg transition"
           >
             Remove

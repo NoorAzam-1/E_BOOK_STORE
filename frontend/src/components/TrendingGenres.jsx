@@ -69,7 +69,7 @@ export default function TrendingGenres() {
 
                   <div className="flex items-center gap-4">
                     <Image
-                      src={genre.spotlight.image}
+                      src={genre?.spotlight?.image}
                       alt={genre.spotlight.title}
                       width={48}
                       height={64}

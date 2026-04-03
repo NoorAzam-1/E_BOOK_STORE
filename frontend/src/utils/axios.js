@@ -64,17 +64,13 @@ axiosInstance.deleteFeedback = (id) =>
   axiosInstance.delete(`/api/feedback/delete/${id}`);
 
 //  PRODUCT APIs
-axiosInstance.getAllProducts = () => axiosInstance.get("/api/product/all");
+axiosInstance.getAllProducts = () => axiosInstance.get("/api/product/list");
 
 axiosInstance.getSingleProduct = (id) =>
   axiosInstance.get(`/api/product/${id}`);
 
 axiosInstance.addProduct = (data) =>
-  axiosInstance.post("/api/product/add", data, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  axiosInstance.post("/api/product/add", data);
 
 axiosInstance.updateProduct = (id, data) =>
   axiosInstance.put(`/api/product/update/${id}`, data);

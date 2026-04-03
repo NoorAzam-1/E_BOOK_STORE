@@ -3,9 +3,12 @@ import bookModel from "../models/productModel.js"; // 👈 product model
 
 // ADD TO CART
 const addToCart = async (req, res) => {
+  console.log("addToCart ....")
   try {
     const userId = req.user._id;
+    console.log(userId)
     const { productId, quantity } = req.body;
+    console.log(req.body)
 
     if (!productId) {
       return res.json({ success: false, message: "Product ID is required", });
@@ -36,6 +39,7 @@ const addToCart = async (req, res) => {
         productId,
         title: product.title,
         image: product.images[0]?.url || "",
+        author: product.author || "",
         price,
         quantity: quantity || 1,
       });

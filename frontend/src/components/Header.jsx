@@ -15,6 +15,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserAsync, getProfile } from "@/features/authSlice";
+import { getCart } from "@/features/cartSlice";
 
 export default function Header() {
   const [active, setActive] = useState("/");
@@ -26,16 +27,18 @@ export default function Header() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  // ✅ Redux user
+  //  Redux user
   const { user } = useSelector((state) => state.auth);
+  const { cartCount } = useSelector((state) => state.cart);
   const isLoggedIn = !!user;
 
-  // ✅ Fetch profile on refresh (important)
+  //  Fetch profile on refresh (important)
   useEffect(() => {
     if (!user) {
       dispatch(getProfile());
+      dispatch(getCart());
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, cartCount]);
 
   const handleMouseEnter = () => {
     if (profileRef.current) {
@@ -50,7 +53,7 @@ export default function Header() {
 
   const logout = async () => {
     setProfileOpen(false);
-    dispatch(logoutUserAsync()); 
+    dispatch(logoutUserAsync());
     router.push("/login");
   };
 
@@ -124,7 +127,7 @@ export default function Header() {
               <Link href="/cart" className="relative text-primary">
                 <ShoppingCart className="h-6 w-6" />
                 <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
-                  3
+                  {/* {cartCount} */}
                 </span>
               </Link>
             )}
@@ -165,15 +168,18 @@ export default function Header() {
         </div>
       )}
 
-      {/* MOBILE MENU */}
-      <div
+        {/* MOBILE MENU */}
+       <div
         className={`fixed top-0 left-0 h-full w-65 bg-background shadow-2xl border-r border-outline-variant/20 transform transition-transform duration-300 z-60 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex justify-between items-center p-4 border-b border-outline-variant/20  ">
+         <div className="flex justify-between items-center p-4 border-b border-outline-variant/20  ">
           <span className="text-primary font-bold text-lg">Menu</span>
-          <button onClick={() => setOpen(false)} className="cursor-pointer hover:text-red-600">
+          <button
+            onClick={() => setOpen(false)}
+            className="cursor-pointer hover:text-red-600"
+          >
             <X />
           </button>
         </div>
@@ -201,7 +207,7 @@ export default function Header() {
             );
           })}
         </div>
-      </div>
+       </div>
 
       {open && (
         <div
