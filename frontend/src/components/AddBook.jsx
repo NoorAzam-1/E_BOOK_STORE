@@ -2,9 +2,16 @@
 import { useDispatch } from "react-redux";
 import { addProduct } from "@/features/productSlice";
 import { useState } from "react";
-import { Book, User, Tag, IndianRupee, Image as ImgIcon } from "lucide-react";
-import Image from "next/image";
+import {
+  Book,
+  User,
+  Tag,
+  IndianRupee,
+  Image as ImgIcon,
+  Hash,
+} from "lucide-react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 export default function AddBook() {
   const dispatch = useDispatch();
@@ -13,26 +20,26 @@ export default function AddBook() {
     title: "",
     author: "",
     description: "",
-    format: "Paperback",
+    format: "EPUB", // Updated for E-book schema
     price: "",
-    category: "",
+    category: "", // Will convert to Array on submit
+    tags: "", // Will convert to Array on submit
     bestseller: false,
     available: true,
-    image: null,
+    images: [], // Updated to array to match imageSchema
   });
 
-  const [preview, setPreview] = useState(null);
+  const [previews, setPreviews] = useState([]); // Array for multiple previews
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
 
     if (type === "file") {
-      const file = files[0];
-
-      if (file) {
-        setForm({ ...form, image: file });
-        setPreview(URL.createObjectURL(file));
+      if (files && files.length > 0) {
+        const filesArray = Array.from(files);
+        setForm({ ...form, images: filesArray });
+        setPreviews(filesArray.map((file) => URL.createObjectURL(file)));
       }
     } else if (type === "checkbox") {
       setForm({ ...form, [name]: checked });
@@ -53,27 +60,55 @@ export default function AddBook() {
       data.append("description", form.description);
       data.append("format", form.format);
       data.append("price", form.price);
-      data.append("category", form.category);
+
+      // Convert comma-separated strings into Arrays for the schema
+      if (form.category) {
+        const categories = form.category
+          .split(",")
+          .map((c) => c.trim())
+          .filter(Boolean);
+        categories.forEach((cat) => data.append("category", cat));
+      }
+
+      if (form.tags) {
+        const tagArray = form.tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean);
+        tagArray.forEach((tag) => data.append("tags", tag));
+      }
+
       data.append("bestseller", form.bestseller);
       data.append("available", form.available);
-      data.append("images", form.image);
+
+      // Append multiple images to match images: [imageSchema]
+      form.images.forEach((img) => {
+        data.append("images", img);
+        console.log(img)
+      });
+
+      console.log("=== FORM DATA DEBUG ===");
+      for (let [key, value] of data.entries()) {
+        console.log(key, value);
+      }
 
       await dispatch(addProduct(data)).unwrap();
-      toast.success("Product added successfully ✅");
+      toast.success("E-Book added successfully ✅");
 
       setForm({
         title: "",
         author: "",
         description: "",
-        format: "Paperback",
+        format: "EPUB",
         price: "",
         category: "",
+        tags: "",
         bestseller: false,
         available: true,
-        image: null,
+        images: [],
       });
 
-      setPreview(null);
+      setPreviews([]);
     } catch (err) {
       toast.error(err || "Error adding product");
     } finally {
@@ -87,21 +122,26 @@ export default function AddBook() {
         {/* HEADER */}
         <div>
           <h3 className="text-sm font-bold text-primary uppercase tracking-wider">
-            Add New Book
+            Add New E-Book
           </h3>
           <p className="text-xs text-on-surface-variant">
-            Fill details to publish your book
+            Fill details to publish your digital book
           </p>
         </div>
 
-        {/* IMAGE PREVIEW */}
-        {preview && (
-          <div className="flex justify-center">
-            <img
-              src={preview}
-              alt="preview"
-              className="w-24 h-32 object-cover rounded-md border"
-            />
+        {/* IMAGE PREVIEWS */}
+        {previews.length > 0 && (
+          <div className="flex gap-3 justify-center flex-wrap">
+            {previews.map((src, i) => (
+              <Image
+                key={i}
+                src={src}
+                width={100}
+                height={100}
+                alt={`preview-${i}`}
+                className="w-24 h-32 object-cover rounded-md border"
+              />
+            ))}
           </div>
         )}
 
@@ -114,6 +154,7 @@ export default function AddBook() {
             name="title"
             value={form.title}
             onChange={handleChange}
+            required
           />
 
           {/* AUTHOR */}
@@ -123,15 +164,18 @@ export default function AddBook() {
             name="author"
             value={form.author}
             onChange={handleChange}
+            required
           />
 
-          {/* CATEGORY */}
+          {/* CATEGORY (Comma Separated) */}
           <InputField
             icon={<Tag size={18} />}
-            label="Category"
+            label="Categories (Comma Separated)"
             name="category"
             value={form.category}
             onChange={handleChange}
+            placeholder="e.g. Fiction, Thriller"
+            required
           />
 
           {/* PRICE */}
@@ -142,6 +186,7 @@ export default function AddBook() {
             type="number"
             value={form.price}
             onChange={handleChange}
+            required
           />
 
           {/* FORMAT */}
@@ -153,15 +198,25 @@ export default function AddBook() {
               onChange={handleChange}
               className="input-no-icon"
             >
-              <option>Paperback</option>
-              <option>Hardcover</option>
-              <option>Ebook</option>
+              <option value="EPUB">EPUB</option>
+              <option value="PDF">PDF</option>
+              <option value="EPUB/PDF">EPUB/PDF</option>
             </select>
           </div>
 
-          {/* IMAGE */}
+          {/* TAGS (Comma Separated) */}
+          <InputField
+            icon={<Hash size={18} />}
+            label="Tags (Comma Separated)"
+            name="tags"
+            value={form.tags}
+            onChange={handleChange}
+            placeholder="e.g. bestseller, 2024"
+          />
+
+          {/* IMAGES */}
           <div className="space-y-1">
-            <label className="label">Book Image</label>
+            <label className="label">Book Images (Multiple)</label>
             <div className="relative group">
               <span className="icon">
                 <ImgIcon size={18} />
@@ -169,7 +224,7 @@ export default function AddBook() {
               <input
                 type="file"
                 multiple
-                name="image"
+                name="images"
                 onChange={handleChange}
                 accept="image/*"
                 className="input-file"
@@ -186,6 +241,7 @@ export default function AddBook() {
               value={form.description}
               onChange={handleChange}
               className="input-no-icon resize-none h-24"
+              required
             />
           </div>
         </div>
@@ -218,9 +274,9 @@ export default function AddBook() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-linear-to-r from-primary to-primary-container text-black font-bold py-3 rounded-lg hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer"
+          className="w-full bg-linear-to-r from-primary to-primary-container text-black font-bold py-3 rounded-lg hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer disabled:opacity-50"
         >
-          {loading ? "Adding..." : "Add Product"}
+          {loading ? "Adding..." : "Add E-Book"}
         </button>
       </form>
     </div>
@@ -234,7 +290,6 @@ function InputField({ icon, label, ...props }) {
 
       <div className="relative group">
         <span className="icon">{icon}</span>
-
         <input {...props} className="input" />
       </div>
     </div>

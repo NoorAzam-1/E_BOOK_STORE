@@ -1,6 +1,6 @@
 import { Star, StarHalf } from "lucide-react";
 import Image from "next/image";
-import { site } from "@/data/site";
+import { site } from "@/data/site.js";
 
 function RatingStars({ rating }) {
   const fullStars = Math.floor(rating);
@@ -20,7 +20,6 @@ function RatingStars({ rating }) {
   );
 }
   
-
 export default function HomePage() {
   return (
     <div className="bg-background text-on-surface">

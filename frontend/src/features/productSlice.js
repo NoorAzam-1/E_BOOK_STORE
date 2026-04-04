@@ -3,10 +3,10 @@ import {axiosInstance} from "@/utils/axios";
 
 //  GET ALL PRODUCTS
 export const getAllProducts = createAsyncThunk(
-  "product/getAll",
+  "product/list",
   async () => {
     const res = await axiosInstance.getAllProducts();
-    return res.data.data;
+    return res.data.products;
   }
 );
 

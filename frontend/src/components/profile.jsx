@@ -44,7 +44,7 @@ export default function ProfilePage() {
           </h3>
 
           <div className="flex justify-between text-center">
-            <Stat number="124" label="Books Read" />
+            <Stat number="124" label="E-Books Read" />
             <Divider />
             <Stat number="842" label="Reading Hours" />
             <Divider />
@@ -174,9 +174,10 @@ function PersonalInfo({ user }) {
 }
 
 function OrderHistory() {
+  // Mock data representing E-book orders based on new schema
   const orders = [
-    { id: "#ORD123", book: "Atomic Habits", price: "₹299" },
-    { id: "#ORD124", book: "Deep Work", price: "₹399" },
+    { id: "#ORD123", book: "Atomic Habits (EPUB)", price: "₹299" },
+    { id: "#ORD124", book: "Deep Work (PDF)", price: "₹399" },
   ];
 
   return (

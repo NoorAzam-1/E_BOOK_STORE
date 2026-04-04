@@ -1,4 +1,5 @@
 import { Search, IndianRupee, X } from "lucide-react";
+// frontend\src\components\browse\Sidebar.jsx
 
 export default function Sidebar({
   open,
@@ -9,6 +10,8 @@ export default function Sidebar({
   setSelectedGenre,
   maxPrice,
   setMaxPrice,
+  selectedFormat,
+  setSelectedFormat,
 }) {
   const genres = [
     "Classic Literature",
@@ -16,7 +19,12 @@ export default function Sidebar({
     "Modern Art",
     "Poetry",
     "History",
+    "Self-Help",
+    "Fiction",
+    "Non-Fiction",
   ];
+
+  const formats = ["EPUB", "PDF", "EPUB/PDF"];
 
   return (
     <>
@@ -28,8 +36,9 @@ export default function Sidebar({
       )}
 
       <aside
-        className={`w-80 p-4 space-y-6 bg-surface-container z-10 fixed top-0 left-0 h-full transform transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:sticky md:top-16 md:h-fit
-  `}
+        className={`w-80 p-4 space-y-6 bg-surface-container z-10 fixed top-0 left-0 h-full transform transition-transform duration-300 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 md:sticky md:top-16 md:h-fit`}
       >
         {/* CLOSE BUTTON */}
         <button onClick={() => setOpen(false)} className="md:hidden mb-4">
@@ -42,17 +51,40 @@ export default function Sidebar({
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search your next great read..."
+            placeholder="Search by title, author, or description..."
             className="w-full bg-surface-container-low border-b border-outline-variant pl-10 py-3 text-sm focus:border-primary outline-none"
           />
         </div>
 
+        {/* 📖 FORMAT */}
+        <section>
+          <h3 className="text-xs font-headline text-primary tracking-[0.1rem] uppercase mb-3">
+            Format
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {formats.map((f) => (
+              <button
+                key={f}
+                onClick={() =>
+                  setSelectedFormat(selectedFormat === f ? "" : f)
+                }
+                className={`px-4 py-1.5 rounded-full text-xs transition ${
+                  selectedFormat === f
+                    ? "bg-primary text-on-primary"
+                    : "bg-surface-container-highest text-on-surface-variant hover:bg-primary hover:text-on-primary"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+        </section>
+
         {/* 🎯 GENRES */}
         <section>
           <h3 className="text-xs font-headline text-primary tracking-[0.1rem] uppercase mb-3">
-            Genres
+            Categories
           </h3>
-
           <div className="flex flex-wrap gap-2">
             {genres.map((g) => (
               <button
@@ -78,14 +110,13 @@ export default function Sidebar({
             </h3>
             <span className="flex items-center">
               <IndianRupee size={12} />
-              100 — <IndianRupee size={12} />
+              0 — <IndianRupee size={12} />
               {maxPrice}
             </span>
           </div>
-
           <input
             type="range"
-            min="100"
+            min="0"
             max="5000"
             value={maxPrice}
             onChange={(e) => setMaxPrice(Number(e.target.value))}
@@ -93,19 +124,18 @@ export default function Sidebar({
           />
         </section>
 
+        {/* ⭐ RATING */}
         <section>
           <h3 className="text-primary text-xs uppercase mb-3">
-            Curator Rating
+            Average Rating
           </h3>
-
-          <label className="flex items-center gap-2 text-sm">
+          <label className="flex items-center gap-2 text-sm cursor-pointer">
             <input type="checkbox" />
-            ⭐⭐⭐⭐⭐ Masterpiece
+            ⭐⭐⭐⭐⭐ 4.5+
           </label>
-
-          <label className="flex items-center gap-2 text-sm mt-2">
+          <label className="flex items-center gap-2 text-sm mt-2 cursor-pointer">
             <input type="checkbox" />
-            ⭐⭐⭐⭐ Highly Recommended
+            ⭐⭐⭐⭐ 4.0+
           </label>
         </section>
       </aside>
