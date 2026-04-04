@@ -84,6 +84,7 @@ export default function AddBook() {
       // Append multiple images to match images: [imageSchema]
       form.images.forEach((img) => {
         data.append("images", img);
+        console.log(img)
       });
 
       console.log("=== FORM DATA DEBUG ===");

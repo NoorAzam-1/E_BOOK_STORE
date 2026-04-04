@@ -79,15 +79,10 @@ const addProduct = async (req, res) => {
     } = req.body;
 
     let uploadedImages = [];
+    const files = req.files; // 👈 yahi main fix hai
+    if (files && files.length > 0) {
+      const cloudImages = await uploadFiles(files, "products");
 
-    // Check if images are provided (assuming req.body.images based on your bulk upload logic)
-    // Note: If you use multer for single upload, change this to req.files
-    const images = req.body.images;
-    console.log(req.body.images)
-    console.log(req.body.files)
-
-    if (images && images.length > 0) {
-      const cloudImages = await uploadFiles(images, "products");
       uploadedImages = cloudImages.map((img) => ({
         url: img.url,
         public_id: img.public_id,
