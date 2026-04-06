@@ -101,8 +101,6 @@ axiosInstance.updateCart = (data) =>
 axiosInstance.removeFromCart = (productId) =>
   axiosInstance.delete(`/api/cart/remove/${productId}`);
 
-axiosInstance.clearCart = () => axiosInstance.delete("/api/cart/clear");
-
 // ORDER APIs
 axiosInstance.placeOrder = (data) =>
   axiosInstance.post("/api/order/place", data);
