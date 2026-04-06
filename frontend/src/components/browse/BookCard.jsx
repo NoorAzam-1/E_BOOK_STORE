@@ -1,29 +1,41 @@
 "use client";
-// frontend\src\components\browse\BookCard.jsx
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/features/cartSlice";
 
 export default function BookCard({ book }) {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const {
+    _id,
+    title,
+    author,
+    price,
+    images,
+    format,
+    bestseller,
+    averageRating,
+  } = book;
 
-  const { _id, title, author, price, images, format, bestseller, averageRating } = book;
-
-  // Get first image from images array
   const coverImage = images?.[0]?.url || "/placeholder-book.png";
   const altText = images?.[0]?.alt || title;
 
   const handleCartClick = (e) => {
     e.stopPropagation();
-    router.push("/cart");
+    dispatch(addToCart({ productId: _id, quantity: 1 }));
   };
 
   const handleCardClick = () => {
-    router.push(`/books/${_id}`);
+    // router.push(`/books/${_id}`);
   };
 
   return (
-    <article className="group flex flex-col cursor-pointer" onClick={handleCardClick}>
+    <article
+      className="group flex flex-col cursor-pointer"
+      onClick={handleCardClick}
+    >
       <div className="relative aspect-3/4 overflow-hidden rounded-md bg-surface-container-low shadow-2xl transition group-hover:-translate-y-4">
         <Image
           alt={altText}
@@ -48,7 +60,7 @@ export default function BookCard({ book }) {
         {/* Hover Overlay */}
         <div className="absolute inset-0 bg-linear-to-t from-surface to-transparent opacity-0 group-hover:opacity-100 flex items-end p-6">
           <button
-            onClick={handleCartClick}
+            onClick={(e)=>handleCartClick(e)}
             className="w-full py-3 bg-linear-to-r from-primary to-primary-container text-on-primary text-xs uppercase rounded cursor-pointer"
           >
             Quick Add to Cart
