@@ -1,23 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {axiosInstance} from "../utils/axios.js";
+import { axiosInstance } from "../utils/axios.js";
 
 // ADD
-export const addWishlist = createAsyncThunk(
-  "wishlist/add",
-  async (data) => {
-    const res = await axiosInstance.addWishlist(data);
-    return res.data;
-  }
-);
+export const addWishlist = createAsyncThunk("wishlist/add", async (data) => {
+  const res = await axiosInstance.addWishlist(data);
+  return res.data;
+});
 
 // GET ALL
-export const getWishlist = createAsyncThunk(
-  "wishlist/getAll",
-  async () => {
-    const res = await axiosInstance.getWishlist();
-    return res.data.data;
-  }
-);
+export const getWishlist = createAsyncThunk("wishlist/getAll", async () => {
+  const res = await axiosInstance.getWishlist();
+  return res.data.data;
+});
 
 // GET SINGLE
 export const getSingleWishlist = createAsyncThunk(
@@ -25,7 +19,7 @@ export const getSingleWishlist = createAsyncThunk(
   async (id) => {
     const res = await axiosInstance.getSingleWishlist(id);
     return res.data.data;
-  }
+  },
 );
 
 // DELETE
@@ -34,7 +28,7 @@ export const deleteWishlist = createAsyncThunk(
   async (id) => {
     await axiosInstance.deleteWishlist(id);
     return id;
-  }
+  },
 );
 
 const wishlistSlice = createSlice({
@@ -69,13 +63,19 @@ const wishlistSlice = createSlice({
 
       // ADD
       .addCase(addWishlist.fulfilled, (state, action) => {
-        state.wishlist.unshift(action.payload.data);
+        if (!state.wishlist) {
+          state.wishlist = [];
+        }
+
+        if (action.payload?.data) {
+          state.wishlist.unshift(action.payload.data);
+        }
       })
 
       //  DELETE
       .addCase(deleteWishlist.fulfilled, (state, action) => {
         state.wishlist = state.wishlist.filter(
-          (item) => item._id !== action.payload
+          (item) => item._id !== action.payload,
         );
       });
   },

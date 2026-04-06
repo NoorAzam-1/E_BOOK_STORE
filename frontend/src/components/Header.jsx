@@ -9,6 +9,7 @@ import {
   Library,
   User,
   LogIn,
+  Heart,
 } from "lucide-react";
 import { site } from "@/data/site";
 import { useState, useRef, useEffect } from "react";
@@ -26,18 +27,20 @@ export default function Header() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  //  Redux user
+  // ✅ Redux states
   const { user } = useSelector((state) => state.auth);
   const { cartCount } = useSelector((state) => state.cart);
+  const { wishlist = [] } = useSelector((state) => state.wishlist);
+
   const isLoggedIn = !!user;
 
-  //  Fetch profile on refresh (important)
+  // ✅ Fetch profile + cart
   useEffect(() => {
     if (!user) {
       dispatch(getProfile());
       dispatch(getCart());
     }
-  }, [dispatch, user, cartCount]);
+  }, [dispatch, user]);
 
   const handleMouseEnter = () => {
     if (profileRef.current) {
@@ -66,6 +69,8 @@ export default function Header() {
     <>
       <header className="fixed top-0 z-[9999] w-full border-b border-outline-variant/80 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 md:px-6 py-4">
+          
+          {/* LEFT */}
           <div className="flex items-center gap-1 md:gap-4">
             <button
               onClick={() => setOpen(true)}
@@ -82,6 +87,7 @@ export default function Header() {
             </Link>
           </div>
 
+          {/* CENTER NAV */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-semibold">
             {navLinks.map((link) => (
               <Link
@@ -96,7 +102,8 @@ export default function Header() {
 
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-4">
-            {/* LOGIN / PROFILE */}
+
+            {/* PROFILE / LOGIN */}
             {isLoggedIn ? (
               <button
                 ref={profileRef}
@@ -115,20 +122,39 @@ export default function Header() {
               </Link>
             )}
 
-            {/* CART */}
+            {/* ❤️ WISHLIST */}
+            {isLoggedIn && (
+              <div
+                onClick={() => router.push("/wishlist")}
+                className="relative text-primary cursor-pointer"
+              >
+                <Heart className="h-6 w-6" />
+
+                {wishlist.length > 0 && (
+                  <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
+                    {wishlist.length}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* 🛒 CART */}
             {isLoggedIn && (
               <Link href="/cart" className="relative text-primary">
                 <ShoppingCart className="h-6 w-6" />
-                <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
-                  {cartCount || 0}
-                </span>
+
+                {cartCount > 0 && (
+                  <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
             )}
           </div>
         </div>
       </header>
 
-      {/* DROPDOWN */}
+      {/* PROFILE DROPDOWN */}
       {profileOpen && isLoggedIn && (
         <div
           style={{
@@ -161,8 +187,8 @@ export default function Header() {
         </div>
       )}
 
-      {/* MOBILE MENU */}
-      <div
+        {/* MOBILE MENU */}
+       <div
         className={`fixed top-0 left-0 h-full w-65 bg-background shadow-2xl border-r border-outline-variant/20 transform transition-transform duration-300 z-60 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
