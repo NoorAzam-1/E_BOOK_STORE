@@ -24,11 +24,12 @@ export default function BookCard({ book }) {
 
   const handleCartClick = (e) => {
     e.stopPropagation();
+     if (loading) return;
     dispatch(addToCart({ productId: _id, quantity: 1 }));
   };
 
   const handleCardClick = () => {
-    // router.push(`/books/${_id}`);
+    router.push(`/books/${_id}`);
   };
 
   return (
