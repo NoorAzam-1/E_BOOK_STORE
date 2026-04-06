@@ -30,7 +30,7 @@ export default function BookCard({ book }) {
   };
 
   const handleCardClick = () => {
-    router.push(`/books/${_id}`);
+    router.push(`/browse/books/${_id}`);
   };
 
   return (
