@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/features/cartSlice";
 
 export default function BookCard({ book }) {
+  const { loading } = useSelector((state) => state.cart);
   const router = useRouter();
   const dispatch = useDispatch();
   const {
@@ -62,9 +63,10 @@ export default function BookCard({ book }) {
         <div className="absolute inset-0 bg-linear-to-t from-surface to-transparent opacity-0 group-hover:opacity-100 flex items-end p-6">
           <button
             onClick={(e)=>handleCartClick(e)}
+            disabled={loading}
             className="w-full py-3 bg-linear-to-r from-primary to-primary-container text-on-primary text-xs uppercase rounded cursor-pointer"
           >
-            Quick Add to Cart
+           {loading ? "Adding..." : "Quick Add to Cart"}
           </button>
         </div>
       </div>
