@@ -127,7 +127,7 @@ export default function Header() {
               <Link href="/cart" className="relative text-primary">
                 <ShoppingCart className="h-6 w-6" />
                 <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
-                  {/* {cartCount} */}
+                  {cartCount || 0}
                 </span>
               </Link>
             )}
