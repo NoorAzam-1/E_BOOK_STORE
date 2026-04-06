@@ -76,7 +76,7 @@ export default function BookCard({ book }) {
   return (
     <>
       <article
-        className="group flex flex-col cursor-pointer"
+        className="group flex flex-col "
         onClick={handleCardClick}
       >
         <div className="relative aspect-3/4 overflow-hidden rounded-md bg-surface-container-low shadow-2xl transition group-hover:-translate-y-4">
@@ -93,7 +93,7 @@ export default function BookCard({ book }) {
           {/* ❤️ Wishlist Button */}
           <button
             onClick={handleWishlist}
-            className={`absolute top-3 right-3 text-xl z-10 transition transform ${
+            className={`absolute top-3 right-3 text-xl z-10 transition transform cursor-pointer ${
               animate ? "scale-125" : "scale-100"
             }`}
           >
@@ -104,7 +104,7 @@ export default function BookCard({ book }) {
           <button
             onClick={handleCart}
             disabled={loading}
-            className="absolute bottom-3 left-1/2 -translate-x-1/2 w-[90%] py-2 bg-primary text-black text-xs uppercase rounded"
+            className="absolute cursor-pointer bottom-3 left-1/2 -translate-x-1/2 w-[90%] py-2 bg-primary text-black text-xs uppercase rounded"
           >
             {loading ? "Adding..." : "Add to Cart"}
           </button>
