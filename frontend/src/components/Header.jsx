@@ -9,6 +9,7 @@ import {
   Library,
   User,
   LogIn,
+  Heart,
 } from "lucide-react";
 import { site } from "@/data/site";
 import { useState, useRef, useEffect } from "react";
@@ -18,7 +19,6 @@ import { logoutUserAsync, getProfile } from "@/features/authSlice";
 import { getCart } from "@/features/cartSlice";
 
 export default function Header() {
-  const [active, setActive] = useState("/");
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
@@ -27,18 +27,20 @@ export default function Header() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  //  Redux user
+  // ✅ Redux states
   const { user } = useSelector((state) => state.auth);
   const { cartCount } = useSelector((state) => state.cart);
+  const { wishlist = [] } = useSelector((state) => state.wishlist);
+
   const isLoggedIn = !!user;
 
-  //  Fetch profile on refresh (important)
+  // ✅ Fetch profile + cart
   useEffect(() => {
     if (!user) {
       dispatch(getProfile());
       dispatch(getCart());
     }
-  }, [dispatch, user, cartCount]);
+  }, [dispatch, user]);
 
   const handleMouseEnter = () => {
     if (profileRef.current) {
@@ -65,8 +67,10 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 z-40 w-full border-b border-outline-variant/80 bg-background/80 backdrop-blur-xl">
+      <header className="fixed top-0 z-[999] w-full border-b border-outline-variant/80 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 md:px-6 py-4">
+          
+          {/* LEFT */}
           <div className="flex items-center gap-1 md:gap-4">
             <button
               onClick={() => setOpen(true)}
@@ -77,24 +81,19 @@ export default function Header() {
 
             <Link
               href="/"
-              onClick={() => setActive("/")}
               className="font-headline text-xl font-black uppercase text-primary hover:text-tertiary"
             >
               {site.brand}
             </Link>
           </div>
 
+          {/* CENTER NAV */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-semibold">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                onClick={() => setActive(link.href)}
-                className={`transition ${
-                  active === link.href
-                    ? "text-primary"
-                    : "text-on-surface hover:text-primary"
-                }`}
+                className="transition text-on-surface hover:text-primary"
               >
                 {link.name}
               </Link>
@@ -103,7 +102,8 @@ export default function Header() {
 
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-4">
-            {/* LOGIN / PROFILE */}
+
+            {/* PROFILE / LOGIN */}
             {isLoggedIn ? (
               <button
                 ref={profileRef}
@@ -122,20 +122,39 @@ export default function Header() {
               </Link>
             )}
 
-            {/* CART */}
+            {/* ❤️ WISHLIST */}
+            {isLoggedIn && (
+              <div
+                onClick={() => router.push("/wishlist")}
+                className="relative text-primary cursor-pointer"
+              >
+                <Heart className="h-6 w-6" />
+
+                {wishlist.length > 0 && (
+                  <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
+                    {wishlist.length}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* 🛒 CART */}
             {isLoggedIn && (
               <Link href="/cart" className="relative text-primary">
                 <ShoppingCart className="h-6 w-6" />
-                <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
-                  {/* {cartCount} */}
-                </span>
+
+                {cartCount > 0 && (
+                  <span className="absolute -right-2 -top-2 bg-primary text-black text-[10px] px-1.5 py-0.5 rounded-full font-bold">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
             )}
           </div>
         </div>
       </header>
 
-      {/* DROPDOWN */}
+      {/* PROFILE DROPDOWN */}
       {profileOpen && isLoggedIn && (
         <div
           style={{
@@ -174,7 +193,7 @@ export default function Header() {
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-         <div className="flex justify-between items-center p-4 border-b border-outline-variant/20  ">
+        <div className="flex justify-between items-center p-4 border-b border-outline-variant/20  ">
           <span className="text-primary font-bold text-lg">Menu</span>
           <button
             onClick={() => setOpen(false)}
@@ -192,14 +211,9 @@ export default function Header() {
                 key={link.name}
                 href={link.href}
                 onClick={() => {
-                  setActive(link.href);
                   setOpen(false);
                 }}
-                className={`flex items-center gap-3 p-3 rounded-md ${
-                  active === link.href
-                    ? "bg-primary/10 text-primary"
-                    : "text-on-surface hover:bg-white/5"
-                }`}
+                className="flex items-center gap-3 p-3 rounded-mdtext-on-surface hover:bg-white/5"
               >
                 <Icon size={18} />
                 <span className="text-sm font-medium">{link.name}</span>
@@ -207,7 +221,7 @@ export default function Header() {
             );
           })}
         </div>
-       </div>
+      </div>
 
       {open && (
         <div
