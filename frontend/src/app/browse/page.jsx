@@ -1,5 +1,4 @@
 "use client";
-// frontend\src\app\browse\page.jsx
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/browse/Sidebar";
 import BookGrid from "@/components/browse/BookGrid";
@@ -9,14 +8,12 @@ import { getAllProducts } from "@/features/productSlice";
 
 export default function BrowsePage() {
   const [open, setOpen] = useState(false);
-
   const [search, setSearch] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [maxPrice, setMaxPrice] = useState(5000);
   const [selectedFormat, setSelectedFormat] = useState("");
 
   const bookdata = useSelector((state) => state.product.products);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,18 +38,26 @@ export default function BrowsePage() {
 
     const isAvailable = book.available !== false;
 
-    return matchesSearch && matchesGenre && matchesPrice && matchesFormat && isAvailable;
+    return (
+      matchesSearch &&
+      matchesGenre &&
+      matchesPrice &&
+      matchesFormat &&
+      isAvailable
+    );
   });
 
   return (
     <main className="w-full mx-auto flex gap-12 bg-surface text-on-surface relative">
       {/* MOBILE MENU BUTTON */}
-      <button
-        onClick={() => setOpen(true)}
-        className="md:hidden fixed top-18 left-4 z-50 bg-surface-container p-2 rounded-lg"
-      >
-        <Menu />
-      </button>
+      {!open && (
+        <button
+          onClick={() => setOpen(true)}
+          className="md:hidden fixed top-16 left-3 z-50 bg-surface-container p-2 rounded-lg shadow-md"
+        >
+          <Menu size={20} />
+        </button>
+      )}
 
       {/* SIDEBAR */}
       <Sidebar
