@@ -134,16 +134,19 @@ const removeProduct = async (req, res) => {
         .json({ success: false, message: "E-book not found" });
     }
 
-    // Optional: Delete images from Cloudinary before removing from DB to save space
-    // if (product.images && product.images.length > 0) {
-    //   const publicIds = product.images.map(img => img.public_id);
-    //   await deleteFilesFromCloudinary(publicIds); // You'd need to implement this in cloudinary.js
-    // }
-
     await prodctModel.findByIdAndDelete(req.body.id);
     res.json({ success: true, message: "E-book Removed" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getSingleProduct = async (req, res) => {
+  try {
+    const product = await prodctModel.findById(req.params.id);
+    res.json({ success: true, data: product });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
   }
 };
 
@@ -248,4 +251,5 @@ export {
   singleProduct,
   updateProduct,
   addMultipleProducts,
+  getSingleProduct
 };

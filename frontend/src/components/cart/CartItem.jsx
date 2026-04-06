@@ -1,19 +1,8 @@
-import { getCart } from "@/features/cartSlice";
+"use client";
+
 import Image from "next/image";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function CartItem({ item, updateQty, removeItem }) {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getCart());
-  }, [dispatch]);
-
-  const { cartCount } = useSelector((state) => state.cart);
-
-  console.log(cartCount);
-
   return (
     <div className="group flex flex-col md:flex-row gap-6 pb-10 border-b border-white/5">
       {/* Image */}
@@ -35,8 +24,11 @@ export default function CartItem({ item, updateQty, removeItem }) {
               <h3 className="text-2xl font-bold hover:text-primary">
                 {item.title}
               </h3>
-              <p className="text-on-surface-variant mt-1">{item.author}</p>
+              <p className="text-on-surface-variant mt-1">
+                {item.author}
+              </p>
             </div>
+
             <p className="text-xl font-bold text-primary">
               ₹{item.price.toFixed(2)}
             </p>
@@ -57,7 +49,9 @@ export default function CartItem({ item, updateQty, removeItem }) {
               -
             </button>
 
-            <span className="px-4 font-bold">{item.quantity}</span>
+            <span className="px-4 font-bold">
+              {item.quantity}
+            </span>
 
             <button
               onClick={() => updateQty(item.productId, "inc")}

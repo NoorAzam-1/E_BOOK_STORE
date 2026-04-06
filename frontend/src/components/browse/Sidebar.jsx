@@ -1,5 +1,6 @@
+"use client";
+
 import { Search, IndianRupee, X } from "lucide-react";
-// frontend\src\components\browse\Sidebar.jsx
 
 export default function Sidebar({
   open,
@@ -28,6 +29,7 @@ export default function Sidebar({
 
   return (
     <>
+      {/* Overlay (mobile) */}
       {open && (
         <div
           onClick={() => setOpen(false)}
@@ -36,29 +38,27 @@ export default function Sidebar({
       )}
 
       <aside
-        className={`w-80 p-4 space-y-6 bg-surface-container z-10 fixed top-0 left-0 h-full transform transition-transform duration-300 ${
-          open ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 md:sticky md:top-16 md:h-fit`}
-      >
+        className={`w-64 sm:w-72 md:w-60 lg:w-80 p-3 sm:p-4 md:p-3 lg:p-4 space-y-6 bg-surface-container z-50
+        fixed top-0 left-0 h-full overflow-y-auto transform transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:sticky md:top-16 md:h-fit`}>
         {/* CLOSE BUTTON */}
-        <button onClick={() => setOpen(false)} className="md:hidden mb-4">
+        <button onClick={() => setOpen(false)} className="md:hidden text-primary">
           <X />
         </button>
 
         {/* 🔍 SEARCH */}
         <div className="relative">
-          <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-outline-variant" />
+          <Search className="absolute top-1/2 ml-1 -translate-y-1/2 text-outline-variant" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by title, author, or description..."
-            className="w-full bg-surface-container-low border-b border-outline-variant pl-10 py-3 text-sm focus:border-primary outline-none"
+            placeholder="Search by title, author..."
+            className="w-full bg-surface-container-low border-b border-outline-variant pl-10 py-2 sm:py-3 text-xs sm:text-sm focus:border-primary outline-none"
           />
         </div>
 
         {/* 📖 FORMAT */}
         <section>
-          <h3 className="text-xs font-headline text-primary tracking-[0.1rem] uppercase mb-3">
+          <h3 className="text-[10px] sm:text-xs md:text-[11px] font-headline text-primary tracking-[0.1rem] uppercase mb-3">
             Format
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -68,7 +68,7 @@ export default function Sidebar({
                 onClick={() =>
                   setSelectedFormat(selectedFormat === f ? "" : f)
                 }
-                className={`px-4 py-1.5 rounded-full text-xs transition ${
+                className={`px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs transition ${
                   selectedFormat === f
                     ? "bg-primary text-on-primary"
                     : "bg-surface-container-highest text-on-surface-variant hover:bg-primary hover:text-on-primary"
@@ -82,7 +82,7 @@ export default function Sidebar({
 
         {/* 🎯 GENRES */}
         <section>
-          <h3 className="text-xs font-headline text-primary tracking-[0.1rem] uppercase mb-3">
+          <h3 className="text-[10px] sm:text-xs md:text-[11px] font-headline text-primary tracking-[0.1rem] uppercase mb-3">
             Categories
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -90,7 +90,7 @@ export default function Sidebar({
               <button
                 key={g}
                 onClick={() => setSelectedGenre(selectedGenre === g ? "" : g)}
-                className={`px-4 py-1.5 rounded-full text-xs transition ${
+                className={`px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs transition ${
                   selectedGenre === g
                     ? "bg-primary text-on-primary"
                     : "bg-surface-container-highest text-on-surface-variant hover:bg-primary hover:text-on-primary"
@@ -104,16 +104,17 @@ export default function Sidebar({
 
         {/* 💰 PRICE */}
         <section>
-          <div className="flex justify-between text-xs mb-3">
+          <div className="flex justify-between text-[10px] sm:text-xs mb-3">
             <h3 className="text-primary uppercase tracking-[0.1rem]">
               Price Range
             </h3>
             <span className="flex items-center">
-              <IndianRupee size={12} />
-              0 — <IndianRupee size={12} />
+              <IndianRupee size={10} />
+              0 — <IndianRupee size={10} />
               {maxPrice}
             </span>
           </div>
+
           <input
             type="range"
             min="0"
@@ -126,14 +127,16 @@ export default function Sidebar({
 
         {/* ⭐ RATING */}
         <section>
-          <h3 className="text-primary text-xs uppercase mb-3">
+          <h3 className="text-primary text-[10px] sm:text-xs uppercase mb-3">
             Average Rating
           </h3>
-          <label className="flex items-center gap-2 text-sm cursor-pointer">
+
+          <label className="flex items-center gap-2 text-xs sm:text-sm cursor-pointer">
             <input type="checkbox" />
             ⭐⭐⭐⭐⭐ 4.5+
           </label>
-          <label className="flex items-center gap-2 text-sm mt-2 cursor-pointer">
+
+          <label className="flex items-center gap-2 text-xs sm:text-sm mt-2 cursor-pointer">
             <input type="checkbox" />
             ⭐⭐⭐⭐ 4.0+
           </label>
