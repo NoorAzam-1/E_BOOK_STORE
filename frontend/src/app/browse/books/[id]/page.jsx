@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSingleProduct } from "@/features/productSlice";
 import Image from "next/image";
 import { Star, StarHalf } from "lucide-react";
+import Link from "next/link";
 
 const bookDescriptions = [
   "is a captivating journey filled with imagination and deep insights.",
@@ -158,9 +159,9 @@ export default function BookDetailPage() {
               </div>
 
               <div className="flex gap-3 mt-4">
-                <button className="flex-1 bg-primary text-on-primary py-3 rounded-lg">
+                <Link href="/checkout" className="flex-1 bg-primary text-on-primary text-center py-3 rounded-lg hover:bg-primary-hover hover:scale-105 transition">
                   Buy Now
-                </button>
+                </Link>
               </div>
             </div>
 
