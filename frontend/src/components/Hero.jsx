@@ -28,7 +28,7 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col gap-4 pt-4 sm:flex-row md:items-center">
-            <Link href="/books" className="w-full md:w-auto flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-primary to-primary-container px-8 py-4 font-bold text-on-primary shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 cursor-pointer">
+            <Link href="/checkout" className="w-full md:w-auto flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-primary to-primary-container px-8 py-4 font-bold text-on-primary shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 cursor-pointer">
               Buy Now — ₹{site.hero.price.toFixed(0)}
               <ArrowRight className="h-5 w-5" />
             </Link>
