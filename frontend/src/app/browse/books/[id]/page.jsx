@@ -2,22 +2,44 @@
 
 import { useEffect } from "react";
 import { useParams } from "next/navigation";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleProduct } from "@/features/productSlice";
 import Image from "next/image";
 import { Star, StarHalf } from "lucide-react";
 
+const bookDescriptions = [
+  "is a captivating journey filled with imagination and deep insights.",
+  "explores powerful themes that leave a lasting impression on readers.",
+  "takes you through an unforgettable story packed with emotions and meaning.",
+  "offers a unique blend of storytelling and thought-provoking ideas.",
+  "is a must-read for anyone who enjoys rich and immersive narratives.",
+];
+
+const authorDescriptions = [
+  "is known for crafting compelling stories that resonate with readers.",
+  "has a unique storytelling style that keeps audiences engaged.",
+  "is celebrated for delivering impactful and memorable books.",
+  "brings creativity and depth into every piece of writing.",
+  "continues to inspire readers with meaningful and engaging content.",
+];
+
 function RatingStars({ rating }) {
-  const safeRating = rating && rating > 0 ? rating : 3; // minimum 3
-  const full = Math.floor(safeRating);
-  const half = safeRating % 1 !== 0;
+  const full = Math.floor(rating);
+  const hasHalf = rating % 1 >= 0.5;
+  const empty = 5 - full - (hasHalf ? 1 : 0);
 
   return (
-    <div className="flex text-primary">
+    <div className="flex text-yellow-400">
       {[...Array(full)].map((_, i) => (
-        <Star key={i} className="h-4 w-4 fill-current" />
+        <Star key={i} className="h-5 w-5 fill-current" />
       ))}
-      {half && <StarHalf className="h-4 w-4 fill-current" />}
+
+      {hasHalf && <StarHalf className="h-5 w-5 fill-current" />}
+
+      {[...Array(empty)].map((_, i) => (
+        <Star key={`e-${i}`} className="h-5 w-5 text-gray-300" />
+      ))}
     </div>
   );
 }
@@ -35,10 +57,36 @@ export default function BookDetailPage() {
     dispatch(getSingleProduct(id));
   }, [dispatch, id]);
 
+  const displayRating = useMemo(() => {
+    if (book?.averageRating && book.averageRating > 0)
+      return book.averageRating;
+
+    const hash = book?._id
+      ?.split("")
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+    return ((hash % 15) / 10 + 3.5).toFixed(1);
+  }, [book]);
+
+  const generatedContent = useMemo(() => {
+    if (!book?._id) return {};
+
+    const hash = book._id
+      .split("")
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+    const bookDesc =
+      book.title + " " + bookDescriptions[hash % bookDescriptions.length];
+
+    const authorDesc =
+      book.author + " " + authorDescriptions[hash % authorDescriptions.length];
+
+    return { bookDesc, authorDesc };
+  }, [book]);
+
   if (loading) return <p className="p-10">Loading...</p>;
   if (!book) return <p className="p-10">Product not found</p>;
 
-  // 🔥 Fake MRP (5% to 40% higher)
   const increasePercent = Math.floor(Math.random() * 36) + 5;
   const fakePrice = Math.round(
     book.price + (book.price * increasePercent) / 100,
@@ -50,18 +98,19 @@ export default function BookDetailPage() {
         {/* HERO */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-16">
           {/* IMAGE */}
-          <div className="lg:col-span-5 flex justify-center">
-            <Image
-              src={book.images?.[0]?.url || "/placeholder-book.png"}
-              alt={book.title}
-              width={320}
-              height={450}
-              className="rounded-lg shadow-2xl -rotate-2 hover:rotate-0 hover:scale-105 transition"
-            />
+          <div className="lg:col-span-4 flex justify-center w-full">
+            <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-sm aspect-[9/10] sm:aspect-[3/4]">
+              <Image
+                src={book.images?.[0]?.url || "/placeholder-book.png"}
+                alt={book.title}
+                fill
+                className="object-cover rounded-lg shadow-2xl -rotate-2 hover:rotate-0 hover:scale-105 transition duration-300"
+              />
+            </div>
           </div>
 
           {/* CONTENT */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-8 space-y-6">
             {/* TAGS */}
             <div>
               {book.category?.map((cat) => (
@@ -82,8 +131,8 @@ export default function BookDetailPage() {
               </p>
 
               <div className="flex items-center gap-3 mt-2">
-                <RatingStars rating={book.averageRating} />
-                <span>{book.averageRating || 3}</span>
+                <RatingStars rating={displayRating} />
+                <span>{displayRating}</span>
               </div>
             </div>
 
@@ -144,26 +193,25 @@ export default function BookDetailPage() {
           </div>
         </section>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row  md:gap-4 py-4 md:py-6">
           {/* ABOUT */}
-          <section className="mb-20 p-6 rounded-xl bg-surface-container">
+          <section className="p-6 rounded-xl bg-surface-container">
             <h2 className="text-2xl font-bold text-primary mb-4">
               About the Book
             </h2>
             <p className="text-on-surface-variant">
-              {book.description ||
-                "This book offers an engaging journey through compelling ideas, rich storytelling, and valuable insights. Perfect for readers who love immersive and thought-provoking content."}
+              {book.description || generatedContent.bookDesc}
             </p>
           </section>
 
           {/* AUTHOR SPOTLIGHT */}
-          <section className="mb-20 p-6 rounded-xl bg-surface-container">
+          <section className="p-6 rounded-xl bg-surface-container">
             <h2 className="text-2xl font-bold text-primary mb-4">
               Author Spotlight
             </h2>
 
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-xl font-bold">
+            <div className="flex items-center justify-center gap-4">
+              <div className="min-w-8 min-h-8 w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-xl font-bold">
                 {book.author?.charAt(0) || "A"}
               </div>
 
@@ -173,8 +221,7 @@ export default function BookDetailPage() {
                 </h3>
 
                 <p className="text-sm text-on-surface-variant">
-                  A passionate storyteller known for creating engaging and
-                  memorable reading experiences.
+                  {generatedContent.authorDesc}
                 </p>
               </div>
             </div>

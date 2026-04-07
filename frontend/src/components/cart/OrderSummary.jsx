@@ -1,13 +1,15 @@
+import Link from "next/link";
+
 export default function OrderSummary({
   subtotal,
   tax,
   total,
 }) {
   return (
-    <div className="glass-card p-8 rounded-xl border border-white/5 sticky top-24">
+    <div className="glass-card flex flex-col p-4 md:p-8 rounded-xl border border-white/5 sticky top-24">
       <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
 
-      <div className="space-y-4 mb-6 text-on-surface-variant">
+      <div className="space-y-2  md:space-y-4 mb-6 text-on-surface-variant">
         <div className="flex justify-between">
           <span>Subtotal</span>
           <span className="text-on-surface font-semibold">
@@ -47,9 +49,9 @@ export default function OrderSummary({
       </div>
 
       {/* Button */}
-      <button className="w-full bg-primary text-on-primary py-4 rounded-lg font-bold hover:scale-[1.02] transition cursor-pointer">
+      <Link href="/checkout" className="w-full bg-primary text-on-primary py-3 px-4 rounded-lg font-bold hover:scale-[1.02] transition cursor-pointer">
         Proceed to Checkout →
-      </button>
+      </Link>
 
       {/* Note */}
       <div className="mt-6 text-xs text-on-surface-variant flex gap-2">
