@@ -53,7 +53,7 @@ export default function WishlistItem({
         <div className="flex flex-col justify-between flex-1 py-2">
           
           {/* Top */}
-          <div className="flex justify-between">
+          <div className="flex justify-between items-start">
             <div>
               <h3 className="text-xl md:text-2xl font-headline font-bold group-hover:text-primary">
                 {title}
@@ -64,7 +64,7 @@ export default function WishlistItem({
             {/* DELETE BUTTON */}
             <button
               onClick={handleDelete}
-              className="text-on-surface-variant hover:text-red-400"
+              className="text-error hover:text-red-600 cursor-pointer transition text-xl"
             >
               ✕
             </button>
@@ -85,7 +85,7 @@ export default function WishlistItem({
             <button
               onClick={handleMoveToCart}
               disabled={loading}
-              className="bg-linear-to-r from-primary to-primary-container text-on-primary px-6 py-3 rounded-md font-bold flex items-center gap-2 hover:scale-[1.03] active:scale-95 transition"
+              className="bg-linear-to-r from-primary to-primary-container text-on-primary px-6 py-3 rounded-md font-bold flex items-center gap-2 hover:scale-[1.03] active:scale-95 transition cursor-pointer"
             >
               {loading ? "Moving..." : "🛒 Move to Cart"}
             </button>
