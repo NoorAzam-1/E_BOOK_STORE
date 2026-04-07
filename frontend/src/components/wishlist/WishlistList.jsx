@@ -25,6 +25,7 @@ export default function WishlistList() {
         <WishlistItem
           key={item._id}
           id={item._id}
+          bookId={item.bookId._id}
           title={item.bookId?.title}
           author={item.bookId?.author}
           price={item.bookId?.price}
