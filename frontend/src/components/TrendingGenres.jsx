@@ -23,7 +23,7 @@ export default function TrendingGenres() {
         {site.genres.map((genre) => (
           <div
             key={genre.name}
-            className="group relative w-80 shrink-0 cursor-pointer overflow-hidden rounded-3xl md:rounded-[2.5rem] bg-surfaceContainer  transition-all duration-700 hover:-translate-y-3 md:w-92"
+            className="group relative w-80 shrink-0 overflow-hidden rounded-3xl md:rounded-[2.5rem] bg-surfaceContainer  transition-all duration-700 hover:-translate-y-3 md:w-92"
           >
             <Image
               src={genre.image}
@@ -38,9 +38,9 @@ export default function TrendingGenres() {
                 <span className="rounded-full border border-primary/30 bg-primary/20 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary backdrop-blur-md">
                   {genre.count}
                 </span>
-                <div className="translate-x-4 rounded-full bg-white/10 p-2 text-on-surface opacity-0 backdrop-blur-md transition-all group-hover:translate-x-0 group-hover:opacity-100">
+                <Link href="/browse" className="translate-x-4 rounded-full bg-white/10 p-2 text-on-surface opacity-0 backdrop-blur-md transition-all group-hover:translate-x-0 group-hover:opacity-100">
                   <ArrowUpRight className="h-5 w-5" />
-                </div>
+                </Link>
               </div>
 
               <div className="space-y-6">
