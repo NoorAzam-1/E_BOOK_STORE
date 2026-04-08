@@ -13,7 +13,7 @@ import wishlistRouter from "./routes/wishlistRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 
-// ✅ DNS FIX (IMPORTANT FOR EMAIL)
+// DNS 
 if (process.env.NODE_ENV === "development") {  
   dns.setServers(["8.8.8.8", "8.8.4.4"]);
 }
