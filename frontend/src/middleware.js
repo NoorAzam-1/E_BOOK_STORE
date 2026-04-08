@@ -1,27 +1,54 @@
 import { NextResponse } from "next/server";
 
 export function middleware(request) {
-  // console.log("ALL COOKIES:", request.cookies.getAll());
   const token = request.cookies.get("token")?.value;
-  // console.log("midle token",token)
-  const protectedRoutes = ["/profile", "/orders", "/cart", "/wishlist"];
-  const authRoutes = ["/login", "/register"];
+  const role = request.cookies.get("role")?.value;
 
   const { pathname } = request.nextUrl;
 
-  // Protected routes
-  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
+  const protectedRoutes = ["/profile", "/orders", "/cart", "/wishlist"];
+  const authRoutes = ["/login", "/register"];
+
+  // 🔒 Protected routes
+  if (protectedRoutes.some((r) => pathname.startsWith(r))) {
     if (!token) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 
-  // Prevent login if already logged in
-  if (authRoutes.includes(pathname)) {
-    if (token) {
+  // 🔒 Admin route
+  if (pathname.startsWith("/admin")) {
+    if (!token) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    if (role !== "admin") {
       return NextResponse.redirect(new URL("/profile", request.url));
+    }
+  }
+
+  // 🔥 LOGIN/REGISTER PAGE REDIRECT
+  if (authRoutes.some((r) => pathname.startsWith(r))) {
+    if (token) {
+      if (role === "admin") {
+        return NextResponse.redirect(new URL("/admin", request.url));
+      } else {
+        return NextResponse.redirect(new URL("/profile", request.url));
+      }
     }
   }
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: [
+    "/profile",
+    "/orders",
+    "/cart",
+    "/wishlist",
+    "/login",
+    "/register",
+    "/admin/:path*",
+  ],
+};
