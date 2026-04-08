@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {axiosInstance} from "@/utils/axios.js";
+import { axiosInstance } from "@/utils/axios";
 import toast from "react-hot-toast";
 
-// 🔐 REGISTER
+// REGISTER
 export const registerUser = createAsyncThunk(
   "auth/register",
   async (data, { rejectWithValue }) => {
@@ -13,18 +13,17 @@ export const registerUser = createAsyncThunk(
         toast.error(res.data.message);
         return rejectWithValue(res.data.message);
       }
-
       toast.success(res.data.message);
       return res.data;
     } catch (error) {
-      const message = error?.response?.data?.message || "Registration failed";
-      toast.error(message);
-      return rejectWithValue(message);
+      const msg = error?.response?.data?.message || "Register failed";
+      toast.error(msg);
+      return rejectWithValue(msg);
     }
-  },
+  }
 );
 
-// 🔐 LOGIN
+// LOGIN
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (data, { rejectWithValue }) => {
@@ -34,15 +33,15 @@ export const loginUser = createAsyncThunk(
       if (!res.data.success) {
         return rejectWithValue(res.data.message);
       }
-
-      return res.data.data;
+      console.log("res",res.data);
+      return res.data.user;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Error");
     }
-  },
+  }
 );
 
-// 👤 PROFILE
+// PROFILE
 export const getProfile = createAsyncThunk(
   "auth/profile",
   async (_, { rejectWithValue }) => {
@@ -52,68 +51,55 @@ export const getProfile = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response?.data || "Error");
     }
-  },
+  }
 );
 
-// 🔐 FORGOT PASSWORD
+// LOGOUT
+export const logoutUserAsync = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      await axiosInstance.logout();
+      return true;
+    } catch {
+      return rejectWithValue("Logout failed");
+    }
+  }
+);
+
+// FORGOT
 export const forgotPassword = createAsyncThunk(
-  "auth/forgotPassword",
+  "auth/forgot",
   async (email, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.forgotPassword(email);
-
-      if (!res.data.success) {
-        toast.error(res.data.message);
-        return rejectWithValue(res.data.message);
-      }
-
       toast.success(res.data.message);
       return res.data;
-    } catch (error) {
-      const message =
-        error?.response?.data?.message || "Failed to send reset link";
-
-      toast.error(message);
-      return rejectWithValue(message);
+    } catch (err) {
+      const msg = err.response?.data?.message || "Error";
+      toast.error(msg);
+      return rejectWithValue(msg);
     }
-  },
+  }
 );
 
-// 🔐 RESET PASSWORD
+// RESET
 export const resetPassword = createAsyncThunk(
-  "auth/resetPassword",
+  "auth/reset",
   async ({ token, newPassword }, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.resetPassword({
         token,
         newPassword,
       });
-
-      if (!res.data.success) {
-        toast.error(res.data.message);
-        return rejectWithValue(res.data.message);
-      }
-
       toast.success(res.data.message);
       return res.data;
-    } catch (error) {
-      const message = error?.response?.data?.message || "Reset Password Failed";
-      toast.error(message);
-      return rejectWithValue(message);
+    } catch (err) {
+      const msg = err.response?.data?.message || "Error";
+      toast.error(msg);
+      return rejectWithValue(msg);
     }
-  },
-);
-
-export const logoutUserAsync = createAsyncThunk(
-  "auth/logout",
-  async (_, { rejectWithValue }) => {
-    try {
-      await axiosInstance.logout(); // 🔥 cookie delete
-      return true;
-    } catch (error) {
-      return rejectWithValue("Logout failed");
-    }
-  },
+  }
 );
 
 const authSlice = createSlice({
@@ -123,59 +109,55 @@ const authSlice = createSlice({
     loading: false,
     error: null,
   },
-  
+
+  reducers: {},
+
   extraReducers: (builder) => {
     builder
+
       // REGISTER
-      .addCase(registerUser.pending, (state) => {
-        state.loading = true;
+      .addCase(registerUser.pending, (s) => {
+        s.loading = true;
       })
-      .addCase(registerUser.fulfilled, (state) => {
-        state.loading = false;
+      .addCase(registerUser.fulfilled, (s, a) => {
+        s.loading = false;
+        s.user = a.payload;
       })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+      .addCase(registerUser.rejected, (s, a) => {
+        s.loading = false;
+        s.error = a.payload;
       })
 
       // LOGIN
-      .addCase(loginUser.pending, (state) => {
-        state.loading = true;
+      .addCase(loginUser.pending, (s) => {
+        s.loading = true;
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload;
+      .addCase(loginUser.fulfilled, (s, a) => {
+        s.loading = false;
+        s.user = a.payload;
       })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-
-      .addCase(logoutUserAsync.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(logoutUserAsync.fulfilled, (state) => {
-        state.loading = false;
-        state.user = null;
-        state.error = null;
-      })
-      .addCase(logoutUserAsync.rejected, (state) => {
-        state.loading = false;
+      .addCase(loginUser.rejected, (s, a) => {
+        s.loading = false;
+        s.error = a.payload;
       })
 
       // PROFILE
-      .addCase(getProfile.pending, (state) => {
-        state.loading = true;
+      .addCase(getProfile.pending, (s) => {
+        s.loading = true;
       })
-      .addCase(getProfile.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload;
+      .addCase(getProfile.fulfilled, (s, a) => {
+        s.loading = false;
+        s.user = a.payload;
       })
-      .addCase(getProfile.rejected, (state) => {
-        state.loading = false;
+      .addCase(getProfile.rejected, (s) => {
+        s.loading = false;
+      })
+
+      // LOGOUT
+      .addCase(logoutUserAsync.fulfilled, (s) => {
+        s.user = null;
       });
   },
 });
 
-export const { logoutUser } = authSlice.actions;
 export default authSlice.reducer;
