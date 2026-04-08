@@ -94,28 +94,28 @@ export default function LibraryPage() {
           <div className="flex gap-4 overflow-x-auto hide-scrollbar">
             <WishlistCard
               title="Midnight Library"
-              price="$14.99"
+              price="₹1,249"
               image="/images/wishlist/w2.webp"
               bg="rgba(255,255,255,0.08)"
             />
 
             <WishlistCard
               title="Circe"
-              price="$12.50"
+              price="₹999"
               image="/images/wishlist/w3.webp"
               bg="rgba(0,150,136,0.20)"
             />
 
             <WishlistCard
               title="Atomic Habits"
-              price="$18.00"
+              price="₹1,499"
               image="/images/wishlist/w2.webp"
               bg="rgba(255,193,7,0.18)"
             />
 
             <WishlistCard
               title="Pride & Prejudice"
-              price="$9.99"
+              price="₹799"
               image="/images/wishlist/w3.webp"
               bg="rgba(244,143,177,0.18)"
             />
