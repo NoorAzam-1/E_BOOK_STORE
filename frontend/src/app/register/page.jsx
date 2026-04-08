@@ -1,5 +1,5 @@
 "use client";
-import { User, Mail, Lock, ArrowRight, Contact, Locate, MapPinHouse } from "lucide-react";
+import { User, Mail, Lock, ArrowRight, Contact, MapPinHouse } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
@@ -52,6 +52,7 @@ export default function RegisterPage() {
           role: form.role,
         }),
       ).unwrap();
+
       if (res.success == true) {
         router.push("/login");
       }
