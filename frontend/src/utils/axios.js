@@ -16,9 +16,9 @@ axiosInstance.interceptors.response.use(
 
     if (error?.response?.status === 401) {
       const store = (await import("@/app/store.js")).default;
-      const { logoutUser } = await import("@/features/authSlice.js");
+      const { logoutUserAsync } = await import("@/features/authSlice.js");
 
-      store.dispatch(logoutUser());
+      store.dispatch(logoutUserAsync());
 
       if (
         typeof window !== "undefined" &&
@@ -32,21 +32,38 @@ axiosInstance.interceptors.response.use(
   },
 );
 
-// ✅ API METHODS
+// AUTH
 axiosInstance.register = (data) =>
   axiosInstance.post("/api/user/register", data);
 
-axiosInstance.login = (data) => axiosInstance.post("/api/user/login", data);
+axiosInstance.login = (data) =>
+  axiosInstance.post("/api/user/login", data);
 
-axiosInstance.logout = () => axiosInstance.post("/api/user/logout");
+axiosInstance.logout = () =>
+  axiosInstance.post("/api/user/logout");
 
 axiosInstance.forgotPassword = (email) =>
-  axiosInstance.post("/api/user/forgot_password", { email });
+  axiosInstance.post("/api/user/forgot-password", { email });
 
 axiosInstance.resetPassword = (data) =>
-  axiosInstance.post("/api/user/reset_password", data);
+  axiosInstance.post("/api/user/reset-password", data);
 
-axiosInstance.getProfile = () => axiosInstance.get("/api/user/profile");
+axiosInstance.getProfile = () =>
+  axiosInstance.get("/api/user/profile");
+
+axiosInstance.adminLogin = (data) =>
+  axiosInstance.post("/api/user/admin-login", data); 
+
+// ADMIN USERS
+axiosInstance.getAllUsers = () =>
+  axiosInstance.get("/api/user/users");
+
+axiosInstance.deleteUser = (id) =>
+  axiosInstance.delete(`/api/user/users/${id}`);
+
+axiosInstance.getSellers = () =>
+  axiosInstance.get("/api/user/users/sellers");
+
 
 //feedback
 axiosInstance.addFeedback = (data) =>
