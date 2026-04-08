@@ -28,15 +28,16 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await dispatch(loginUser(form)).unwrap();
-      if (res) {
-        toast.success("Login Successful ✅");
+      const user = await dispatch(loginUser(form)).unwrap();
+      toast.success("Login Successful ✅");
+      if (user.role === "admin") {
+        router.push("/admin");
+      } else {
         router.push("/profile");
       }
     } catch (error) {
-      toast.error(error?.message || "Login Failed ");
+      toast.error(error?.message || "Login Failed");
     }
-
     setLoading(false);
   };
 
