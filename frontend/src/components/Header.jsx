@@ -33,18 +33,18 @@ export default function Header() {
   const { user } = useSelector((state) => state.auth);
   const { cartCount } = useSelector((state) => state.cart);
   const { wishlist = [] } = useSelector((state) => state.wishlist);
-
   const isLoggedIn = !!user;
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  // Fetch data
   useEffect(() => {
-    if (!user) {
+    if (!user && !isLoggingOut) {
       dispatch(getProfile());
       dispatch(getCart());
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, isLoggingOut]);
 
   const logout = async () => {
+    setIsLoggingOut(true);
     setProfileOpen(false);
     dispatch(logoutUserAsync());
     router.push("/login");
@@ -60,7 +60,6 @@ export default function Header() {
     <>
       <header className="fixed top-0 z-40 w-full border-b border-outline-variant/80 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 md:px-6 py-4">
-
           {/* LEFT */}
           <div className="flex items-center gap-2 md:gap-4">
             <button
@@ -93,7 +92,6 @@ export default function Header() {
 
           {/* RIGHT */}
           <div className="flex items-center gap-4 relative">
-
             {/* PROFILE / LOGIN */}
             {isLoggedIn ? (
               <div
@@ -107,13 +105,9 @@ export default function Header() {
 
                 {/* DROPDOWN */}
                 {profileOpen && (
-                  <div
-                    className="absolute -right-6 md:-right-10 lg:-right-12 xl:-right-20 top-6 w-48 bg-background border border-outline-variant/30 rounded-xl shadow-2xl z-50 backdrop-blur-xl"
-                  >
-                    
+                  <div className="absolute -right-6 md:-right-10 lg:-right-12 xl:-right-20 top-6 w-48 bg-background border border-outline-variant/30 rounded-xl shadow-2xl z-50 backdrop-blur-xl">
                     {/* LINKS */}
                     <div className="py-2 text-sm">
-
                       <Link
                         href="/profile"
                         className="flex items-center gap-3 px-4 py-2 hover:bg-white/5 transition"
