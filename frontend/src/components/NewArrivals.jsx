@@ -52,7 +52,7 @@ export default function NewArrivals() {
                 <span className="text-xs text-on-surface-variant">({book.reviews})</span>
               </div>
 
-              <p className="mt-2 text-lg font-bold text-primary">${book.price.toFixed(2)}</p>
+              <p className="mt-2 text-lg font-bold text-primary">₹{book.price.toFixed(2)}</p>
             </div>
           </Link>
         ))}

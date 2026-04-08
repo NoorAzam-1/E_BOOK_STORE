@@ -52,7 +52,6 @@ export default function BookDetailPage() {
   const { singleProduct: book, loading } = useSelector(
     (state) => state.product,
   );
-  console.log("Book Details:", book);
 
   useEffect(() => {
     dispatch(getSingleProduct(id));

@@ -6,24 +6,24 @@ import Link from "next/link";
 export default function Hero() {
   return (
     <section className="mx-auto w-full">
-      <div className="relative flex min-h-[500px] flex-col items-center gap-12 overflow-hidden rounded-xl md:rounded-4xl bg-surface-container-low p-8 md:flex-row md:p-16">
+      <div className="relative flex min-h-[500px] flex-col items-center gap-12 overflow-hidden rounded-xl md:rounded-4xl bg-surface-container-low p-6 lg:flex-row md:p-10 lg:p-16">
         <div className="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-primary/10 blur-[120px]" />
 
-        <div className="z-10 flex-1 space-y-6">
+        <div className="z-10 flex-1 space-y-3 md:space-y-6">
           <div className="inline-block rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
             <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
               {site.hero.badge}
             </span>
           </div>
 
-          <h1 className="font-headline text-5xl font-extrabold md:leading-tight tracking-tight text-on-surface md:text-7xl">
+          <h1 className="font-headline text-4xl md:text-7xl lg:text-5xl font-extrabold md:leading-0.9 lg:leading-tight xl:leading-12  tracking-wider lg:tracking-wide xl:tracking-widest text-on-surface ">
             {site.hero.title.split(" ").slice(0, 2).join(" ")} <br />
             <span className="text-primary">
               {site.hero.title.split(" ").slice(2).join(" ")}
             </span>
           </h1>
 
-          <p className="max-w-lg text-lg leading-relaxed text-on-surface-variant md:text-xl">
+          <p className="max-w-lg text-md sm:text-lg leading-relaxed text-on-surface-variant md:text-xl">
             {site.hero.description}
           </p>
 
@@ -35,9 +35,9 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="z-10 flex w-full flex-1 justify-center md:w-auto">
-          <div className="group relative lg:scale-125">
-            <div className="absolute inset-0 scale-90 rounded-full bg-primary/20 blur-2xl transition-transform duration-700 group-hover:scale-110" />
+        <div className="z-10 flex w-full  flex-1 justify-center md:w-auto">
+          <div className="group relative lg:scale-135 xl:scale-140">
+            <div className="absolute inset-0 rounded-full w-full  lg:w-[80%] bg-primary/20 blur-2xl transition-transform duration-700" />
             <Image
               src={site.hero.image}
               alt="Book Cover"

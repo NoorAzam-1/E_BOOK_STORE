@@ -47,7 +47,7 @@ export const site = {
     {
       title: "The Digital Nomad",
       author: "Elena Rodriguez",
-      price: 12.99,
+      price: 600,
       rating: 4.5,
       reviews: 128,
       image:
@@ -56,7 +56,7 @@ export const site = {
     {
       title: "Silence of the Void",
       author: "Marcus Thorne",
-      price: 18.5,
+      price: 567,
       rating: 5,
       reviews: 340,
       image:
@@ -65,7 +65,7 @@ export const site = {
     {
       title: "Architecture of Dreams",
       author: "Julian Vane",
-      price: 15.0,
+      price: 735,
       rating: 4,
       reviews: 89,
       image:
@@ -74,7 +74,7 @@ export const site = {
     {
       title: "Pulse of Innovation",
       author: "Sarah Jenkins",
-      price: 21.99,
+      price: 748,
       rating: 4,
       reviews: 215,
       image:
