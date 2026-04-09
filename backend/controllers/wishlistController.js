@@ -3,8 +3,6 @@ import wishlistModel from "../models/wishlistModel.js";
 // CREATE
 const addWishlist = async (req, res) => {
   try {
-    // console.log("addWishlist API called");
-
     const userId = req.user._id;
     const { bookId } = req.body;
 
