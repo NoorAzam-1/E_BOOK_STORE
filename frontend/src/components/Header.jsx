@@ -33,6 +33,8 @@ export default function Header() {
   const isLoggedIn = !!user;
 
   useEffect(() => {
+    setProfileOpen(false);
+
     if (!user) {
       dispatch(getProfile());
       dispatch(getCart());
@@ -92,7 +94,10 @@ export default function Header() {
                 onMouseEnter={() => setProfileOpen(true)}
                 onMouseLeave={() => setProfileOpen(false)}
               >
-                <UserRoundCog className="h-6 w-6 text-primary cursor-pointer" />
+                <UserRoundCog
+                  className="h-6 w-6 text-primary cursor-pointer"
+                  onClick={() => setProfileOpen((prev) => !prev)}
+                />
 
                 {/* DROPDOWN */}
                 {profileOpen && (
