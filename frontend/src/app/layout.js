@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter, Manrope } from "next/font/google";
 import Footer from "@/components/Footer";
 import { Providers } from "./provider";
+import AuthGuard from "@/components/AuthGuard";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,11 +27,13 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${manrope.variable} bg-background text-on-surface`}
       >
         <Providers>
-          <Header />
-          <main className="mt-18 sm:mt-19 md:mt-20 lg:mt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-            {children}
-          </main>
-          <Footer />
+          <AuthGuard>
+            <Header />
+            <main className="mt-18 sm:mt-19 md:mt-20 lg:mt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+              {children}
+            </main>
+            <Footer />
+          </AuthGuard>
         </Providers>
       </body>
     </html>
