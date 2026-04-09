@@ -4,6 +4,7 @@ import userModel from "../models/userModel.js";
 const userAuth = async (req, res, next) => {
   try {
     const token = req.cookies.token;
+    console.log("Token from cookie:", token); // Debugging log  
 
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
