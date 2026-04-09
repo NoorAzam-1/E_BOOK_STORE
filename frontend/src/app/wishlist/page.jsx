@@ -2,7 +2,7 @@ import WishlistList from "@/components/wishlist/WishlistList";
 
 export default function WishlistPage() {
   return (
-    <main className="max-w-5xl mx-auto bg-surface text-on-surface">
+    <main className="min-h-screen max-w-5xl mx-auto bg-surface text-on-surface">
 
       {/* Header */}
       <div className="flex justify-between items-end mb-10">
