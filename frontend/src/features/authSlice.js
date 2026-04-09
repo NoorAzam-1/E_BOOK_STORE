@@ -20,7 +20,7 @@ export const registerUser = createAsyncThunk(
       toast.error(msg);
       return rejectWithValue(msg);
     }
-  }
+  },
 );
 
 // LOGIN
@@ -29,15 +29,14 @@ export const loginUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.login(data);
-
       if (!res.data.success) {
         return rejectWithValue(res.data.message);
       }
-      return res.data.user;
+      return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Error");
     }
-  }
+  },
 );
 
 // PROFILE
@@ -50,21 +49,16 @@ export const getProfile = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response?.data || "Error");
     }
-  }
+  },
 );
 
 // LOGOUT
-export const logoutUserAsync = createAsyncThunk(
-  "auth/logout",
-  async (_, { rejectWithValue }) => {
-    try {
-      await axiosInstance.logout();
-      return true;
-    } catch {
-      return rejectWithValue("Logout failed");
-    }
-  }
-);
+export const logoutUserAsync = createAsyncThunk("auth/logout", async () => {
+  toast.success("Logged out successfully");
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
+  return true;
+});
 
 // FORGOT
 export const forgotPassword = createAsyncThunk(
@@ -79,7 +73,7 @@ export const forgotPassword = createAsyncThunk(
       toast.error(msg);
       return rejectWithValue(msg);
     }
-  }
+  },
 );
 
 // RESET
@@ -98,7 +92,7 @@ export const resetPassword = createAsyncThunk(
       toast.error(msg);
       return rejectWithValue(msg);
     }
-  }
+  },
 );
 
 const authSlice = createSlice({
@@ -155,6 +149,8 @@ const authSlice = createSlice({
       // LOGOUT
       .addCase(logoutUserAsync.fulfilled, (s) => {
         s.user = null;
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
       });
   },
 });
