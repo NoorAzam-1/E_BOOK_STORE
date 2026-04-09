@@ -29,6 +29,10 @@ export default function LoginPage() {
 
     try {
       const user = await dispatch(loginUser(form)).unwrap();
+      if (user?.token) {
+        localStorage.setItem("token", user.token);
+        localStorage.setItem("role", user.role);
+      }
       toast.success("Login Successful ✅");
       if (user.role === "admin") {
         router.push("/admin");

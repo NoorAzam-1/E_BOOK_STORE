@@ -2,7 +2,17 @@ import axios from "axios";
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
-  withCredentials: true,
+});
+
+axiosInstance.interceptors.request.use((config) => {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+
+  return config;
 });
 
 axiosInstance.interceptors.response.use(
@@ -15,17 +25,7 @@ axiosInstance.interceptors.response.use(
     }
 
     if (error?.response?.status === 401) {
-      const store = (await import("@/app/store.js")).default;
-      const { logoutUserAsync } = await import("@/features/authSlice.js");
-
       store.dispatch(logoutUserAsync());
-
-      if (
-        typeof window !== "undefined" &&
-        window.location.pathname !== "/login"
-      ) {
-        window.location.href = "/login";
-      }
     }
 
     return Promise.reject(error);
@@ -36,11 +36,9 @@ axiosInstance.interceptors.response.use(
 axiosInstance.register = (data) =>
   axiosInstance.post("/api/user/register", data);
 
-axiosInstance.login = (data) =>
-  axiosInstance.post("/api/user/login", data);
+axiosInstance.login = (data) => axiosInstance.post("/api/user/login", data);
 
-axiosInstance.logout = () =>
-  axiosInstance.post("/api/user/logout");
+axiosInstance.logout = () => axiosInstance.post("/api/user/logout");
 
 axiosInstance.forgotPassword = (email) =>
   axiosInstance.post("/api/user/forgot-password", { email });
@@ -48,22 +46,18 @@ axiosInstance.forgotPassword = (email) =>
 axiosInstance.resetPassword = (data) =>
   axiosInstance.post("/api/user/reset-password", data);
 
-axiosInstance.getProfile = () =>
-  axiosInstance.get("/api/user/profile");
+axiosInstance.getProfile = () => axiosInstance.get("/api/user/profile");
 
 axiosInstance.adminLogin = (data) =>
-  axiosInstance.post("/api/user/admin-login", data); 
+  axiosInstance.post("/api/user/admin-login", data);
 
 // ADMIN USERS
-axiosInstance.getAllUsers = () =>
-  axiosInstance.get("/api/user/users");
+axiosInstance.getAllUsers = () => axiosInstance.get("/api/user/users");
 
 axiosInstance.deleteUser = (id) =>
   axiosInstance.delete(`/api/user/users/${id}`);
 
-axiosInstance.getSellers = () =>
-  axiosInstance.get("/api/user/users/sellers");
-
+axiosInstance.getSellers = () => axiosInstance.get("/api/user/users/sellers");
 
 //feedback
 axiosInstance.addFeedback = (data) =>

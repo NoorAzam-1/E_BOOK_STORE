@@ -311,16 +311,12 @@
 //   getSellers,
 // };
 
-
-
-
 import userModel from "../models/userModel.js";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import { sendEmail } from "../utils/emailSender.js";
-
 
 // ================= FORGOT PASSWORD =================
 const forgotPassword = async (req, res) => {
@@ -362,7 +358,6 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-
 // ================= RESET PASSWORD =================
 const resetPassword = async (req, res) => {
   try {
@@ -397,7 +392,6 @@ const resetPassword = async (req, res) => {
   }
 };
 
-
 // ================= LOGIN =================
 const loginUser = async (req, res) => {
   try {
@@ -423,29 +417,17 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    const options = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    };
-
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
     const { password: _, ...safeUser } = user.toObject();
 
-    res
-      .cookie("token", token, options)
-      .cookie("role", user.role, options) 
-      .json({
-        success: true,
-        user: safeUser,
-      });
-
+    return res.json({
+      success: true,
+      token,
+      role: user.role,
+      user: safeUser,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -504,7 +486,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-
 // ================= ADMIN LOGIN =================
 const adminLogin = async (req, res) => {
   try {
@@ -530,19 +511,27 @@ const adminLogin = async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    }).json({
+    // res
+    //   .cookie("token", token, {
+    //     httpOnly: true,
+    //     secure: process.env.NODE_ENV === "production",
+    //     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    //   })
+    //   .json({
+    //     success: true,
+    //     user,
+    //   });
+
+    return res.json({
       success: true,
+      token,
+      role: user.role,
       user,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
 // ================= GET ALL USERS =================
 const getAllUsers = async (req, res) => {
@@ -553,7 +542,6 @@ const getAllUsers = async (req, res) => {
     res.status(500).json({ success: false });
   }
 };
-
 
 // ================= DELETE USER =================
 const deleteUser = async (req, res) => {
@@ -576,7 +564,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-
 // ================= GET SELLERS =================
 const getSellers = async (req, res) => {
   try {
@@ -587,14 +574,10 @@ const getSellers = async (req, res) => {
   }
 };
 
-
 // ================= PROFILE =================
 const userProfile = async (req, res) => {
   try {
-    const user = await userModel
-      .findById(req.user.id)
-      .select("-password -__v");
-
+    const user = await userModel.findById(req.user.id).select("-password -__v");
     if (!user) {
       return res.status(404).json({ success: false });
     }
@@ -605,18 +588,17 @@ const userProfile = async (req, res) => {
   }
 };
 
-
 // ================= LOGOUT =================
 const logoutUser = async (req, res) => {
   try {
-    const options = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    };
+    // const options = {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    // };
 
-    res.clearCookie("token", options);
-    res.clearCookie("role", options);
+    // res.clearCookie("token", options);
+    // res.clearCookie("role", options);
 
     res.json({
       success: true,

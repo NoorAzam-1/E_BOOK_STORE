@@ -1,24 +1,20 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { User, History, CreditCard, ChevronRight } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProfile } from "@/features/authSlice";
-import { useRouter } from "next/navigation";
 import AddBook from "./AddBook";
 
 export default function ProfilePage() {
   const [active, setActive] = useState("profile");
   const { user, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const router = useRouter();
   const role = user?.role;
 
   useEffect(() => {
     dispatch(getProfile())
-      .unwrap()
-      .catch(() => router.push("/login"));
+      .unwrap();
   }, []);
 
   if (loading) {
@@ -95,7 +91,7 @@ export default function ProfilePage() {
             </p>
           )}
         </section>
-        
+
         {role === "seller" && (
           <section className="space-y-3">
             <h3 className="text-xs uppercase tracking-widest text-on-surface-variant px-1">

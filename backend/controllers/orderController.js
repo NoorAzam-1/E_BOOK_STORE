@@ -34,7 +34,7 @@ const placeOrder = async (req, res) => {
 
     res.json({ success: true, message: "Order placed", data: order });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ success: false, message: error.message });
   }
 };
@@ -50,7 +50,7 @@ const getOrders = async (req, res) => {
 
     res.json({ success: true, data: orders });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ success: false, message: error.message });
   }
 };

@@ -17,39 +17,32 @@ import {
 
 import { site } from "@/data/site";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserAsync, getProfile } from "@/features/authSlice";
 import { getCart } from "@/features/cartSlice";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-
-  const router = useRouter();
   const dispatch = useDispatch();
-
-  // Redux
+  const router = useRouter();
   const { user } = useSelector((state) => state.auth);
   const { cartCount } = useSelector((state) => state.cart);
   const { wishlist = [] } = useSelector((state) => state.wishlist);
   const isLoggedIn = !!user;
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
-    if (!user && !isLoggingOut) {
+    if (!user) {
       dispatch(getProfile());
       dispatch(getCart());
     }
-  }, [dispatch, user, isLoggingOut]);
+  }, [user]);
 
-  const logout = async () => {
-    setIsLoggingOut(true);
-    setProfileOpen(false);
+  const logout = () => {
     dispatch(logoutUserAsync());
     router.push("/login");
   };
-
   const navLinks = [
     { name: "Home", href: "/", icon: Home },
     { name: "Browse", href: "/browse", icon: Search },
@@ -97,9 +90,7 @@ export default function Header() {
               <div
                 className="relative"
                 onMouseEnter={() => setProfileOpen(true)}
-                onMouseLeave={() =>
-                  setTimeout(() => setProfileOpen(false), 150)
-                }
+                onMouseLeave={() => setProfileOpen(false)}
               >
                 <UserRoundCog className="h-6 w-6 text-primary cursor-pointer" />
 
