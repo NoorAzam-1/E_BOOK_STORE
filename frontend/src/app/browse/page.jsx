@@ -10,7 +10,7 @@ export default function BrowsePage() {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
-  const [maxPrice, setMaxPrice] = useState(5000);
+  const [maxPrice, setMaxPrice] = useState(50000000000);
   const [selectedFormat, setSelectedFormat] = useState("");
 
   const bookdata = useSelector((state) => state.product.products);
@@ -46,6 +46,7 @@ export default function BrowsePage() {
       isAvailable
     );
   });
+
 
   return (
     <main className="w-full mx-auto flex gap-12 bg-surface text-on-surface relative">
