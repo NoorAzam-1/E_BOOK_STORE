@@ -87,7 +87,7 @@ axiosInstance.updateProduct = (id, data) =>
   axiosInstance.put(`/api/product/update/${id}`, data);
 
 axiosInstance.deleteProduct = (id) =>
-  axiosInstance.delete(`/api/product/delete/${id}`);
+  axiosInstance.post(`/api/product/remove/${id}`);
 
 // WISHLIST APIs
 axiosInstance.addWishlist = (data) =>
