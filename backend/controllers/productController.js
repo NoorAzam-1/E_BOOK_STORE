@@ -126,18 +126,22 @@ const listProduct = async (req, res) => {
 // Function for removing product
 const removeProduct = async (req, res) => {
   try {
-    const product = await prodctModel.findById(req.body.id);
+    const { id } = req.params;
 
-    if (!product) {
-      return res
-        .status(404)
-        .json({ success: false, message: "E-book not found" });
-    }
+    console.log("🗑️ Deleting:", id);
 
-    await prodctModel.findByIdAndDelete(req.body.id);
-    res.json({ success: true, message: "E-book Removed" });
+    await prodctModel.findByIdAndDelete(id);
+
+    res.json({
+      success: true,
+      message: "Product Deleted",
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.log("❌ Delete error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Delete failed",
+    });
   }
 };
 
@@ -251,5 +255,5 @@ export {
   singleProduct,
   updateProduct,
   addMultipleProducts,
-  getSingleProduct
+  getSingleProduct,
 };
