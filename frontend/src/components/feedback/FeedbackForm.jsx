@@ -39,7 +39,7 @@ export default function FeedbackForm({ editData, setEditData }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-4 shadow rounded mb-6">
+    <form onSubmit={handleSubmit} className=" p-4 shadow rounded mb-6">
       <h2 className="text-xl font-bold mb-4">
         {editData ? "Edit Feedback" : "Add Feedback"}
       </h2>
