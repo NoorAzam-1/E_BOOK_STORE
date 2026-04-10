@@ -43,7 +43,7 @@ export default function WishlistItem({
         <div className="relative w-full md:w-40 aspect-2/3 overflow-hidden rounded-lg shadow-xl shrink-0">
           <Image
             alt="Image"
-            src={image}
+            src={image || "/placeholder.png"}
             fill
             className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
           />
