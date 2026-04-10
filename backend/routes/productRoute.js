@@ -6,10 +6,10 @@ const productRouter = express.Router ();
 
 productRouter.post('/add', upload.array('images', 4), addProduct);
 productRouter.post('/single',singleProduct);
-productRouter.post('/remove',removeProduct);
 productRouter.get('/list',listProduct);
 productRouter.post("/bulk", addMultipleProducts);
-productRouter.get("/:id", getSingleProduct);
+productRouter.post('/remove/:id',removeProduct);
 productRouter.put('/update/:id', upload.array('images', 4), updateProduct);
+productRouter.get("/:id", getSingleProduct);
 
 export default productRouter
