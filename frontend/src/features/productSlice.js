@@ -41,6 +41,7 @@ export const updateProduct = createAsyncThunk(
 export const deleteProduct = createAsyncThunk(
   "product/delete",
   async (id) => {
+    console.log("Deleting product with ID slice:", id);
     await axiosInstance.deleteProduct(id);
     return id;
   }
