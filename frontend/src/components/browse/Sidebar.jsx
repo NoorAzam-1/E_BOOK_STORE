@@ -38,7 +38,7 @@ export default function Sidebar({
       )}
 
       <aside
-        className={`w-64 sm:w-72 md:w-60 lg:w-80 p-3 sm:p-4 md:p-3 lg:p-4 space-y-6 bg-surface-container z-30
+        className={`w-64 sm:w-72 md:w-60 lg:w-80 p-3 sm:p-4 md:p-3 lg:p-4 space-y-6 bg-surface-container z-40
         fixed top-0 left-0 h-full overflow-y-auto transform transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:sticky md:top-16 md:h-fit`}>
         {/* CLOSE BUTTON */}
         <button onClick={() => setOpen(false)} className="md:hidden text-primary">
