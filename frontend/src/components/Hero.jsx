@@ -1,9 +1,26 @@
+"use client";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { site } from "@/data/site";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+  const router = useRouter();
+  const handleBuyNow = () => {
+    localStorage.setItem(
+      "checkoutData",
+      JSON.stringify([
+        {
+          productId: "hero-book",
+          title: site.hero.title,
+          price: site.hero.price,
+          image: site.hero.image,
+          quantity: 1,
+        },
+      ]),
+    );
+    router.push("/checkout");
+  };
   return (
     <section className="mx-auto w-full">
       <div className="relative flex min-h-[500px] flex-col items-center gap-12 overflow-hidden rounded-xl md:rounded-4xl bg-surface-container-low p-6 lg:flex-row md:p-10 lg:p-16">
@@ -28,10 +45,13 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col gap-4 pt-4 sm:flex-row md:items-center">
-            <Link href="/checkout" className="w-full md:w-auto flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-primary to-primary-container px-8 py-4 font-bold text-on-primary shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 cursor-pointer">
+            <button
+              className="w-full md:w-auto flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-primary to-primary-container px-8 py-4 font-bold text-on-primary shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 cursor-pointer"
+              onClick={handleBuyNow}
+            >
               Buy Now — ₹{site.hero.price.toFixed(0)}
               <ArrowRight className="h-5 w-5" />
-            </Link>
+            </button>
           </div>
         </div>
 
