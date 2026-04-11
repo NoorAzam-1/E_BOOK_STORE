@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleProduct } from "@/features/productSlice";
 import Image from "next/image";
 import { Star, StarHalf } from "lucide-react";
-import Link from "next/link";
 
 const bookDescriptions = [
   "is a captivating journey filled with imagination and deep insights.",
@@ -29,7 +28,6 @@ function RatingStars({ rating }) {
   const full = Math.floor(rating);
   const hasHalf = rating % 1 >= 0.5;
   const empty = 5 - full - (hasHalf ? 1 : 0);
-
   return (
     <div className="flex text-yellow-400">
       {[...Array(full)].map((_, i) => (
@@ -48,6 +46,7 @@ function RatingStars({ rating }) {
 export default function BookDetailPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { singleProduct: book, loading } = useSelector(
     (state) => state.product,
@@ -83,6 +82,18 @@ export default function BookDetailPage() {
 
     return { bookDesc, authorDesc };
   }, [book]);
+
+  const handleBuyNow = () => {
+    const item = {
+      productId: book._id,
+      title: book.title,
+      price: book.price,
+      image: book.images?.[0]?.url,
+      qty: 1,
+    };
+    localStorage.setItem("checkoutData", JSON.stringify([item]));
+    router.push("/checkout");
+  };
 
   if (loading) return <p className="p-10">Loading...</p>;
   if (!book) return <p className="p-10">Product not found</p>;
@@ -158,9 +169,12 @@ export default function BookDetailPage() {
               </div>
 
               <div className="flex gap-3 mt-4">
-                <Link href="/checkout" className="flex-1 bg-primary text-on-primary text-center py-3 rounded-lg hover:bg-primary-hover hover:scale-105 transition">
+                <button
+                  onClick={handleBuyNow}
+                  className="flex-1 bg-primary text-on-primary text-center py-3 rounded-lg hover:bg-primary-hover hover:scale-105 transition cursor-pointer"
+                >
                   Buy Now
-                </Link>
+                </button>
               </div>
             </div>
 
