@@ -10,11 +10,9 @@ export default function ProfilePage() {
   const [active, setActive] = useState("profile");
   const { user, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const role = user?.role;
-
+  const role = user?.role === "seller" || user?.role === "admin";
   useEffect(() => {
-    dispatch(getProfile())
-      .unwrap();
+    dispatch(getProfile()).unwrap();
   }, []);
 
   if (loading) {
@@ -92,16 +90,10 @@ export default function ProfilePage() {
           )}
         </section>
 
-        {role === "seller" && (
-          <section className="space-y-3">
-            <h3 className="text-xs uppercase tracking-widest text-on-surface-variant px-1">
-              Seller Dashboard
-            </h3>
-
-            <div className="bg-surface-container rounded-xl border border-outline-variant/20 p-5">
-              <AddBook />
-            </div>
-          </section>
+        {role && (
+          <div className="bg-surface-container rounded-xl border border-outline-variant/20 p-5">
+            <AddBook />
+          </div>
         )}
       </main>
     </div>

@@ -55,6 +55,7 @@ export const getProfile = createAsyncThunk(
 // LOGOUT
 export const logoutUserAsync = createAsyncThunk("auth/logout", async () => {
   toast.success("Logged out successfully");
+  localStorage.removeItem("checkoutData");
   localStorage.removeItem("token");
   localStorage.removeItem("role");
   return true;
