@@ -17,7 +17,7 @@ export default function CartItem({ item, updateQty, removeItem }) {
       </div>
 
       {/* Content */}
-      <div className="flex flex-col justify-between flex-1">
+      <div key={item.productId} className="flex flex-col justify-between flex-1">
         <div>
           <div className="flex justify-between">
             <div>
