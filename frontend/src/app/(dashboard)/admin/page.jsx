@@ -7,23 +7,21 @@ import Image from "next/image";
 
 import { getAllProducts, deleteProduct } from "@/features/productSlice";
 import { getAllUsers, deleteUser } from "@/features/adminSlice";
+import { getAllFeedback, deleteFeedback } from "@/features/feedbackSlice";
 import OrderCard from "@/components/orders/OrderCard";
-
 
 export default function AdminPage() {
   const dispatch = useDispatch();
 
   const { products = [] } = useSelector((state) => state.product);
   const { users = [] } = useSelector((state) => state.admin);
-
-  const feedbacks = [
-    { _id: "1", message: "Great platform UI!" },
-    { _id: "2", message: "Loved the experience." },
-  ];
+  const { feedbacks = [] } = useSelector((state) => state.feedback);
+  console.log("🚀 ~ file: page.jsx:17 ~ AdminPage ~ feedbacks:", feedbacks);
 
   useEffect(() => {
     dispatch(getAllProducts());
     dispatch(getAllUsers());
+    dispatch(getAllFeedback());
   }, [dispatch]);
 
   const now = new Date();
@@ -78,6 +76,10 @@ export default function AdminPage() {
 
   const handleDeleteProduct = (id) => {
     dispatch(deleteProduct(id));
+  };
+
+  const handleDeleteFeedback = (id) => {
+    dispatch(deleteFeedback(id));
   };
 
   return (
@@ -296,18 +298,58 @@ export default function AdminPage() {
         <h2 className="text-2xl font-bold mb-4">Feedback</h2>
 
         <div className="space-y-4">
-          {feedbacks.map((f) => (
-            <div
-              key={f._id}
-              className="glass-card p-4 rounded-xl border border-outline-variant flex justify-between"
-            >
-              <p>{f.message}</p>
+          {feedbacks.map((f) => {
+            const date = new Date(f.createdAt).toLocaleDateString("en-IN", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            });
 
-              <button className="text-error flex items-center gap-2 cursor-pointer">
-                <Trash2 size={16} /> Delete
-              </button>
-            </div>
-          ))}
+            return (
+              <div
+                key={f._id}
+                className="relative glass-card p-4 sm:p-5 rounded-xl border border-outline-variant flex flex-col sm:flex-row justify-between gap-4 hover:scale-[1.01] transition"
+              >
+                {/* BG ICON */}
+                <span className="absolute right-3 bottom-2 opacity-10 z-10 text-primary text-6xl">
+                  💬
+                </span>
+
+                {/* LEFT CONTENT */}
+                <div className="flex-1 space-y-2">
+                  {/* MESSAGE */}
+                  <p className="text-sm sm:text-base font-medium">
+                    {f.feedback}
+                  </p>
+
+                  {/* USER INFO */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-xs sm:text-sm text-on-surface-variant">
+                    <span className="flex items-center gap-1">👤 {f.name}</span>
+
+                    <span className="hidden sm:block">•</span>
+
+                    <span className="flex items-center gap-1">
+                      📧 {f.email}
+                    </span>
+                    {/* DATE */}
+                    <p className="text-[11px] text-on-surface-variant flex items-center gap-1">
+                      📅 {date}
+                    </p>
+                  </div>
+                </div>
+
+                {/* RIGHT SIDE */}
+                <div className="flex items-center justify-end sm:justify-center ">
+                  <button
+                    onClick={() => handleDeleteFeedback(f._id)}
+                    className="flex items-center gap-2 text-error cursor-pointer active:scale-95 hover:opacity-80 z-20 transition"
+                  >
+                    <Trash2 size={16} /> Delete
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
     </div>
