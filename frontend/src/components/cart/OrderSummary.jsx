@@ -1,10 +1,10 @@
-import Link from "next/link";
 
-export default function OrderSummary({
-  subtotal,
-  tax,
-  total,
-}) {
+export default function OrderSummary({ subtotal, tax, total, data }) {
+  const handleCheckout = () => {
+    localStorage.setItem("checkoutData", JSON.stringify(data));
+    window.location.href = "/checkout";
+  };
+
   return (
     <div className="glass-card flex flex-col p-4 md:p-8 rounded-xl border border-white/5 sticky top-24">
       <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
@@ -49,9 +49,12 @@ export default function OrderSummary({
       </div>
 
       {/* Button */}
-      <Link href="/checkout" className="w-full bg-primary text-on-primary py-3 px-4 rounded-lg font-bold hover:scale-[1.02] transition cursor-pointer">
+      <button
+        onClick={handleCheckout}
+        className="w-full bg-primary text-on-primary py-3 px-4 rounded-lg font-bold hover:scale-[1.02] transition cursor-pointer"
+      >
         Proceed to Checkout →
-      </Link>
+      </button>
 
       {/* Note */}
       <div className="mt-6 text-xs text-on-surface-variant flex gap-2">

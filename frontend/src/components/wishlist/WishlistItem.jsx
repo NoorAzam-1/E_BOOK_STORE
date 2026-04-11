@@ -19,7 +19,6 @@ export default function WishlistItem({
 
   const [toast, setToast] = useState("");
 
-  // ✅ Move to Cart
   const handleMoveToCart = () => {
     if (loading) return;
 
@@ -29,7 +28,6 @@ export default function WishlistItem({
     setToast("Moved to cart 🛒");
   };
 
-  // ✅ Delete from wishlist
   const handleDelete = () => {
     dispatch(deleteWishlist(id));
     setToast("Removed from wishlist ❌");

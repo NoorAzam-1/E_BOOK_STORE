@@ -13,12 +13,11 @@ import {
 export default function CartPage() {
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
-
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
 
-  // ✅ UPDATE QTY (CONNECTED TO BACKEND)
+  // UPDATE QTY (CONNECTED TO BACKEND)
   const updateQty = (productId, type) => {
     const item = cart.items.find((i) => i.productId === productId);
 
@@ -37,12 +36,12 @@ export default function CartPage() {
     );
   };
 
-  // ✅ REMOVE
+  // REMOVE
   const removeItem = (productId) => {
     dispatch(removeFromCart(productId));
   };
 
-  // ✅ CALCULATIONS
+  // CALCULATIONS
   const subtotal =
     cart?.items?.reduce(
       (acc, item) => acc + item.price * item.quantity,
@@ -83,6 +82,7 @@ export default function CartPage() {
             subtotal={subtotal}
             tax={tax}
             total={total}
+            data={cart?.items}
           />
         </div>
       </div>

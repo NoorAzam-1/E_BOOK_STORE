@@ -12,16 +12,14 @@ const bookSchema = new mongoose.Schema({
   author: { type: String, required: true, trim: true },
   description: { type: String, required: true },
   
-  // E-book specific fields
-  price: { type: Number, required: true }, // Single price for the digital book
-  format: { type: String, default: "EPUB" }, // Simple string, e.g., "EPUB", "PDF", "EPUB/PDF"
+  price: { type: Number, required: true }, 
+  format: { type: String, default: "EPUB" }, 
   
   category: [{ type: String, required: true }], 
   tags: [String], 
   images: [imageSchema],
   
   bestseller: { type: Boolean, default: false },
-  // 'available' can now just mean "is this book listed/purchasable?"
   available: { type: Boolean, default: true },
   
   averageRating: { type: Number, default: 0 },

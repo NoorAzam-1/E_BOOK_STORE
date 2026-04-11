@@ -61,7 +61,7 @@ export default function Header() {
               onClick={() => setOpen(true)}
               className="text-primary md:hidden hover:text-tertiary"
             >
-              <Menu className="h-6 w-6" />
+              <Menu className="h-6 w-6 cursor-pointer" />
             </button>
 
             <Link
@@ -185,7 +185,7 @@ export default function Header() {
         <div className="flex justify-between items-center p-4 border-b border-outline-variant/20">
           <span className="text-primary font-bold text-lg">Menu</span>
           <button onClick={() => setOpen(false)}>
-            <X />
+            <X className="hover:text-red-600 cursor-pointer" />
           </button>
         </div>
 
