@@ -17,7 +17,7 @@ export default function OrderSummary() {
   if (!items.length) return <p className="p-10 text-center">Loading...</p>;
 
 
-  const subtotal = items.reduce((acc, i) => acc + i.price * i.qty, 0);
+  const subtotal = items.reduce((acc, i) => acc + i.price * i.quantity, 0);
 
   const tax = subtotal * 0.08;
   const total = subtotal + tax;
