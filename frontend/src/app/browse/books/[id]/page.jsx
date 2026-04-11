@@ -89,7 +89,7 @@ export default function BookDetailPage() {
       title: book.title,
       price: book.price,
       image: book.images?.[0]?.url,
-      qty: 1,
+      quantity: 1,
     };
     localStorage.setItem("checkoutData", JSON.stringify([item]));
     router.push("/checkout");
