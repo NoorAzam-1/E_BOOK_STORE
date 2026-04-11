@@ -13,7 +13,7 @@ export default function AuthGuard({ children }) {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
-    const protectedRoutes = ["/profile", "/orders", "/cart", "/wishlist"];
+    const protectedRoutes = ["/profile", "/orders", "/cart", "/wishlist", "/checkout"];
     const authRoutes = ["/login", "/register"];
 
     // Protected routes
