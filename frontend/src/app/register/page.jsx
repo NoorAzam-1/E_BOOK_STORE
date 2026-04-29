@@ -86,7 +86,7 @@ export default function RegisterPage() {
               icon={<User size={18} />}
               label="Full Name"
               name="name"
-              placeholder="Noor Azam"
+              placeholder="Name"
               value={form.name}
               onChange={handleChange}
             />
@@ -96,7 +96,7 @@ export default function RegisterPage() {
               icon={<Mail size={18} />}
               label="Email Address"
               name="email"
-              placeholder="noor@ebookstore.com"
+              placeholder="abc@gamil.com"
               value={form.email}
               onChange={handleChange}
             />
