@@ -65,7 +65,7 @@ export default function LoginPage() {
               icon={<Mail size={18} />}
               label="Email Address"
               name="email"
-              placeholder="noor@ebookstore.com"
+              placeholder="abc@ebookstore.com"
               value={form.email}
               onChange={handleChange}
             />
